@@ -1,0 +1,9 @@
+{
+  "name": "galaxy-defender",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Galaxy Defender browser game",
+  "scripts": {
+    "test": "node --test"
+  }
+}
