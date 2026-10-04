@@ -36,7 +36,9 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 .achievementCard.common{border-color:#fff;box-shadow:0 0 14px rgba(255,255,255,.55)}
 .achievementCard.rare{border-color:#00ff66;box-shadow:0 0 16px rgba(0,255,102,.55)}
 .achievementCard.epic{border-color:#b44cff;box-shadow:0 0 18px rgba(180,76,255,.65)}
-.achievementCard.legendary{border-color:#ffd21a;box-shadow:0 0 20px rgba(255,210,26,.7)}
+.achievementCard.legendary{border-color:#ffd21a;box-shadow:0 0 20px rgba(255,210,26,.7)}.achievementCard.amazing{border-color:#ff2020;box-shadow:0 0 24px rgba(255,32,32,.82)}
+.achievementCard.unlocked.amazing{animation:achievementRed 1.5s infinite alternate}
+@keyframes achievementRed{from{box-shadow:0 0 10px rgba(255,32,32,.4)}to{box-shadow:0 0 38px rgba(255,32,32,1),0 0 70px rgba(255,0,0,.55)}}
 .achievementCard.unlocked.common{animation:achievementWhite 2s infinite alternate}
 .achievementCard.unlocked.rare{animation:achievementGreen 2s infinite alternate}
 .achievementCard.unlocked.epic{animation:achievementPurple 2s infinite alternate}

@@ -3,8 +3,9 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const indexPath = path.join(__dirname, '..', 'index.html');
-const html = fs.readFileSync(indexPath, 'utf8');
+const root = path.join(__dirname, '..');
+const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const js = fs.readFileSync(path.join(root, 'src', 'game.js'), 'utf8');
 
 test('index.html exists and contains the core game UI', () => {
   for (const id of [
@@ -19,16 +20,17 @@ test('index.html exists and contains the core game UI', () => {
     'achievementsOverlay',
     'profileOverlay'
   ]) {
-    assert.match(html, new RegExp(`id=["']${id}["']`), `missing #${id}`);
+    assert.match(index, new RegExp(`id=["']${id}["']`), `missing #${id}`);
   }
 });
 
-test('game script is present and starts in strict mode', () => {
-  assert.match(html, /<script>[\s\S]*?["']use strict["'];/);
+test('game script is loaded from the split source file and starts in strict mode', () => {
+  assert.match(index, /<script\s+src=["']src\/game\.js["']><\/script>/);
+  assert.match(js, /^["']use strict["'];/);
 });
 
-test('the game exposes the main gameplay entry points before refactoring', () => {
+test('the split game source exposes the main gameplay entry points', () => {
   for (const name of ['startGame', 'update', 'draw', 'gameOver']) {
-    assert.match(html, new RegExp(`function\\s+${name}\\s*\\(`), `missing ${name}()`);
+    assert.match(js, new RegExp(`function\\s+${name}\\s*\\(`), `missing ${name}()`);
   }
 });
