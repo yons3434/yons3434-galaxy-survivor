@@ -56,4 +56,3 @@ test("game assets are non-empty", () => {
   assert.ok(css.length > 1000);
   assert.ok(index.length > 1000);
 });
-});
