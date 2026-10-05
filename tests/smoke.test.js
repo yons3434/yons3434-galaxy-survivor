@@ -11,7 +11,8 @@ const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 test("split project has the expected entry files", () => {
   assert.match(index, /src\/style\.css/);
   assert.match(index, /src\/game\.js/);
-  assert.equal((index.match(/<script/g) || []).length, 1);
+  assert.equal((index.match(/<script/g) || []).length, 2);
+  assert.match(index, /cdn\.jsdelivr\.net\/npm\/\@supabase\/supabase-js/);
 });
 
 test("game JavaScript keeps permanent combo across hits", () => {
