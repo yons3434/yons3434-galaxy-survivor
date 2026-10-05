@@ -202,3 +202,11 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 #homeDailyMissions .homeDailyRow.rarity-legendary .homeDailyRowTitle{color:#ffd21a}
 #homeDailyMissions .homeDailyRow.rarity-amazing .homeDailyRowTitle{color:#ff4d6d}
 #homeDailyMissions .homeDailyRow.done{border-color:#35e06f;box-shadow:0 0 12px rgba(53,224,111,.7)}
+
+/* Compact daily missions home button */
+#homeDailyMissions{position:absolute;left:19%;top:50%;transform:translate(-50%,-50%);width:210px;height:82px;padding:10px 16px;border:2px solid #4cc9f0;border-radius:18px;background:linear-gradient(145deg,#111a38,#050918);box-shadow:0 0 20px rgba(76,201,240,.28);cursor:pointer;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;z-index:25;direction:rtl}
+#homeDailyMissions:hover{transform:translate(-50%,-50%) scale(1.05);box-shadow:0 0 30px rgba(76,201,240,.5)}
+#homeDailyMissions .homeDailyButtonIcon{font-size:28px;line-height:1}
+#homeDailyMissions .homeDailyButtonText{font-size:17px;font-weight:bold;color:#90e0ef}
+#homeDailyMissions .homeDailyButtonCount{font-size:12px;color:#ffd166}
+@media(max-width:700px){#homeDailyMissions{left:23%;width:175px;height:70px}.homeDailyButtonIcon{font-size:23px!important}.homeDailyButtonText{font-size:14px!important}}
