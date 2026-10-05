@@ -10,7 +10,7 @@ const script = html.match(/<script>([\s\S]*?)<\/script>/)?.[1] || "";
 
 test("Galaxy Defender monolithic file has valid JavaScript syntax", () => {
   assert.ok(script.length > 10000);
-  assert.doesNotThrow(() => new vm.Script(script));
+  assert.doesNotThrow(() => new vm.Script(script, {filename: "Galaxy-Defender.html"}));
 });
 
 test("chaser meteor uses the diagonal warning-lane attack", () => {
