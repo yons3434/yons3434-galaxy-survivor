@@ -238,7 +238,11 @@ function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.inne
 canvas.addEventListener("mousemove",e=>{mouse.x=e.clientX;mouse.y=e.clientY});
 const leaderboardDifficultyNames={easy:"🟢 קל",normal:"⚪ בינוני",hard:"🟠 קשה",super:"🔴 סופר קשה",impossible:"⚫ בלתי אפשרי"};
 const PROFILE_ID_KEY="galaxyDefenderProfileId_v2", PROFILE_NAME_KEY="galaxyDefenderProfileName_v2";
-const LEADERBOARD_PREFIX="galaxyDefenderLeaderboard_v4_";
+const LEADERBOARD_PREFIX="galaxyDefenderLeaderboard_v5_";
+const LEADERBOARD_RESET_KEY="galaxyDefenderLeaderboardResetVersion";
+const LEADERBOARD_RESET_VERSION="global_v2";
+function clearLegacyLocalLeaderboards(){try{if(localStorage.getItem(LEADERBOARD_RESET_KEY)===LEADERBOARD_RESET_VERSION)return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith("galaxyDefenderLeaderboard_"))keys.push(k)}keys.forEach(k=>localStorage.removeItem(k));localStorage.setItem(LEADERBOARD_RESET_KEY,LEADERBOARD_RESET_VERSION)}catch(e){}}
+clearLegacyLocalLeaderboards();
 const STATS_KEY="galaxyDefenderStats_v2";
 const ACHIEVEMENTS_KEY="galaxyDefenderAchievements_v1";
 const ACHIEVEMENTS_STATS_KEY="galaxyDefenderAchievementStats_v1";
@@ -359,7 +363,7 @@ function leaderboardKey(mode){return LEADERBOARD_PREFIX+mode}
 function getLocalLeaderboard(mode){try{const data=JSON.parse(localStorage.getItem(leaderboardKey(mode))||"[]");return Array.isArray(data)?data.filter(x=>x&&Number.isFinite(Number(x.distance))):[]}catch(e){return []}}
 function getLeaderboard(mode){
   const list=globalLeaderboardCache[mode];
-  return Array.isArray(list)?list.slice():getLocalLeaderboard(mode);
+  return Array.isArray(list)?list.slice():(supabaseClient?[]:getLocalLeaderboard(mode));
 }
 function normalizeGlobalLeaderboard(rows){
   const bestByPlayer=new Map();
@@ -391,12 +395,12 @@ async function loadGlobalLeaderboard(mode=difficulty){
     if(error)throw error;
     const list=normalizeGlobalLeaderboard(data);
     globalLeaderboardCache[mode]=list;
-    try{localStorage.setItem(leaderboardKey(mode),JSON.stringify(list))}catch(e){}
     globalLeaderboardReady=true;
     return list;
   }catch(e){
-    console.warn("Global leaderboard unavailable; using local fallback.",e);
-    return getLeaderboard(mode);
+    console.warn("Global leaderboard unavailable.",e);
+    globalLeaderboardCache[mode]=[];
+    return [];
   }
 }
 async function registerGlobalPlayer(){
