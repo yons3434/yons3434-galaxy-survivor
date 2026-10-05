@@ -188,3 +188,17 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 .dailyMissionsBonus.done{border-color:#35e06f;background:rgba(53,224,111,.1);color:#7dff9c}
 @media(max-width:700px){#homeDailyMissions{left:4%;top:35px;width:42%;height:430px;padding:11px}.dailyMissionRow{grid-template-columns:32px 1fr}.dailyMissionReward{grid-column:2}.dailyMissionsHeader h2{font-size:18px}}
 @media(max-width:480px){#homeDailyMissions{left:3%;width:46%;height:390px}.homeDailyMissions .homeDailyHead{font-size:16px}}
+
+
+/* Daily mission rarity glow */
+#homeDailyMissions .homeDailyRow.rarity-common{border-color:#fff;box-shadow:0 0 10px rgba(255,255,255,.55),inset 0 0 10px rgba(255,255,255,.08)}
+#homeDailyMissions .homeDailyRow.rarity-rare{border-color:#35e06f;box-shadow:0 0 12px rgba(53,224,111,.7),inset 0 0 12px rgba(53,224,111,.1)}
+#homeDailyMissions .homeDailyRow.rarity-epic{border-color:#b44cff;box-shadow:0 0 14px rgba(180,76,255,.75),inset 0 0 12px rgba(180,76,255,.12)}
+#homeDailyMissions .homeDailyRow.rarity-legendary{border-color:#ffd21a;box-shadow:0 0 15px rgba(255,210,26,.8),inset 0 0 12px rgba(255,210,26,.12)}
+#homeDailyMissions .homeDailyRow.rarity-amazing{border-color:#ff1744;box-shadow:0 0 16px rgba(255,23,68,.8),inset 0 0 14px rgba(255,23,68,.12)}
+#homeDailyMissions .homeDailyRow.rarity-common .homeDailyRowTitle{color:#fff}
+#homeDailyMissions .homeDailyRow.rarity-rare .homeDailyRowTitle{color:#35e06f}
+#homeDailyMissions .homeDailyRow.rarity-epic .homeDailyRowTitle{color:#c77dff}
+#homeDailyMissions .homeDailyRow.rarity-legendary .homeDailyRowTitle{color:#ffd21a}
+#homeDailyMissions .homeDailyRow.rarity-amazing .homeDailyRowTitle{color:#ff4d6d}
+#homeDailyMissions .homeDailyRow.done{border-color:#35e06f;box-shadow:0 0 12px rgba(53,224,111,.7)}
