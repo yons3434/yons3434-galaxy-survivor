@@ -66,7 +66,7 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 
 #leaderboard{display:none}
 #leaderboardPanel{width:min(760px,94vw);max-height:82vh;overflow:auto;background:linear-gradient(145deg,#111a38,#050918);border:2px solid #4cc9f0;border-radius:18px;padding:20px;box-shadow:0 0 35px rgba(76,201,240,.25)}
-#leaderboardTabs{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin:10px 0}
+#globalPlayerCount{margin:8px auto 12px;padding:9px 14px;border:2px solid #ffd21a;border-radius:12px;background:rgba(255,210,26,.08);font-size:18px;font-weight:bold;color:#ffd21a;box-shadow:0 0 15px rgba(255,210,26,.18)}\n#leaderboardTabs{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin:10px 0}
 #leaderboardTabs button{padding:8px 12px;margin:2px}
 #leaderboardTabs button.active{outline:3px solid #fff;transform:scale(1.04)}
 #leaderboardTable{width:100%;border-collapse:collapse;margin-top:10px}
@@ -206,7 +206,7 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 <div id="pauseMenu"><h1>⏸️ המשחק נעצר</h1><h2>הקלפים והשדרוגים שבחרת</h2><div id="selectedCards"></div><div><button type="button" id="resumeButton">▶️ המשך משחק</button><button type="button" id="endGameButton">🏁 סיים משחק</button></div></div>
 <div id="profileOverlay" class="overlay"><div id="profilePanel"><button type="button" id="profileAchievementsButton" title="הישגים">🏅</button><h1>👤 פרופיל</h1><div id="profileEditArea"><p>שם המשתמש שלך:</p><input id="profileNameInput" maxlength="16" placeholder="השם שלך"><br><button type="button" id="saveProfileNameButton">💾 שמור שם</button></div><div id="profileStats" class="profileStats"></div><div id="playerXpSummary"></div><div id="profileAchievementSummary" class="profileAchievementSummary"></div><h2>🏆 השיאים שלי</h2><table class="profileBest"><thead><tr><th>דרגה</th><th>שיחק</th><th>שיא</th></tr></thead><tbody id="profileBestBody"></tbody></table><br><button type="button" id="closeProfileButton">✖️ סגור</button></div></div>
 <div id="achievementsOverlay" class="overlay"><div id="achievementsPanel"><h1>🏅 הישגים</h1><p id="achievementsSummary">0 / 0 הישגים</p><div id="dailyMissionsPanel"><div class="dailyMissionsHeader"><h2>📅 משימות יומיות</h2><div id="dailyMissionsStreak">🔥 רצף: 0 ימים</div></div><div id="dailyMissionsSummary"></div><div id="dailyMissionsList"></div></div><div id="achievementsGrid"></div><button type="button" id="closeAchievementsButton">✖️ סגור</button></div></div>
-<div id="leaderboard" class="overlay"><div id="leaderboardPanel"><h1>🏆 לוח תוצאות</h1><p>100 התוצאות הטובות ביותר בכל דרגת קושי</p><div id="leaderboardTabs"></div><table id="leaderboardTable"><thead><tr><th>#</th><th>שחקן</th><th>מרחק</th><th>רמה</th></tr></thead><tbody id="leaderboardBody"></tbody></table><button type="button" id="closeLeaderboardButton">✖️ סגור</button></div></div><div id="collectionOverlay" class="overlay"><div id="collectionPanel"><h1>📕 אוסף בוסים ואויבים</h1><p>כל הבוסים והאויבים במשחק, לפי האזור שלהם</p><div id="collectionContent"></div><button type="button" id="closeCollectionButton">✖️ סגור</button></div></div>
+<div id="leaderboard" class="overlay"><div id="leaderboardPanel"><h1>🏆 לוח תוצאות</h1><div id="globalPlayerCount" class="globalPlayerCount">👥 שחקנים ששיחקו אי פעם: 0</div><p>100 התוצאות הטובות ביותר בכל דרגת קושי</p><div id="leaderboardTabs"></div><table id="leaderboardTable"><thead><tr><th>#</th><th>שחקן</th><th>מרחק</th><th>רמה</th></tr></thead><tbody id="leaderboardBody"></tbody></table><button type="button" id="closeLeaderboardButton">✖️ סגור</button></div></div><div id="collectionOverlay" class="overlay"><div id="collectionPanel"><h1>📕 אוסף בוסים ואויבים</h1><p>כל הבוסים והאויבים במשחק, לפי האזור שלהם</p><div id="collectionContent"></div><button type="button" id="closeCollectionButton">✖️ סגור</button></div></div>
 <div id="helpOverlay" class="overlay" style="display:none"><div id="helpPanel"><h1>📖 איך משחקים והקלפים</h1><div id="helpContent"></div><button type="button" id="closeHelpButton">✖️ סגור</button></div></div>
 <div id="gameOver" class="overlay"><h1>💥 GAME OVER</h1><h2>המרחק שלך: <span id="finalDistance">0</span> מטר</h2><h2>רמה: <span id="finalLevel">1</span></h2><h3 id="newRecordMessage"></h3><button type="button" id="restartButton">משחק חדש</button><button type="button" id="gameOverLeaderboardButton">🏆 לוח תוצאות</button></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.min.js"></script>
@@ -399,9 +399,33 @@ async function loadGlobalLeaderboard(mode=difficulty){
     return getLeaderboard(mode);
   }
 }
+async function registerGlobalPlayer(){
+  if(!supabaseClient)return;
+  try{
+    await supabaseClient.from("player_registry").upsert({
+      player_id:playerProfileId,
+      player_name:(String(profileName||"שחקן").trim()||"שחקן").slice(0,20),
+      last_seen:new Date().toISOString()
+    },{onConflict:"player_id"});
+  }catch(e){console.warn("Global player registration failed.",e)}
+}
+async function getGlobalPlayerCount(){
+  if(!supabaseClient)return null;
+  try{
+    const {count,error}=await supabaseClient.from("player_registry").select("player_id",{count:"exact",head:true});
+    if(error)throw error;
+    return Number(count)||0;
+  }catch(e){console.warn("Global player count unavailable.",e);return null}
+}
+async function updateGlobalPlayerCount(){
+  const el=document.getElementById("globalPlayerCount");if(!el)return;
+  const count=await getGlobalPlayerCount();
+  if(count!==null)el.textContent="👥 שחקנים ששיחקו אי פעם: "+count;
+}
 async function loadAllGlobalLeaderboards(){
   if(!supabaseClient)return;
   await Promise.all(Object.keys(difficultySettings).map(mode=>loadGlobalLeaderboard(mode)));
+  await updateGlobalPlayerCount();
 }
 function getStats(){try{const x=JSON.parse(localStorage.getItem(STATS_KEY)||"{}");return {totalTime:Number(x.totalTime)||0,games:Number(x.games)||0,played:x.played&&typeof x.played==="object"?x.played:{}}}catch(e){return {totalTime:0,games:0,played:{}}}}
 function saveStatsForGame(){const st=getStats();st.totalTime+=Math.max(0,Math.floor(gameTime));st.games++;st.played[difficulty]=(Number(st.played[difficulty])||0)+1;try{localStorage.setItem(STATS_KEY,JSON.stringify(st))}catch(e){}}
@@ -603,7 +627,8 @@ collectionOverlay.addEventListener("click",e=>{if(e.target===collectionOverlay)c
 function renderHelp(){helpContent.innerHTML="";const controls=document.createElement("div");controls.className="helpSection";controls.innerHTML="<h3>🎮 איך משחקים</h3><div>WASD / חצים — תנועה</div><div>SPACE — ירי</div><div>1 — אקדח | 2 — מיניגאן | 3 — RPG</div><div>4 — להביור | 5 — שוטגאן | 6 — רובה חור שחור</div><div>Q — RPG | R — שוטגאן | F — להביור</div><div>E — נשק רגיל | L — לייזר</div><div>P / Esc — עצירה</div><div>הלייזר והלהביור מכוונים לעכבר.</div><div>בכל עליית רמה בוחרים קלף שדרוג אחד.</div><div>השמד אויבים ומטאוריטים כדי לקבל XP ולהתחזק.</div>";helpContent.appendChild(controls);const diff=document.createElement("div");diff.className="helpSection";diff.innerHTML="<h3>⚔️ דרגות קושי</h3><div>🟢 קל — יותר XP, יותר חיים, אויבים חלשים יותר ומגן ארוך יותר אחרי פגיעה.</div><div>⚪ בינוני — רגיל.</div><div>🟠 קשה — אויבים חזקים יותר ויורים בשלשות.</div><div>🔴 סופר קשה — אויבים חזקים מאוד, פחות XP ופחות חיים.</div><div>⚫ בלתי אפשרי — אויבים חזקים במיוחד, מעט XP ורקע שחור עם זוהר.</div>";helpContent.appendChild(diff);const cards=document.createElement("div");cards.className="helpSection";cards.style.gridColumn="1 / -1";cards.innerHTML="<h3>🃏 כל הקלפים</h3>";const seen=new Set();const rarityOrder={common:0,rare:1,epic:2,legendary:3,amazing:4};[...upgrades].sort((a,b)=>(rarityOrder[a.rarityClass]??99)-(rarityOrder[b.rarityClass]??99)).forEach(u=>{const key=u.id+"|"+u.title;if(seen.has(key))return;seen.add(key);const card=document.createElement("div");card.className="helpCard "+u.rarityClass;card.innerHTML=`<div class="icon">${u.icon}</div><div class="title">${u.title}</div><div class="desc">${u.description}</div><div class="small">${u.rarity}</div>`;cards.appendChild(card)});helpContent.appendChild(cards)}
 function openHelp(){renderHelp();helpOverlay.style.display="flex"}function closeHelp(){helpOverlay.style.display="none"}
 helpButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openHelp()});closeHelpButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();closeHelp()});
-function openLeaderboard(mode=difficulty){
+async function openLeaderboard(mode=difficulty){
+  await updateGlobalPlayerCount();
   renderLeaderboard(mode);
   leaderboard.style.display="flex";
 }
@@ -687,6 +712,7 @@ function applyDistanceZone(showMessageOnChange=true){
   currentDistanceZone="normal";
 }
 function startGame(){
+registerGlobalPlayer();
 function applyDifficultyEffects(){const setting=difficultySettings[difficulty];document.body.style.background=setting.background;canvas.style.background="radial-gradient(circle at 50% 40%, "+setting.background+", #02030a 80%)";document.title="Galaxy Defender - "+difficulty;currentDistanceZone="normal";activeSpecialBossArea="";applyDistanceZone(false)}if(gameStarted)return;gameStarted=true;scoreSaved=false;gameTime=0;distance=0;speedComboDistance=0;speedComboPermanentDistance=0;speedComboPermanentBonus=0;speedComboTemporaryBonus=0;speedComboPermanentLastAwardedStep=0;speedComboLastAwardedStep=0;window.activeBlackHoles=[];currentDistanceZone="normal";activeSpecialBossArea="";pendingBossPlan=null;lastScheduledBossDistance=0;specialBossWarningActive=false;specialBossWarningType="";difficulty=document.getElementById("difficultySelect").value;recordBroken=false;lastAchievementDistance=-1;const ach=getAchievementStats();ach.games++;ach.played[difficulty]=(Number(ach.played[difficulty])||0)+1;saveAchievementStats(ach);unlockAchievement("firstGame");if(ach.played.easy>0)unlockAchievement("playEasy");if(ach.played.normal>0)unlockAchievement("playNormal");if(ach.played.hard>0)unlockAchievement("playHard");if(ach.played.super>0)unlockAchievement("playSuper");if(ach.played.impossible>0)unlockAchievement("playImpossible");checkAchievements();personalBestAtStart=getPersonalBest(difficulty);document.getElementById("recordLiveBanner").style.display="none";applyDifficultyEffects();let setting=difficultySettings[difficulty];player.maxLives+=setting.extraLives;if(player.maxLives<1)player.maxLives=1;player.lives=player.maxLives;gameRunning=true;paused=false;levelUpOpen=false;startScreen.style.display="none";pauseMenu.style.display="none";levelUpScreen.style.display="none";gameOverScreen.style.display="none";gameSettingsButton.style.display="flex";resizeCanvas();updateMobileControlMode();updateHUD();updateMobileControls();if(!animationId)animationId=requestAnimationFrame(gameLoop)}
 function restartGame(){window.location.reload()}
 startButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();startGame()});document.getElementById("homeDailyMissions").addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openAchievements()});if(achievementsButton){achievementsButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openAchievements()})};closeAchievementsButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();closeAchievements()});achievementsOverlay.addEventListener("click",e=>{if(e.target===achievementsOverlay)closeAchievements()});profileAchievementsButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();const snap=viewedProfileAchievementSnapshot||getAchievementState();closeProfile();openAchievements(snap)});restartButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();restartGame()});
