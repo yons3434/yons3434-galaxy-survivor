@@ -209,6 +209,7 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 <div id="leaderboard" class="overlay"><div id="leaderboardPanel"><h1>🏆 לוח תוצאות</h1><p>100 התוצאות הטובות ביותר בכל דרגת קושי</p><div id="leaderboardTabs"></div><table id="leaderboardTable"><thead><tr><th>#</th><th>שחקן</th><th>מרחק</th><th>רמה</th></tr></thead><tbody id="leaderboardBody"></tbody></table><button type="button" id="closeLeaderboardButton">✖️ סגור</button></div></div><div id="collectionOverlay" class="overlay"><div id="collectionPanel"><h1>📕 אוסף בוסים ואויבים</h1><p>כל הבוסים והאויבים במשחק, לפי האזור שלהם</p><div id="collectionContent"></div><button type="button" id="closeCollectionButton">✖️ סגור</button></div></div>
 <div id="helpOverlay" class="overlay" style="display:none"><div id="helpPanel"><h1>📖 איך משחקים והקלפים</h1><div id="helpContent"></div><button type="button" id="closeHelpButton">✖️ סגור</button></div></div>
 <div id="gameOver" class="overlay"><h1>💥 GAME OVER</h1><h2>המרחק שלך: <span id="finalDistance">0</span> מטר</h2><h2>רמה: <span id="finalLevel">1</span></h2><h3 id="newRecordMessage"></h3><button type="button" id="restartButton">משחק חדש</button><button type="button" id="gameOverLeaderboardButton">🏆 לוח תוצאות</button></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.min.js"></script>
 <script>
 "use strict";
 const canvas=document.getElementById("gameCanvas"),ctx=canvas.getContext("2d");
@@ -347,8 +348,61 @@ function closeAchievements(){achievementsOverlay.style.display="none"}
 const playerProfileId=(()=>{let id=localStorage.getItem(PROFILE_ID_KEY);if(!id){id="p_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,10);localStorage.setItem(PROFILE_ID_KEY,id)}return id})();
 let profileName=localStorage.getItem(PROFILE_NAME_KEY)||"שחקן";
 profileNameInput.value=profileName;homeProfileName.textContent=profileName;renderPlayerXPUI();
+
+const SUPABASE_URL="https://xuuolwzgumkperloybwx.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_1W5HZKcovGMiXQSSzf3DgA_RvsDUMWI";
+const supabaseClient=window.supabase?.createClient?window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY):null;
+const globalLeaderboardCache={};
+let globalLeaderboardReady=false;
+
 function leaderboardKey(mode){return LEADERBOARD_PREFIX+mode}
-function getLeaderboard(mode){try{const data=JSON.parse(localStorage.getItem(leaderboardKey(mode))||"[]");return Array.isArray(data)?data.filter(x=>x&&Number.isFinite(Number(x.distance))):[]}catch(e){return []}}
+function getLocalLeaderboard(mode){try{const data=JSON.parse(localStorage.getItem(leaderboardKey(mode))||"[]");return Array.isArray(data)?data.filter(x=>x&&Number.isFinite(Number(x.distance))):[]}catch(e){return []}}
+function getLeaderboard(mode){
+  const list=globalLeaderboardCache[mode];
+  return Array.isArray(list)?list.slice():getLocalLeaderboard(mode);
+}
+function normalizeGlobalLeaderboard(rows){
+  const bestByPlayer=new Map();
+  (Array.isArray(rows)?rows:[]).forEach(row=>{
+    if(!row||!Number.isFinite(Number(row.distance)))return;
+    const key=String(row.player_id||row.id);
+    if(bestByPlayer.has(key))return;
+    bestByPlayer.set(key,{
+      playerId:key,
+      name:String(row.player_name||"שחקן").slice(0,16),
+      distance:Math.floor(Number(row.distance)||0),
+      level:Math.max(1,Math.floor(Number(row.level)||1)),
+      date:Date.parse(row.created_at||"")||Date.now(),
+      achievements:Array.isArray(row.achievements)?row.achievements:[]
+    });
+  });
+  return [...bestByPlayer.values()].sort((a,b)=>Number(b.distance)-Number(a.distance)||Number(b.level)-Number(a.level)).slice(0,100);
+}
+async function loadGlobalLeaderboard(mode=difficulty){
+  if(!supabaseClient)return getLeaderboard(mode);
+  try{
+    const {data,error}=await supabaseClient.from("leaderboard")
+      .select("id,player_id,player_name,distance,level,difficulty,created_at,achievements")
+      .eq("difficulty",mode)
+      .order("distance",{ascending:false})
+      .order("level",{ascending:false})
+      .order("created_at",{ascending:true})
+      .limit(500);
+    if(error)throw error;
+    const list=normalizeGlobalLeaderboard(data);
+    globalLeaderboardCache[mode]=list;
+    try{localStorage.setItem(leaderboardKey(mode),JSON.stringify(list))}catch(e){}
+    globalLeaderboardReady=true;
+    return list;
+  }catch(e){
+    console.warn("Global leaderboard unavailable; using local fallback.",e);
+    return getLeaderboard(mode);
+  }
+}
+async function loadAllGlobalLeaderboards(){
+  if(!supabaseClient)return;
+  await Promise.all(Object.keys(difficultySettings).map(mode=>loadGlobalLeaderboard(mode)));
+}
 function getStats(){try{const x=JSON.parse(localStorage.getItem(STATS_KEY)||"{}");return {totalTime:Number(x.totalTime)||0,games:Number(x.games)||0,played:x.played&&typeof x.played==="object"?x.played:{}}}catch(e){return {totalTime:0,games:0,played:{}}}}
 function saveStatsForGame(){const st=getStats();st.totalTime+=Math.max(0,Math.floor(gameTime));st.games++;st.played[difficulty]=(Number(st.played[difficulty])||0)+1;try{localStorage.setItem(STATS_KEY,JSON.stringify(st))}catch(e){}}
 function setProfileName(name){profileName=(String(name||"").trim()||"שחקן").slice(0,16);localStorage.setItem(PROFILE_NAME_KEY,profileName);homeProfileName.textContent=profileName}
@@ -367,24 +421,53 @@ function checkLiveRecord(){
     if(banner){banner.textContent="🏆 שיא חדש! "+d+"m";banner.style.display="block";clearTimeout(window.recordBannerTimer);window.recordBannerTimer=setTimeout(()=>banner.style.display="none",2200)}
   }
 }
-function saveLeaderboardScore(){
+async function saveLeaderboardScore(){
   if(scoreSaved)return -1;
   scoreSaved=true;
-  const name=profileName;
-  const entry={playerId:playerProfileId,name,distance:Math.floor(distance),level:Number(level),date:Date.now(),achievements:achievementSnapshot()};
-  const list=getLeaderboard(difficulty);
+  const entry={
+    playerId:playerProfileId,
+    name:(String(profileName||"שחקן").trim()||"שחקן").slice(0,16),
+    distance:Math.floor(distance),
+    level:Math.max(1,Number(level)||1),
+    date:Date.now(),
+    achievements:achievementSnapshot()
+  };
+
+  if(supabaseClient){
+    try{
+      const {error}=await supabaseClient.from("leaderboard").insert({
+        player_id:entry.playerId,
+        player_name:entry.name,
+        score:entry.distance,
+        distance:entry.distance,
+        level:entry.level,
+        difficulty,
+        achievements:entry.achievements
+      });
+      if(error)throw error;
+      const list=await loadGlobalLeaderboard(difficulty);
+      const rank=list.findIndex(x=>x.playerId===playerProfileId&&Number(x.distance)>=entry.distance);
+      return rank>=0&&rank<100?rank:-1;
+    }catch(e){
+      console.warn("Global score submission failed; saving locally.",e);
+    }
+  }
+
+  const list=getLocalLeaderboard(difficulty);
   const oldIndex=list.findIndex(x=>x.playerId===playerProfileId);
-  if(oldIndex>=0){if(Number(list[oldIndex].distance)>=entry.distance)return -1;list.splice(oldIndex,1)}
+  if(oldIndex>=0&&Number(list[oldIndex].distance)>=entry.distance)return -1;
+  if(oldIndex>=0)list.splice(oldIndex,1);
   list.push(entry);
   list.sort((a,b)=>Number(b.distance)-Number(a.distance)||Number(b.level)-Number(a.level));
   const rank=list.findIndex(x=>x.playerId===playerProfileId);
   try{localStorage.setItem(leaderboardKey(difficulty),JSON.stringify(list.slice(0,100)))}catch(e){}
+  globalLeaderboardCache[difficulty]=list.slice(0,100);
   return rank>=0&&rank<100?rank:-1;
 }
-function renderLeaderboard(mode=difficulty){
+async function renderLeaderboard(mode=difficulty){
   leaderboardTabs.innerHTML="";
   Object.keys(difficultySettings).forEach(key=>{const btn=document.createElement("button");btn.type="button";btn.textContent=leaderboardDifficultyNames[key];if(key===mode)btn.classList.add("active");btn.addEventListener("click",()=>renderLeaderboard(key));leaderboardTabs.appendChild(btn)});
-  const list=getLeaderboard(mode);leaderboardBody.innerHTML="";
+  const list=await loadGlobalLeaderboard(mode);leaderboardBody.innerHTML="";
   if(!list.length){leaderboardBody.innerHTML='<tr><td colspan="4">אין עדיין תוצאות. היה הראשון!</td></tr>';return}
   list.forEach((entry,i)=>{const tr=document.createElement("tr");const tdName=document.createElement("td");const b=document.createElement("button");b.type="button";b.className="leaderboardUser";b.textContent=entry.name||"שחקן";b.addEventListener("click",()=>openPublicProfile(entry.playerId,entry.name||"שחקן"));tdName.appendChild(b);tr.appendChild(Object.assign(document.createElement("td"),{textContent:String(i+1)}));tr.appendChild(tdName);tr.appendChild(Object.assign(document.createElement("td"),{textContent:"📏 "+Math.floor(entry.distance)+"m"}));tr.appendChild(Object.assign(document.createElement("td"),{textContent:"⭐ "+Math.floor(entry.level||1)}));leaderboardBody.appendChild(tr)});
 }
@@ -1451,11 +1534,12 @@ function updateHUD(){document.getElementById("distance").textContent=Math.floor(
 function showMessage(text){const message=document.getElementById("message");message.textContent=text;message.style.opacity="1";clearTimeout(messageTimer);messageTimer=setTimeout(()=>{message.style.opacity="0"},1000)}
 function showSelectedCards(){const container=document.getElementById("selectedCards");container.innerHTML="";selectedUpgrades.forEach(upgrade=>{const card=document.createElement("div");card.className="selectedCard "+upgrade.rarityClass;card.innerHTML=`<div class="icon">${upgrade.icon}</div><div class="title">${upgrade.title}</div>`;container.appendChild(card)})}
 function explosion(x,y){explosions.push({x,y,radius:5,life:20})}
-function gameOver(){updateProfileButtonVisibility();gameRunning=false;gameSettingsButton.style.display="none";mobileControls.style.display="none";document.getElementById("recordLiveBanner").style.display="none";paused=false;levelUpOpen=false;pauseMenu.style.display="none";levelUpScreen.style.display="none";document.getElementById("finalDistance").textContent=Math.floor(distance);document.getElementById("finalLevel").textContent=level;const rank=saveLeaderboardScore();document.getElementById("newRecordMessage").textContent=rank>=0?"🏆 נכנסת ללוח התוצאות במקום #"+(rank+1)+"!":"";gameOverScreen.style.display="flex"}
+async function gameOver(){updateProfileButtonVisibility();gameRunning=false;gameSettingsButton.style.display="none";mobileControls.style.display="none";document.getElementById("recordLiveBanner").style.display="none";paused=false;levelUpOpen=false;pauseMenu.style.display="none";levelUpScreen.style.display="none";document.getElementById("finalDistance").textContent=Math.floor(distance);document.getElementById("finalLevel").textContent=level;const rank=await saveLeaderboardScore();document.getElementById("newRecordMessage").textContent=rank>=0?"🏆 נכנסת ללוח התוצאות במקום #"+(rank+1)+"!":"";gameOverScreen.style.display="flex"}
 function gameLoop(){animationId=null;if(!gameStarted)return;update();draw();animationId=requestAnimationFrame(gameLoop)}
 resizeCanvas();updateHUD();
 
 updateProfileButtonVisibility();
+loadAllGlobalLeaderboards();
 
 </script>
 </body>
