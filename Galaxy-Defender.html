@@ -363,7 +363,7 @@ function leaderboardKey(mode){return LEADERBOARD_PREFIX+mode}
 function getLocalLeaderboard(mode){try{const data=JSON.parse(localStorage.getItem(leaderboardKey(mode))||"[]");return Array.isArray(data)?data.filter(x=>x&&Number.isFinite(Number(x.distance))):[]}catch(e){return []}}
 function getLeaderboard(mode){
   const list=globalLeaderboardCache[mode];
-  return Array.isArray(list)?list.slice():(supabaseClient?[]:getLocalLeaderboard(mode));
+  return Array.isArray(list)?list.slice():[];
 }
 function normalizeGlobalLeaderboard(rows){
   const bestByPlayer=new Map();
@@ -481,16 +481,7 @@ async function saveLeaderboardScore(){
     }
   }
 
-  const list=getLocalLeaderboard(difficulty);
-  const oldIndex=list.findIndex(x=>x.playerId===playerProfileId);
-  if(oldIndex>=0&&Number(list[oldIndex].distance)>=entry.distance)return -1;
-  if(oldIndex>=0)list.splice(oldIndex,1);
-  list.push(entry);
-  list.sort((a,b)=>Number(b.distance)-Number(a.distance)||Number(b.level)-Number(a.level));
-  const rank=list.findIndex(x=>x.playerId===playerProfileId);
-  try{localStorage.setItem(leaderboardKey(difficulty),JSON.stringify(list.slice(0,100)))}catch(e){}
-  globalLeaderboardCache[difficulty]=list.slice(0,100);
-  return rank>=0&&rank<100?rank:-1;
+  return -1;
 }
 async function renderLeaderboard(mode=difficulty){
   leaderboardTabs.innerHTML="";
