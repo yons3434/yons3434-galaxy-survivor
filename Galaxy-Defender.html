@@ -604,7 +604,7 @@ function applyDistanceZone(showMessageOnChange=true){
   currentDistanceZone="normal";
 }
 function startGame(){
-function applyDifficultyEffects(){const setting=difficultySettings[difficulty];document.body.style.background=setting.background;canvas.style.background="radial-gradient(circle at 50% 40%, "+setting.background+", #02030a 80%)";document.title="Galaxy Defender - "+difficulty;currentDistanceZone="normal";activeSpecialBossArea="";applyDistanceZone(false)}if(gameStarted)return;gameStarted=true;scoreSaved=false;gameTime=0;distance=0;speedComboDistance=0;speedComboPermanentDistance=0;speedComboPermanentBonus=0;speedComboTemporaryBonus=0;speedComboPermanentLastAwardedStep=0;speedComboLastAwardedStep=0;window.activeBlackHoles=[];window.chaserHazards=[];currentDistanceZone="normal";activeSpecialBossArea="";pendingBossPlan=null;lastScheduledBossDistance=0;specialBossWarningActive=false;specialBossWarningType="";difficulty=document.getElementById("difficultySelect").value;recordBroken=false;lastAchievementDistance=-1;const ach=getAchievementStats();ach.games++;ach.played[difficulty]=(Number(ach.played[difficulty])||0)+1;saveAchievementStats(ach);unlockAchievement("firstGame");if(ach.played.easy>0)unlockAchievement("playEasy");if(ach.played.normal>0)unlockAchievement("playNormal");if(ach.played.hard>0)unlockAchievement("playHard");if(ach.played.super>0)unlockAchievement("playSuper");if(ach.played.impossible>0)unlockAchievement("playImpossible");checkAchievements();personalBestAtStart=getPersonalBest(difficulty);document.getElementById("recordLiveBanner").style.display="none";applyDifficultyEffects();let setting=difficultySettings[difficulty];player.maxLives+=setting.extraLives;if(player.maxLives<1)player.maxLives=1;player.lives=player.maxLives;gameRunning=true;paused=false;levelUpOpen=false;startScreen.style.display="none";pauseMenu.style.display="none";levelUpScreen.style.display="none";gameOverScreen.style.display="none";gameSettingsButton.style.display="flex";resizeCanvas();updateMobileControlMode();updateHUD();updateMobileControls();if(!animationId)animationId=requestAnimationFrame(gameLoop)}
+function applyDifficultyEffects(){const setting=difficultySettings[difficulty];document.body.style.background=setting.background;canvas.style.background="radial-gradient(circle at 50% 40%, "+setting.background+", #02030a 80%)";document.title="Galaxy Defender - "+difficulty;currentDistanceZone="normal";activeSpecialBossArea="";applyDistanceZone(false)}if(gameStarted)return;gameStarted=true;scoreSaved=false;gameTime=0;distance=0;speedComboDistance=0;speedComboPermanentDistance=0;speedComboPermanentBonus=0;speedComboTemporaryBonus=0;speedComboPermanentLastAwardedStep=0;speedComboLastAwardedStep=0;window.activeBlackHoles=[];currentDistanceZone="normal";activeSpecialBossArea="";pendingBossPlan=null;lastScheduledBossDistance=0;specialBossWarningActive=false;specialBossWarningType="";difficulty=document.getElementById("difficultySelect").value;recordBroken=false;lastAchievementDistance=-1;const ach=getAchievementStats();ach.games++;ach.played[difficulty]=(Number(ach.played[difficulty])||0)+1;saveAchievementStats(ach);unlockAchievement("firstGame");if(ach.played.easy>0)unlockAchievement("playEasy");if(ach.played.normal>0)unlockAchievement("playNormal");if(ach.played.hard>0)unlockAchievement("playHard");if(ach.played.super>0)unlockAchievement("playSuper");if(ach.played.impossible>0)unlockAchievement("playImpossible");checkAchievements();personalBestAtStart=getPersonalBest(difficulty);document.getElementById("recordLiveBanner").style.display="none";applyDifficultyEffects();let setting=difficultySettings[difficulty];player.maxLives+=setting.extraLives;if(player.maxLives<1)player.maxLives=1;player.lives=player.maxLives;gameRunning=true;paused=false;levelUpOpen=false;startScreen.style.display="none";pauseMenu.style.display="none";levelUpScreen.style.display="none";gameOverScreen.style.display="none";gameSettingsButton.style.display="flex";resizeCanvas();updateMobileControlMode();updateHUD();updateMobileControls();if(!animationId)animationId=requestAnimationFrame(gameLoop)}
 function restartGame(){window.location.reload()}
 startButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();startGame()});document.getElementById("homeDailyMissions").addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openAchievements()});if(achievementsButton){achievementsButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openAchievements()})};closeAchievementsButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();closeAchievements()});achievementsOverlay.addEventListener("click",e=>{if(e.target===achievementsOverlay)closeAchievements()});profileAchievementsButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();const snap=viewedProfileAchievementSnapshot||getAchievementState();closeProfile();openAchievements(snap)});restartButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();restartGame()});
 function togglePause(){if(!gameStarted||levelUpOpen||gameOverScreen.style.display==="flex")return;paused=!paused;gameRunning=!paused;pauseMenu.style.display=paused?"flex":"none";if(paused)showSelectedCards();updateMobileControls()}
@@ -744,6 +744,16 @@ function spawnBlackHole(x,y){const hole={x,y,radius:24,life:150,maxLife:150,blac
 function updateBlackHoles(){const holes=window.activeBlackHoles||[];for(const h of holes){h.life--;h.radius=Math.min(90,h.radius+1.2);[...asteroids,...enemies].forEach(t=>{if(t.health<=0)return;const dx=h.x-t.x,dy=h.y-t.y,d=Math.hypot(dx,dy)||1;const pull=Math.max(0,1-d/h.radius)*2.8;t.x+=dx/d*pull;t.y+=dy/d*pull;if(d<34){t.health-=effectiveDamage()*.18;if(t.health<=0){if(enemies.includes(t))destroyEnemy(t);else destroyAsteroid(t)}}});if(h.life<=0){explosion(h.x,h.y);[...asteroids,...enemies].forEach(t=>{if(t.health<=0)return;const d=Math.hypot(t.x-h.x,t.y-h.y);if(d<110){t.health-=effectiveDamage()*3*(1-d/110);if(t.health<=0){if(enemies.includes(t))destroyEnemy(t);else destroyAsteroid(t)}}})}}window.activeBlackHoles=holes.filter(h=>h.life>0)}
 function drawBlackHoles(){(window.activeBlackHoles||[]).forEach(h=>{ctx.save();ctx.translate(h.x,h.y);const pulse=1+Math.sin(h.life*.15)*.08;ctx.scale(pulse,pulse);ctx.shadowColor="#7e57c2";ctx.shadowBlur=28;ctx.fillStyle="#050008";ctx.beginPath();ctx.arc(0,0,h.radius*.55,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#b388ff";ctx.lineWidth=4;ctx.beginPath();ctx.arc(0,0,h.radius*.8,0,Math.PI*2);ctx.stroke();ctx.strokeStyle="#fff";ctx.globalAlpha=.65;ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,h.radius,0,Math.PI*2);ctx.stroke();ctx.restore()})}
 function rpgExplosion(x,y,isMini=false){const explosionRadius=isMini?120:120;explosion(x,y);[...asteroids,...enemies].forEach(target=>{if(target.health<=0)return;const d=Math.hypot(target.x-x,target.y-y);if(d<=explosionRadius){const damage=effectiveDamage()*8*(1-d/explosionRadius*.5);target.health-=damage;if(target.health<=0){if(target.boss||enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}});showMessage("💥 RPG התפוצץ!") }
+function setupChaserMeteor(a){
+  const tx=player.x,ty=player.y,ux=-Math.SQRT1_2,uy=Math.SQRT1_2;
+  const backX=Math.SQRT1_2,backY=-Math.SQRT1_2,margin=45;
+  const topX=tx+ty;
+  let sx,sy;
+  if(topX<=canvas.width){sx=topX;sy=0}else{sx=canvas.width;sy=ty-(canvas.width-tx)}
+  a.chaserMeteor=true;a.chaserPhase="warning";a.chaserTimer=0;
+  a.chaserTargetX=tx;a.chaserTargetY=ty;a.chaserDx=ux;a.chaserDy=uy;
+  a.x=sx+backX*margin;a.y=sy+backY*margin;a.size=29;a.health=999999;a.maxHealth=999999;a.speed=1000;
+}
 function spawnAsteroid(){
   const size=Math.random()*18+12;
   const health=(10+size*.55+distance*.004)*difficultySettings[difficulty].enemyHP;
@@ -756,7 +766,9 @@ function spawnAsteroid(){
   else if(special==="teleport")type="teleport";
   else if(special==="inversion")type="inversion";
   const splitOnDeath=special==="split";
-  asteroids.push({x:Math.random()*canvas.width,y:-50,size,health,maxHealth:health,speed:2+Math.random()*2+distance/1500,specialType:type,splitOnDeath,teleportTimer:240,teleportMarker:null,teleportHidden:false,gateTimer:Math.random()*100,clone:false,cloneSpawned:false,splitDone:false,inversionReturning:false,shatterTimer:0});
+  const asteroid={x:Math.random()*canvas.width,y:-50,size,health,maxHealth:health,speed:2+Math.random()*2+distance/1500,specialType:type,splitOnDeath,teleportTimer:240,teleportMarker:null,teleportHidden:false,gateTimer:Math.random()*100,clone:false,cloneSpawned:false,splitDone:false,inversionReturning:false,shatterTimer:0};
+  asteroids.push(asteroid);
+  if(type==="chaser")setupChaserMeteor(asteroid);
 }
 function spawnEnemy(){
   const health=(18+distance*.012)*difficultySettings[difficulty].enemyHP;
@@ -1052,7 +1064,7 @@ processSpecialEntities();
     b.x+=Number(b.vx)||0;
     b.y+=Number(b.vy)||0;
     asteroids.forEach(a=>{
-      if(a.health<=0||b.dead)return;
+      if(a.health<=0||b.dead||a.chaserMeteor)return;
       if(Math.hypot(b.x-a.x,b.y-a.y)<a.size+b.size){
         if(b.blackHole){b.dead=true;spawnBlackHole(b.x,b.y);return}
         if(b.rpg){b.dead=true;rpgExplosion(b.x,b.y,b.rpgMini===true);return}
@@ -1094,6 +1106,10 @@ processSpecialEntities();
   if(a.teleportMarker||a.y<-500)return;
   if(Math.hypot(a.x-player.x,a.y-player.y)<a.size+20){
     if(invincible||dodgeGhostTimer>0)return;
+    if(a.chaserMeteor){
+      if(a.chaserPhase!=="flying")return;
+      a.health=0;damagePlayer();return;
+    }
     if(a.specialType==="ice"){freezeTimer=Math.max(freezeTimer,420);a.health=0;destroyAsteroid(a);return}
     if(a.specialType==="inversion"){inversionTimer=Math.max(inversionTimer,120)}
     if(a.specialType==="chaser"){}
@@ -1314,6 +1330,15 @@ function processSpecialEntities(){
       a.y+=a.speed*worldSpeedMultiplier();
       a.gateTimer=(a.gateTimer??180)-1;
       if(a.gateTimer<=0){a.gateTimer=180;a.x=70+Math.random()*(canvas.width-140);a.y=120+Math.random()*Math.max(80,canvas.height-280);}
+    }else if(a.chaserMeteor){
+      a.chaserTimer++;
+      if(a.chaserTimer<120)a.chaserPhase="warning";
+      else if(a.chaserTimer<240)a.chaserPhase="charging";
+      else{
+        a.chaserPhase="flying";
+        a.x+=a.chaserDx*a.speed/60;a.y+=a.chaserDy*a.speed/60;
+        if(a.x<-120||a.y>canvas.height+120)a.health=0;
+      }
     }else if(a.specialType==="chaser"){
       const dx=player.x-a.x,dy=player.y-a.y,len=Math.hypot(dx,dy)||1;a.x+=dx/len*a.speed*worldSpeedMultiplier();a.y+=dy/len*a.speed*worldSpeedMultiplier();
     }else if(a.specialType==="teleport"){
@@ -1342,14 +1367,6 @@ function processSpecialEntities(){
     }
   });
 
-  // Chaser-area warning zones: 5 seconds, then a very fast meteor flies through them.
-  if(activeSpecialBossArea==="chaser"){
-    window.chaserHazards=window.chaserHazards||[];
-    if(window.chaserHazards.length<1&&Math.random()<.004)window.chaserHazards.push({x:40+Math.random()*(canvas.width-80),y:150,rx:58,ry:28,life:300,spawned:false});
-    window.chaserHazards.forEach(h=>{h.life--;if(h.life<=0&&!h.spawned){h.spawned=true;asteroids.push({x:h.x,y:-60,size:18,health:999999,maxHealth:999999,speed:18+distance/4000,specialType:"chaserMeteor",chaserMeteor:true,splitOnDeath:false,clone:false,teleportTimer:0,teleportMarker:null,teleportHidden:false,gateTimer:180,inversionReturning:false,shatterTimer:0});}});
-    window.chaserHazards=window.chaserHazards.filter(h=>!h.spawned);
-  }
-
   // Split-bullet wall logic.
   enemyBullets.forEach(b=>{
     if(!b.specialSplitBullet||b.dead)return;
@@ -1366,6 +1383,24 @@ function processSpecialEntities(){
 
 function drawHealthBar(x,y,width,height,health,maxHealth){const ratio=Math.max(0,Math.min(1,health/maxHealth));ctx.fillStyle="rgba(0,0,0,.85)";ctx.fillRect(x-width/2,y,width,height);ctx.fillStyle=ratio>.5?"#00e676":ratio>.25?"#ffeb3b":"#ff1744";ctx.fillRect(x-width/2,y,width*ratio,height);ctx.strokeStyle="#fff";ctx.strokeRect(x-width/2,y,width,height)}
 function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.save();ctx.translate(player.x,player.y);const ghostActive=invincible||dodgeGhostTimer>0;ctx.globalAlpha=ghostActive?.68:1;if(dodgeGhostTimer>0&&!invincible){ctx.globalAlpha=.68}const rageActive=lowHealthActive();if(rageActive){ctx.fillStyle="#ff8c00";ctx.shadowColor="#ff8c00";ctx.shadowBlur=35}else{ctx.fillStyle="#4cc9f0";ctx.shadowBlur=0}ctx.beginPath();ctx.moveTo(0,-30);ctx.lineTo(-22,25);ctx.lineTo(0,15);ctx.lineTo(22,25);ctx.closePath();ctx.fill();ctx.fillStyle="#fff";ctx.fillRect(-5,-10,10,15);ctx.restore();if(laserMode&&laserOn){const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1;ctx.save();ctx.strokeStyle="#ff1744";ctx.shadowColor="#ff1744";ctx.shadowBlur=20;ctx.lineWidth=12;ctx.beginPath();ctx.moveTo(player.x,player.y);ctx.lineTo(player.x+dx/len*1000,player.y+dy/len*1000);ctx.stroke();ctx.restore()}if(flamethrowerOn){const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1,dirX=dx/len,dirY=dy/len;ctx.save();ctx.globalAlpha=.8;ctx.shadowColor="#ff9800";ctx.shadowBlur=25;ctx.strokeStyle="#ff6d00";ctx.lineWidth=55;ctx.beginPath();ctx.moveTo(player.x+dirX*20,player.y+dirY*20);ctx.lineTo(player.x+dirX*220,player.y+dirY*220);ctx.stroke();ctx.strokeStyle="#ffff00";ctx.lineWidth=25;ctx.stroke();ctx.restore()}bullets.forEach(b=>{ctx.fillStyle=b.rpg?"#ff1744":b.droneBullet?"#00ff88":"#ffff00";ctx.beginPath();ctx.arc(b.x,b.y,b.size,0,Math.PI*2);ctx.fill()});enemyBullets.forEach(b=>{ctx.fillStyle=b.specialSplitBullet?(b.splitStage===0?"#064d18":b.splitStage===1?"#25e66b":"#8dffad"):"#ff1744";ctx.beginPath();ctx.arc(b.x,b.y,b.specialSplitBullet?b.size:6,0,Math.PI*2);ctx.fill()});asteroids.forEach(a=>{
+  if(a.chaserMeteor){
+    const ux=a.chaserDx,uy=a.chaserDy,px=-uy,py=ux,w=76,L=Math.hypot(canvas.width,canvas.height)*2.5,cx=a.chaserTargetX,cy=a.chaserTargetY;
+    const ax=cx-ux*L/2,ay=cy-uy*L/2,bx=cx+ux*L/2,by=cy+uy*L/2;
+    const pts=[[ax+px*w/2,ay+py*w/2],[bx+px*w/2,by+py*w/2],[bx-px*w/2,by-py*w/2],[ax-px*w/2,ay-py*w/2]];
+    ctx.save();ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath();
+    const alpha=a.chaserPhase==="warning"?.10+.10*(.5+.5*Math.sin(performance.now()/90)):a.chaserPhase==="charging"?.42:.48;
+    ctx.fillStyle="rgba(255,0,0,"+alpha+")";ctx.shadowColor="#ff0000";ctx.shadowBlur=a.chaserPhase==="warning"?8:25;ctx.fill();ctx.shadowBlur=0;ctx.clip();
+    ctx.globalAlpha=a.chaserPhase==="warning"?.28:.8;ctx.fillStyle="#650000";
+    for(let t=-L;t<L;t+=36){const xx=cx+ux*t,yy=cy+uy*t;ctx.save();ctx.translate(xx,yy);ctx.rotate(Math.atan2(uy,ux));ctx.fillRect(-7,-w/2,14,w);ctx.restore()}
+    ctx.restore();
+    ctx.save();ctx.strokeStyle="#ff2222";ctx.lineWidth=3;ctx.shadowColor="#f00";ctx.shadowBlur=12;ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath();ctx.stroke();ctx.restore();
+    if(a.chaserPhase==="flying"){
+      ctx.save();ctx.translate(a.x,a.y);ctx.shadowColor="#ff3b00";ctx.shadowBlur=30;ctx.fillStyle="#d94312";ctx.beginPath();ctx.arc(0,0,a.size,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=8;ctx.fillStyle="#ffb347";ctx.beginPath();ctx.arc(-8,-8,8,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle="#5b1800";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-16,-4);ctx.lineTo(-4,5);ctx.lineTo(5,-12);ctx.moveTo(8,10);ctx.lineTo(18,1);ctx.stroke();ctx.restore();
+    }
+    return;
+  }
   if(a.teleportHidden&&a.teleportMarker){ctx.save();ctx.globalAlpha=.75;ctx.shadowColor="#bb66ff";ctx.shadowBlur=25;ctx.fillStyle="rgba(180,70,255,.20)";ctx.strokeStyle="#c060ff";ctx.lineWidth=4;ctx.beginPath();ctx.arc(a.teleportMarker.x,a.teleportMarker.y,a.size+18,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore();return}
   if(difficulty==="impossible"){ctx.shadowColor="#00ffff";ctx.shadowBlur=25}else ctx.shadowBlur=0;
   if(a.clone)ctx.globalAlpha=.8;
@@ -1385,8 +1420,6 @@ function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.save();ctx.tra
     drawHealthBar(enemy.x,enemy.y-size-10,enemy.boss?120:50,7,enemy.health,enemy.maxHealth);
     if(enemy.boss){ctx.fillStyle="#fff";ctx.font="20px Arial";ctx.textAlign="center";ctx.fillText("BOSS",enemy.x,enemy.y+7)}
   });
-  // Special hazard telegraphs.
-  if(activeSpecialBossArea==="chaser"){window.chaserHazards=window.chaserHazards||[];window.chaserHazards.forEach(h=>{ctx.save();ctx.globalAlpha=Math.max(0,h.life/300)*.6;ctx.fillStyle="#ff2200";ctx.strokeStyle="#ff6a55";ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(h.x,h.y,h.rx,h.ry,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()})}
   if(freezeTimer>0){ctx.save();ctx.globalAlpha=.18;ctx.fillStyle="#8eeeff";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.restore()}drones.forEach(d=>{const size=d.type==="normal"?12:d.type==="upgraded"?16:d.type==="rpgMini"?18:22;ctx.fillStyle=d.type==="large"?"#ffd600":d.type==="rpgMini"?"#ff1744":d.type==="upgraded"?"#ff9800":"#00ff88";ctx.beginPath();ctx.arc(d.x,d.y,size,0,Math.PI*2);ctx.fill();ctx.fillStyle="#fff";ctx.font="10px Arial";ctx.textAlign="center";ctx.fillText("🛸",d.x,d.y+4)});if(swordCount>0)for(let i=0;i<swordCount;i++){const angle=swordAngle+i*Math.PI*2/swordCount,sx=player.x+Math.cos(angle)*swordRange,sy=player.y+Math.sin(angle)*swordRange;ctx.save();ctx.translate(sx,sy);ctx.rotate(angle);ctx.fillStyle="#00ffff";ctx.shadowColor="#00ffff";ctx.shadowBlur=15;ctx.fillRect(-3,-25,6,50);ctx.restore()}drawBlackHoles();explosions.forEach(e=>{ctx.strokeStyle="#ff9800";ctx.lineWidth=4;ctx.beginPath();ctx.arc(e.x,e.y,e.radius,0,Math.PI*2);ctx.stroke()})}
 function setHud(id,show){const e=document.getElementById(id);if(e)e.style.display=show?"":"none"}
 function updateMobileControlMode(){
