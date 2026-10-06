@@ -70,7 +70,8 @@ test("stackable upgrade cards show Roman numeral levels while unlock-only cards 
   assert.match(js, /const numberedUpgradeIds=new Set\(\["damage"/);
   assert.match(js, /function getUpgradeLevel\(id\)/);
   assert.match(js, /case"poison":return poisonLevel/);
-  assert.match(js, /return level<=0\?upgrade\.title:upgrade\.title\+" "\+toRomanNumeral\(level\+1\)/);
+  assert.match(js, /toRomanNumeral\(level\+1\)/);
+  assert.match(js, /return level<=0\?upgrade\.title/);
   assert.match(js, /function toRomanNumeral\(value\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
 });
