@@ -20,10 +20,10 @@ let speedComboDistance=0,speedComboPermanentDistance=0,speedComboPermanentBonus=
 // Permanent combo persists through hits; temporary combo is the only part that can reset during a run.
 const keys=Object.create(null),mouse={x:window.innerWidth/2,y:window.innerHeight/2};
 const player={x:0,y:0,size:25,speed:5,damage:10,maxLives:3,lives:3,fireRate:15,lastShot:0};
-let damageLevel=0,speedLevel=0,fireRateLevel=0,maxLivesLevel=0,extraFireLevel=0,luckLevel=0,dodgeChance=0,healOneUsed=false,fullHealUsed=false,reviveAvailable=false,piercingLevel=0,homingLevel=0,extraRowLevel=0,laserMode=false,laserOn=false,flamethrowerMode=false,flamethrowerOn=false,swordCount=0,swordDamage=4,swordRange=90,swordAngle=0,droneDamageLevel=0,droneTier=0,maxDrones=2,extraDroneLevel=0,flamethrowerLevel=0,shotgunLevel=0,minigunLevel=0,rpgLevel=0,blackHoleAmmo=0,blackHoleMaxAmmo=0,chainLightningLevel=0,amazingDroneLevel=0,bulletSizeLevel=0,xpBoostLevel=0,levelHealLevel=0,poisonLevel=0,currentWeapon="pistol";
+let damageLevel=0,speedLevel=0,fireRateLevel=0,maxLivesLevel=0,extraFireLevel=0,luckLevel=0,dodgeChance=0,healOneUsed=false,fullHealUsed=false,reviveAvailable=false,piercingLevel=0,homingLevel=0,extraRowLevel=0,laserMode=false,laserOn=false,flamethrowerMode=false,flamethrowerOn=false,swordCount=0,swordDamage=4,swordRange=90,swordAngle=0,droneDamageLevel=0,droneTier=0,maxDrones=2,extraDroneLevel=0,flamethrowerLevel=0,shotgunLevel=0,minigunLevel=0,rpgLevel=0,blackHoleAmmo=0,blackHoleMaxAmmo=0,chainLightningLevel=0,amazingDroneLevel=0,bulletSizeLevel=0,xpBoostLevel=0,levelHealLevel=0,poisonLevel=0,freezeLevel=0,currentWeapon="pistol";
 const ammo={pistol:Infinity,minigun:150,rpg:10,shotgun:30,flamethrower:Infinity,blackHole:0},weaponNames={pistol:"אקדח",minigun:"מיניגאן",rpg:"RPG",shotgun:"שוטגאן",flamethrower:"להביור",blackHole:"רובה חור שחור"};
 let bullets=[],enemyBullets=[],asteroids=[],enemies=[],explosions=[],drones=[],selectedUpgrades=[];
-const upgrades=[{id:"damage",rarity:"רגיל",rarityClass:"common",icon:"💥",title:"עוד נזק",description:"מגדיל את הנזק של היריות וגם מחזק את החרבות."},{id:"fireRate",rarity:"רגיל",rarityClass:"common",icon:"⚡",title:"מהירות יריות",description:"מגדיל את מהירות הירי וגם את מהירות הסיבוב של החרבות."},{id:"maxLives",rarity:"רגיל",rarityClass:"common",icon:"❤️",title:"הרחבת חיים מקסימליים",description:"מוסיף לב אחד לחיים המקסימליים."},{id:"healOne",rarity:"רגיל",rarityClass:"common",icon:"❤️",title:"ריפוי לב אחד",description:"מרפא לב אחד. חד־פעמי."},{id:"speed",rarity:"רגיל",rarityClass:"common",icon:"🚀",title:"מהירות תנועה",description:"מגדיל את מהירות תנועת החללית."},{id:"extraFire",rarity:"נדיר",rarityClass:"rare",icon:"🔫",title:"עוד ירי",description:"מוסיף יריות נוספות לכל ירייה."},{id:"xpBoost",rarity:"נדיר",rarityClass:"rare",icon:"✨",title:"עוד XP",description:"מגדיל את כמות ה־XP שמקבלים."},{id:"luck",rarity:"נדיר",rarityClass:"rare",icon:"🍀",title:"עוד מזל",description:"מגדיל את הסיכוי לקבל שדרוגים נדירים יותר."},{id:"dodge",rarity:"נדיר",rarityClass:"rare",icon:"🌀",title:"התחמקות",description:"נותן סיכוי לא לאבד לב כאשר נפגעים."},{id:"fullHeal",rarity:"נדיר",rarityClass:"rare",icon:"💚",title:"ריפוי כל החיים",description:"מרפא את כל החיים. חד־פעמי."},{id:"drone",rarity:"נדיר",rarityClass:"rare",icon:"🛸",title:"מיני־חללית",description:"מוסיף מיני־חללית רגילה שיורה אוטומטית."},{id:"extraDrone",rarity:"נדיר",rarityClass:"rare",icon:"🛸",title:"עוד מיני־חללית",description:"מגדיל את מקסימום המיני־חלליות ב־1 עד מקסימום 5."},{id:"extraDrone",rarity:"נדיר",rarityClass:"rare",icon:"🛸",title:"עוד מיני־חללית",description:"מגדיל את המקסימום של המיני־חלליות ב־1. מתחיל מ־2 ועד מקסימום 5."},{id:"rpg",rarity:"אדיר",rarityClass:"epic",icon:"🚀",title:"יריות RPG",description:"פותח את נשק ה־RPG ומוסיף 10 תחמושת."},{id:"piercing",rarity:"אדיר",rarityClass:"epic",icon:"🏹",title:"יריות חודרות",description:"היריות ממשיכות דרך אויבים ופוגעות באויבים נוספים."},{id:"sword",rarity:"אדיר",rarityClass:"epic",icon:"⚔️",title:"עוד חרב",description:"מוסיף חרב אנרגיה מסתובבת סביב החללית."},{id:"revive",rarity:"אדיר",rarityClass:"epic",icon:"💖",title:"החייאה",description:"כאשר החיים מגיעים לאפס, חוזרים לחיים עם כל החיים המלאים."},{id:"levelHeal",rarity:"אדיר",rarityClass:"epic",icon:"💜",title:"ריפוי בעליית רמה",description:"בכל פעם שעולים רמה, השחקן מתרפא בלב אחד."},{id:"shotgun",rarity:"אדיר",rarityClass:"epic",icon:"🔫",title:"שוטגאן",description:"פותח את השוטגאן."},{id:"droneUpgrade",rarity:"אדיר",rarityClass:"epic",icon:"🛸",title:"מיני־חללית משודרגת",description:"כל המיני־חלליות הקיימות משתדרגות ויורות 3 קליעים."},{id:"homing",rarity:"מדהים",rarityClass:"amazing",icon:"🎯",title:"יריות עוקבות",description:"הקליעים עוקבים אחרי המטרה הקרובה ביותר."},{id:"chainLightning",rarity:"מדהים",rarityClass:"amazing",icon:"⚡",title:"שרשרת ברקים",description:"פגיעה באויב יכולה להעביר ברק לאויבים קרובים נוספים."},{id:"rpgMiniShip",rarity:"מדהים",rarityClass:"amazing",icon:"🤖",title:"מיני־חללית RPG",description:"מוסיף מיני־חללית מיוחדת שיורה טילי RPG אוטומטיים."},{id:"blackHole",rarity:"מדהים",rarityClass:"amazing",icon:"🌌",title:"רובה חור שחור",description:"נשק חדש שמתחיל עם 4 יריות. כל ירייה יוצרת חור שחור שמושך אויבים ומטאוריטים ומתפוצץ. התחמושת חוזרת רק כאשר בוחרים שוב בקלף."},{id:"extraRow",rarity:"אגדי",rarityClass:"legendary",icon:"🔱",title:"עוד שורה של יריות",description:"מוסיף שורה נוספת של יריות."},{id:"laser",rarity:"אגדי",rarityClass:"legendary",icon:"🔴",title:"מצב לייזר",description:"פותח לייזר חזק שעוקב אחרי העכבר וגורם נזק."},{id:"flamethrower",rarity:"אגדי",rarityClass:"legendary",icon:"🔥",title:"להביור",description:"פותח להביור שעוקב אחרי העכבר."},{id:"droneMega",rarity:"אגדי",rarityClass:"legendary",icon:"🛸",title:"מיני־חללית גדולה",description:"משדרג את המיני־חללית הגדולה ויורה 7 קליעים."}, {id:"lowHealthRage",rarity:"אדיר",rarityClass:"epic",icon:"❤️‍🔥",title:"זעם אחרון",description:"כאשר החיים של החללית נמוכים מ־50%, מהירות התנועה גדלה ב־50%, מהירות הטעינה גדלה ב־50%, הנזק גדל ב־25% והחללית זוהרת בכתום."},{id:"poison",rarity:"אדיר",rarityClass:"epic",icon:"☠️",title:"רעל",description:"כל פגיעה מרעילה את האויב. הרעל גורם נזק של 5% מה־HP המקסימלי בכל שנייה למשך 4 שניות. כל בחירה נוספת מחזקת את הרעל לפי מספר הבחירות."}];
+const upgrades=[{id:"damage",rarity:"רגיל",rarityClass:"common",icon:"💥",title:"עוד נזק",description:"מגדיל את הנזק של היריות וגם מחזק את החרבות."},{id:"fireRate",rarity:"רגיל",rarityClass:"common",icon:"⚡",title:"מהירות יריות",description:"מגדיל את מהירות הירי וגם את מהירות הסיבוב של החרבות."},{id:"maxLives",rarity:"רגיל",rarityClass:"common",icon:"❤️",title:"הרחבת חיים מקסימליים",description:"מוסיף לב אחד לחיים המקסימליים."},{id:"healOne",rarity:"רגיל",rarityClass:"common",icon:"❤️",title:"ריפוי לב אחד",description:"מרפא לב אחד. חד־פעמי."},{id:"speed",rarity:"רגיל",rarityClass:"common",icon:"🚀",title:"מהירות תנועה",description:"מגדיל את מהירות תנועת החללית."},{id:"extraFire",rarity:"נדיר",rarityClass:"rare",icon:"🔫",title:"עוד ירי",description:"מוסיף יריות נוספות לכל ירייה."},{id:"xpBoost",rarity:"נדיר",rarityClass:"rare",icon:"✨",title:"עוד XP",description:"מגדיל את כמות ה־XP שמקבלים."},{id:"luck",rarity:"נדיר",rarityClass:"rare",icon:"🍀",title:"עוד מזל",description:"מגדיל את הסיכוי לקבל שדרוגים נדירים יותר."},{id:"dodge",rarity:"נדיר",rarityClass:"rare",icon:"🌀",title:"התחמקות",description:"נותן סיכוי לא לאבד לב כאשר נפגעים."},{id:"fullHeal",rarity:"נדיר",rarityClass:"rare",icon:"💚",title:"ריפוי כל החיים",description:"מרפא את כל החיים. חד־פעמי."},{id:"drone",rarity:"נדיר",rarityClass:"rare",icon:"🛸",title:"מיני־חללית",description:"מוסיף מיני־חללית רגילה שיורה אוטומטית."},{id:"extraDrone",rarity:"נדיר",rarityClass:"rare",icon:"🛸",title:"עוד מיני־חללית",description:"מגדיל את מקסימום המיני־חלליות ב־1 עד מקסימום 5."},{id:"extraDrone",rarity:"נדיר",rarityClass:"rare",icon:"🛸",title:"עוד מיני־חללית",description:"מגדיל את המקסימום של המיני־חלליות ב־1. מתחיל מ־2 ועד מקסימום 5."},{id:"rpg",rarity:"אדיר",rarityClass:"epic",icon:"🚀",title:"יריות RPG",description:"פותח את נשק ה־RPG ומוסיף 10 תחמושת."},{id:"piercing",rarity:"אדיר",rarityClass:"epic",icon:"🏹",title:"יריות חודרות",description:"היריות ממשיכות דרך אויבים ופוגעות באויבים נוספים."},{id:"sword",rarity:"אדיר",rarityClass:"epic",icon:"⚔️",title:"עוד חרב",description:"מוסיף חרב אנרגיה מסתובבת סביב החללית."},{id:"revive",rarity:"אדיר",rarityClass:"epic",icon:"💖",title:"החייאה",description:"כאשר החיים מגיעים לאפס, חוזרים לחיים עם כל החיים המלאים."},{id:"levelHeal",rarity:"אדיר",rarityClass:"epic",icon:"💜",title:"ריפוי בעליית רמה",description:"בכל פעם שעולים רמה, השחקן מתרפא בלב אחד."},{id:"shotgun",rarity:"אדיר",rarityClass:"epic",icon:"🔫",title:"שוטגאן",description:"פותח את השוטגאן."},{id:"droneUpgrade",rarity:"אדיר",rarityClass:"epic",icon:"🛸",title:"מיני־חללית משודרגת",description:"כל המיני־חלליות הקיימות משתדרגות ויורות 3 קליעים."},{id:"homing",rarity:"מדהים",rarityClass:"amazing",icon:"🎯",title:"יריות עוקבות",description:"הקליעים עוקבים אחרי המטרה הקרובה ביותר."},{id:"chainLightning",rarity:"מדהים",rarityClass:"amazing",icon:"⚡",title:"שרשרת ברקים",description:"פגיעה באויב יכולה להעביר ברק לאויבים קרובים נוספים."},{id:"rpgMiniShip",rarity:"מדהים",rarityClass:"amazing",icon:"🤖",title:"מיני־חללית RPG",description:"מוסיף מיני־חללית מיוחדת שיורה טילי RPG אוטומטיים."},{id:"blackHole",rarity:"מדהים",rarityClass:"amazing",icon:"🌌",title:"רובה חור שחור",description:"נשק חדש שמתחיל עם 4 יריות. כל ירייה יוצרת חור שחור שמושך אויבים ומטאוריטים ומתפוצץ. התחמושת חוזרת רק כאשר בוחרים שוב בקלף."},{id:"extraRow",rarity:"אגדי",rarityClass:"legendary",icon:"🔱",title:"עוד שורה של יריות",description:"מוסיף שורה נוספת של יריות."},{id:"laser",rarity:"אגדי",rarityClass:"legendary",icon:"🔴",title:"מצב לייזר",description:"פותח לייזר חזק שעוקב אחרי העכבר וגורם נזק."},{id:"flamethrower",rarity:"אגדי",rarityClass:"legendary",icon:"🔥",title:"להביור",description:"פותח להביור שעוקב אחרי העכבר."},{id:"droneMega",rarity:"אגדי",rarityClass:"legendary",icon:"🛸",title:"מיני־חללית גדולה",description:"משדרג את המיני־חללית הגדולה ויורה 7 קליעים."}, {id:"lowHealthRage",rarity:"אדיר",rarityClass:"epic",icon:"❤️‍🔥",title:"זעם אחרון",description:"כאשר החיים של החללית נמוכים מ־50%, מהירות התנועה גדלה ב־50%, מהירות הטעינה גדלה ב־50%, הנזק גדל ב־25% והחללית זוהרת בכתום."},{id:"poison",rarity:"אדיר",rarityClass:"epic",icon:"☠️",title:"רעל",description:"כל פגיעה מרעילה את האויב. הרעל גורם נזק של 5% מה־HP המקסימלי בכל שנייה למשך 4 שניות. כל בחירה נוספת מחזקת את הרעל לפי מספר הבחירות."},{id:"freeze",rarity:"אדיר",rarityClass:"epic",icon:"🧊",title:"הקפאה",description:"כל פגיעה יכולה להקפיא את האויב. רמה I מתחילה ב־10% סיכוי, 25% האטה ו־4 שניות. בכל בחירה הסיכוי והעוצמה ×1.5 והזמן ×1.33 (עד 90% האטה)."}];
 function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;if(!gameStarted){player.x=canvas.width/2;player.y=canvas.height-120}}window.addEventListener("resize",resizeCanvas);
 canvas.addEventListener("mousemove",e=>{mouse.x=e.clientX;mouse.y=e.clientY});
 const leaderboardDifficultyNames={easy:"🟢 קל",normal:"⚪ בינוני",hard:"🟠 קשה",super:"🔴 סופר קשה",impossible:"⚫ בלתי אפשרי"};
@@ -620,7 +620,7 @@ function triggerChainLightning(source){if(chainLightningLevel<=0)return;const ma
 function spawnBlackHole(x,y){const hole={x,y,radius:24,life:150,maxLife:150,blackHole:true};window.activeBlackHoles=window.activeBlackHoles||[];window.activeBlackHoles.push(hole);}
 function updateBlackHoles(){const holes=window.activeBlackHoles||[];for(const h of holes){h.life--;h.radius=Math.min(90,h.radius+1.2);[...asteroids,...enemies].forEach(t=>{if(t.health<=0)return;const dx=h.x-t.x,dy=h.y-t.y,d=Math.hypot(dx,dy)||1;const pull=Math.max(0,1-d/h.radius)*2.8;t.x+=dx/d*pull;t.y+=dy/d*pull;if(d<34){t.health-=effectiveDamage()*.18;if(enemies.includes(t))applyPoison(t);if(t.health<=0){if(enemies.includes(t))destroyEnemy(t);else destroyAsteroid(t)}}});if(h.life<=0){explosion(h.x,h.y);[...asteroids,...enemies].forEach(t=>{if(t.health<=0)return;const d=Math.hypot(t.x-h.x,t.y-h.y);if(d<110){t.health-=effectiveDamage()*3*(1-d/110);if(enemies.includes(t))applyPoison(t);if(t.health<=0){if(enemies.includes(t))destroyEnemy(t);else destroyAsteroid(t)}}})}}window.activeBlackHoles=holes.filter(h=>h.life>0)}
 function drawBlackHoles(){(window.activeBlackHoles||[]).forEach(h=>{ctx.save();ctx.translate(h.x,h.y);const pulse=1+Math.sin(h.life*.15)*.08;ctx.scale(pulse,pulse);ctx.shadowColor="#7e57c2";ctx.shadowBlur=28;ctx.fillStyle="#050008";ctx.beginPath();ctx.arc(0,0,h.radius*.55,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#b388ff";ctx.lineWidth=4;ctx.beginPath();ctx.arc(0,0,h.radius*.8,0,Math.PI*2);ctx.stroke();ctx.strokeStyle="#fff";ctx.globalAlpha=.65;ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,h.radius,0,Math.PI*2);ctx.stroke();ctx.restore()})}
-function rpgExplosion(x,y,isMini=false){const explosionRadius=isMini?120:120;explosion(x,y);screenShake(4,120);[...asteroids,...enemies].forEach(target=>{if(target.health<=0)return;const d=Math.hypot(target.x-x,target.y-y);if(d<=explosionRadius){const damage=effectiveDamage()*8*(1-d/explosionRadius*.5);target.health-=damage;if(enemies.includes(target))applyPoison(target);if(target.health<=0){if(target.boss||enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}});showMessage("💥 RPG התפוצץ!") }
+function rpgExplosion(x,y,isMini=false){const explosionRadius=isMini?120:120;explosion(x,y);screenShake(4,120);[...asteroids,...enemies].forEach(target=>{if(target.health<=0)return;const d=Math.hypot(target.x-x,target.y-y);if(d<=explosionRadius){const damage=effectiveDamage()*8*(1-d/explosionRadius*.5);target.health-=damage;if(enemies.includes(target)){applyPoison(target);applyFreeze(target)}if(target.health<=0){if(target.boss||enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}});showMessage("💥 RPG התפוצץ!") }
 function spawnAsteroid(){
   const size=Math.random()*18+12;
   const health=(10+size*.55+distance*.004)*difficultySettings[difficulty].enemyHP;
@@ -725,8 +725,13 @@ function spawnBoss(type="normal"){
 function findNearestTarget(x,y){let nearest=null,best=Infinity;[...asteroids,...enemies].forEach(target=>{if(target.health<=0)return;const d=Math.hypot(target.x-x,target.y-y);if(d<best){best=d;nearest=target}});return nearest}
 function applyPoison(enemy){if(poisonLevel<=0||!enemy||enemy.health<=0)return;const now=performance.now();enemy.poisonUntil=now+4000;enemy.poisonStrength=poisonLevel;enemy.poisonNextTickAt=now+1000}
 function updatePoison(){if(poisonLevel<=0)return;const now=performance.now();enemies.forEach(enemy=>{if(enemy.health<=0||!(enemy.poisonUntil>now))return;if(!(enemy.poisonNextTickAt>0))enemy.poisonNextTickAt=now+1000;if(now>=enemy.poisonNextTickAt){enemy.poisonNextTickAt+=1000;enemy.health-=enemy.maxHealth*.05*enemy.poisonStrength;if(enemy.health<=0)destroyEnemy(enemy)}})}
+function getFreezeChance(){return Math.min(1,.1*Math.pow(1.5,Math.max(0,freezeLevel-1)))}
+function getFreezeStrength(){return Math.min(.9,.25*Math.pow(1.5,Math.max(0,freezeLevel-1)))}
+function getFreezeDuration(){return 4000*Math.pow(1.33,Math.max(0,freezeLevel-1))}
+function getEnemyFreezeFactor(enemy){if(!enemy||freezeLevel<=0||!(enemy.freezeUntil>performance.now()))return 1;return Math.max(.1,1-(Number(enemy.freezeStrength)||0))}
+function applyFreeze(enemy){if(freezeLevel<=0||!enemy||enemy.health<=0)return false;if(Math.random()>=getFreezeChance())return false;const now=performance.now();enemy.freezeUntil=now+getFreezeDuration();enemy.freezeStrength=getFreezeStrength();return true}
 function addXP(amount){amount*=difficultySettings[difficulty].xp;amount*=1+xpBoostLevel*.25;xp+=amount;while(xp>=xpNeeded){xp-=xpNeeded;level++;const ach=getAchievementStats();ach.levels++;saveAchievementStats(ach);checkAchievements();xpNeeded=Math.floor(xpNeeded*1.25);if(levelHealLevel>0)player.lives=Math.min(player.maxLives,player.lives+1);addPlayerXP(10,false,"עליית רמה");if(rpgLevel>0)ammo.rpg+=5;if(shotgunLevel>0)ammo.shotgun+=15;openLevelUp()}updateHUD()}
-const numberedUpgradeIds=new Set(["damage","fireRate","maxLives","speed","extraFire","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","extraRow","lowHealthRage","poison"]);
+const numberedUpgradeIds=new Set(["damage","fireRate","maxLives","speed","extraFire","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","extraRow","lowHealthRage","poison","freeze"]);
 function getUpgradeLevel(id){
   switch(id){
     case"damage":return damageLevel;
@@ -745,6 +750,7 @@ function getUpgradeLevel(id){
     case"extraRow":return extraRowLevel;
     case"lowHealthRage":return lowHealthBoostLevel;
     case"poison":return poisonLevel;
+    case"freeze":return freezeLevel;
     default:return 0;
   }
 }
@@ -760,10 +766,10 @@ function getUpgradeCardTitle(upgrade){
   return level<=0?upgrade.title:upgrade.title+" "+toRomanNumeral(level+1);
 }
 function openLevelUp(){levelUpOpen=true;gameRunning=false;const availableFiltered=upgrades.filter(u=>!(u.id==="extraDrone"&&maxDrones>=5));const weighted=[];availableFiltered.forEach(upgrade=>{let weight=upgrade.rarityClass==="common"?60:upgrade.rarityClass==="rare"?25:upgrade.rarityClass==="epic"?12:upgrade.rarityClass==="legendary"?3:1;weight+=luckLevel*2;for(let i=0;i<weight;i++)weighted.push(upgrade)});const choices=[];while(choices.length<3&&weighted.length){const index=Math.floor(Math.random()*weighted.length),choice=weighted[index];if(!choices.some(x=>x.id===choice.id))choices.push(choice);weighted.splice(index,1)}upgradeContainer.innerHTML="";choices.forEach(upgrade=>{const card=document.createElement("div");card.className="upgradeCard "+upgrade.rarityClass;card.innerHTML=`<div class="rarity">${upgrade.rarity}</div><div class="upgradeIcon">${upgrade.icon}</div><div class="upgradeTitle">${getUpgradeCardTitle(upgrade)}</div><div class="upgradeDescription">${upgrade.description}</div>`;card.addEventListener("click",function(){if(!levelUpOpen)return;applyUpgrade(upgrade);selectedUpgrades.push(upgrade);const ach=getAchievementStats();const key=upgrade.rarityClass==="common"?"commonCards":upgrade.rarityClass==="rare"?"rareCards":upgrade.rarityClass==="epic"?"epicCards":upgrade.rarityClass==="legendary"?"legendaryCards":"amazingCards";ach[key]=(Number(ach[key])||0)+1;saveAchievementStats(ach);checkAchievements();levelUpScreen.style.display="none";levelUpOpen=false;gameRunning=true;updateHUD()});upgradeContainer.appendChild(card)});levelUpScreen.style.display="flex"}
-function applyUpgrade(u){switch(u.id){case"damage":damageLevel++;player.damage+=4;swordDamage+=2;break;case"fireRate":fireRateLevel++;player.fireRate=Math.max(3,player.fireRate-2);break;case"maxLives":maxLivesLevel++;player.maxLives++;player.lives++;break;case"healOne":if(!healOneUsed){healOneUsed=true;player.lives=Math.min(player.maxLives,player.lives+1)}break;case"speed":speedLevel++;player.speed+=.7;break;case"extraFire":extraFireLevel++;break;case"xpBoost":xpBoostLevel++;break;case"luck":luckLevel++;break;case"dodge":dodgeChance=Math.min(.5,dodgeChance+.08);break;case"fullHeal":if(!fullHealUsed){fullHealUsed=true;player.lives=player.maxLives}break;case"extraDrone":if(maxDrones<5){maxDrones++;extraDroneLevel++;showMessage("🛸 מקסימום מיני חלליות: "+maxDrones)}break;case"drone":if(drones.length<maxDrones)drones.push({type:"normal",angle:Math.random()*Math.PI*2,radius:70,timer:20,rotationSpeed:.025});break;case"rpg":rpgLevel++;ammo.rpg+=10;break;case"piercing":piercingLevel++;break;case"sword":swordCount++;break;case"revive":reviveAvailable=true;break;case"levelHeal":levelHealLevel++;break;case"shotgun":shotgunLevel++;ammo.shotgun+=30;break;case"droneUpgrade":if(drones.length===0)drones.push({type:"upgraded",angle:Math.random()*Math.PI*2,radius:85,timer:10,rotationSpeed:.05});else drones.forEach(d=>{if(d.type==="normal"){d.type="upgraded";d.radius=85;d.rotationSpeed=.05}});droneTier=Math.max(droneTier,1);break;case"homing":homingLevel++;break;case"chainLightning":chainLightningLevel++;break;case"rpgMiniShip":amazingDroneLevel++;if(!drones.some(d=>d.type==="rpgMini")){drones.push({type:"rpgMini",angle:Math.random()*Math.PI*2,radius:115,timer:12,rotationSpeed:.035})}break;case"blackHole":blackHoleMaxAmmo+=4;blackHoleAmmo+=4;ammo.blackHole=blackHoleAmmo;showMessage("🌌 +4 יריות חור שחור!");break;case"extraRow":extraRowLevel++;break;case"laser":laserMode=true;break;case"flamethrower":flamethrowerMode=true;flamethrowerLevel++;break;case"lowHealthRage":lowHealthBoostLevel++;break;case"poison":poisonLevel++;showMessage("☠️ רעל ×"+poisonLevel);break;case"droneMega":if(drones.length===0)drones.push({type:"large",angle:Math.random()*Math.PI*2,radius:100,timer:10,rotationSpeed:.075});else drones.forEach(d=>{d.type="large";d.radius=100;d.rotationSpeed=.075});droneTier=2;break}updateHUD()}
+function applyUpgrade(u){switch(u.id){case"damage":damageLevel++;player.damage+=4;swordDamage+=2;break;case"fireRate":fireRateLevel++;player.fireRate=Math.max(3,player.fireRate-2);break;case"maxLives":maxLivesLevel++;player.maxLives++;player.lives++;break;case"healOne":if(!healOneUsed){healOneUsed=true;player.lives=Math.min(player.maxLives,player.lives+1)}break;case"speed":speedLevel++;player.speed+=.7;break;case"extraFire":extraFireLevel++;break;case"xpBoost":xpBoostLevel++;break;case"luck":luckLevel++;break;case"dodge":dodgeChance=Math.min(.5,dodgeChance+.08);break;case"fullHeal":if(!fullHealUsed){fullHealUsed=true;player.lives=player.maxLives}break;case"extraDrone":if(maxDrones<5){maxDrones++;extraDroneLevel++;showMessage("🛸 מקסימום מיני חלליות: "+maxDrones)}break;case"drone":if(drones.length<maxDrones)drones.push({type:"normal",angle:Math.random()*Math.PI*2,radius:70,timer:20,rotationSpeed:.025});break;case"rpg":rpgLevel++;ammo.rpg+=10;break;case"piercing":piercingLevel++;break;case"sword":swordCount++;break;case"revive":reviveAvailable=true;break;case"levelHeal":levelHealLevel++;break;case"shotgun":shotgunLevel++;ammo.shotgun+=30;break;case"droneUpgrade":if(drones.length===0)drones.push({type:"upgraded",angle:Math.random()*Math.PI*2,radius:85,timer:10,rotationSpeed:.05});else drones.forEach(d=>{if(d.type==="normal"){d.type="upgraded";d.radius=85;d.rotationSpeed=.05}});droneTier=Math.max(droneTier,1);break;case"homing":homingLevel++;break;case"chainLightning":chainLightningLevel++;break;case"rpgMiniShip":amazingDroneLevel++;if(!drones.some(d=>d.type==="rpgMini")){drones.push({type:"rpgMini",angle:Math.random()*Math.PI*2,radius:115,timer:12,rotationSpeed:.035})}break;case"blackHole":blackHoleMaxAmmo+=4;blackHoleAmmo+=4;ammo.blackHole=blackHoleAmmo;showMessage("🌌 +4 יריות חור שחור!");break;case"extraRow":extraRowLevel++;break;case"laser":laserMode=true;break;case"flamethrower":flamethrowerMode=true;flamethrowerLevel++;break;case"lowHealthRage":lowHealthBoostLevel++;break;case"poison":poisonLevel++;showMessage("☠️ רעל ×"+poisonLevel);break;case"freeze":freezeLevel++;showMessage("🧊 הקפאה ×"+freezeLevel);break;case"droneMega":if(drones.length===0)drones.push({type:"large",angle:Math.random()*Math.PI*2,radius:100,timer:10,rotationSpeed:.075});else drones.forEach(d=>{d.type="large";d.radius=100;d.rotationSpeed=.075});droneTier=2;break}updateHUD()}
 function updateLaser(){if(!laserOn||!laserMode||!gameRunning)return;const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1,dirX=dx/len,dirY=dy/len,maxRange=1200;[...enemies,...asteroids].forEach(target=>{if(target.health<=0)return;const ex=target.x-player.x,ey=target.y-player.y,forward=ex*dirX+ey*dirY,side=Math.abs(ex*dirY-ey*dirX);if(forward>0&&forward<maxRange&&side<35){target.health-=effectiveDamage()*.25;if(enemies.includes(target))applyPoison(target);if(target.health<=0){if(enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}})}
 function updateFlamethrower(){if(!flamethrowerOn||!flamethrowerMode||!gameRunning)return;const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1,dirX=dx/len,dirY=dy/len,range=220;[...enemies,...asteroids].forEach(target=>{if(target.health<=0)return;const ex=target.x-player.x,ey=target.y-player.y,forward=ex*dirX+ey*dirY,side=Math.abs(ex*dirY-ey*dirX);if(forward>0&&forward<range&&side<55){target.health-=effectiveDamage()*.18;if(enemies.includes(target))applyPoison(target);if(target.health<=0){if(enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}})}
-function updateSwords(){if(swordCount<=0)return;swordAngle+=.015+fireRateLevel*.004;for(let i=0;i<swordCount;i++){const angle=swordAngle+i*Math.PI*2/swordCount,sx=player.x+Math.cos(angle)*swordRange,sy=player.y+Math.sin(angle)*swordRange;enemies.forEach(enemy=>{if(enemy.health<=0)return;if(Math.hypot(sx-enemy.x,sy-enemy.y)<35){enemy.health-=swordDamage*(lowHealthActive()?1.25:1);applyPoison(enemy);if(enemy.health<=0)destroyEnemy(enemy)}});asteroids.forEach(a=>{if(a.health<=0)return;if(Math.hypot(sx-a.x,sy-a.y)<35){a.health-=swordDamage*(lowHealthActive()?1.25:1);if(a.health<=0)destroyAsteroid(a)}});enemyBullets.forEach(b=>{if(Math.hypot(sx-b.x,sy-b.y)<30)b.dead=true})}}
+function updateSwords(){if(swordCount<=0)return;swordAngle+=.015+fireRateLevel*.004;for(let i=0;i<swordCount;i++){const angle=swordAngle+i*Math.PI*2/swordCount,sx=player.x+Math.cos(angle)*swordRange,sy=player.y+Math.sin(angle)*swordRange;enemies.forEach(enemy=>{if(enemy.health<=0)return;if(Math.hypot(sx-enemy.x,sy-enemy.y)<35){enemy.health-=swordDamage*(lowHealthActive()?1.25:1);applyPoison(enemy);applyFreeze(enemy);if(enemy.health<=0)destroyEnemy(enemy)}});asteroids.forEach(a=>{if(a.health<=0)return;if(Math.hypot(sx-a.x,sy-a.y)<35){a.health-=swordDamage*(lowHealthActive()?1.25:1);if(a.health<=0)destroyAsteroid(a)}});enemyBullets.forEach(b=>{if(Math.hypot(sx-b.x,sy-b.y)<30)b.dead=true})}}
 function updateDrones(){drones.forEach(drone=>{drone.angle+=drone.rotationSpeed;drone.x=player.x+Math.cos(drone.angle)*drone.radius;drone.y=player.y+Math.sin(drone.angle)*drone.radius;drone.timer--;if(drone.timer>0)return;const target=findNearestTarget(drone.x,drone.y);if(target){const dx=target.x-drone.x,dy=target.y-drone.y,baseAngle=Math.atan2(dy,dx);let count=1;if(drone.type==="upgraded")count=3;if(drone.type==="large")count=7;if(drone.type==="rpgMini")count=1;for(let i=0;i<count;i++){const spread=count===1?0:(i-(count-1)/2)*.13;createDroneBullet(drone,baseAngle+spread,drone.type==="rpgMini"?12:(drone.type==="large"?7+droneDamageLevel*4:5+droneDamageLevel*3),drone.type==="large"?6:drone.type==="rpgMini"?9:5)}}drone.timer=drone.type==="normal"?40:drone.type==="upgraded"?20:13})}
 function createDroneBullet(drone,angle,damage,size){bullets.push({x:drone.x,y:drone.y,vx:Math.cos(angle)*7,vy:Math.sin(angle)*7,damage,size,droneBullet:true,rpg:drone.type==="rpgMini",rpgMini:drone.type==="rpgMini",homing:homingLevel>0,piercing:piercingLevel>0})}
 function damagePlayer(){
@@ -930,30 +936,31 @@ function update(){if(!gameRunning)return;gameTime+=1/60;let speed=effectiveMoveS
   });
   enemies.forEach(enemy=>{
     if(enemy.health<=0)return;
+    const freezeFactor=getEnemyFreezeFactor(enemy);
     if(enemy.boss){
-      if(enemy.specialBoss)return;      enemy.x+=enemy.direction*bossSpeed;if(enemy.x<100||enemy.x>canvas.width-100)enemy.direction*=-1;
-      enemy.timer--;
-      if(enemy.timer<=0){
+      if(enemy.specialBoss)return;      enemy.x+=enemy.direction*bossSpeed*freezeFactor;if(enemy.x<100||enemy.x>canvas.width-100)enemy.direction*=-1;
+      enemy.timer-=freezeFactor;
+      if(enemy.timer<=0)){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
         const shots=difficultySettings[difficulty].enemyTriple?3:1;
         for(let ss=0;ss<shots;ss++){
           const spread=(ss-(shots-1)/2)*.25;
-          enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:(dx/len+spread)*2,vy:4});
+          enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:(dx/len+spread)*2,vy:4,freezeSpeedMultiplier:freezeFactor});
         }
         enemy.timer=25;
       }
       return;
     }
     if(enemy.specialType==="normal"){
-      enemy.y+=enemy.speed*worldSpeedMultiplier();
-      enemy.x+=Math.sin(Date.now()/500)*.7*worldSpeedMultiplier();
-      enemy.timer--;
+      enemy.y+=enemy.speed*worldSpeedMultiplier()*freezeFactor;
+      enemy.x+=Math.sin(Date.now()/500)*.7*worldSpeedMultiplier()*freezeFactor;
+      enemy.timer-=freezeFactor;
       if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
         const shots=difficultySettings[difficulty].enemyTriple?3:1;
         for(let ss=0;ss<shots;ss++){
           const spread=(ss-(shots-1)/2)*.25;
-          enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:(dx/len+spread),vy:3});
+          enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:(dx/len+spread),vy:3,freezeSpeedMultiplier:freezeFactor});
         }
         enemy.timer=100;
       }
@@ -982,7 +989,7 @@ processSpecialEntities();
       if(Math.hypot(b.x-enemy.x,b.y-enemy.y)<size+b.size){
         if(b.blackHole){b.dead=true;spawnBlackHole(b.x,b.y);return}
         if(b.rpg){b.dead=true;rpgExplosion(b.x,b.y,b.rpgMini===true);return}
-        enemy.health-=b.damage;applyPoison(enemy);
+        enemy.health-=b.damage;applyPoison(enemy);applyFreeze(enemy);
         if(enemy.boss)screenShake(2,80);
         if(chainLightningLevel>0)triggerChainLightning(enemy);
         if(!b.piercing)b.dead=true;
@@ -992,10 +999,11 @@ processSpecialEntities();
   });
   enemyBullets.forEach(b=>{
     if(b.dead)return;
-    b.x+=Number(b.vx)||0;
-    b.y+=Number(b.vy)||0;
+    const bulletSpeedMultiplier=Math.max(.1,Math.min(1,Number(b.freezeSpeedMultiplier)||1));
+    b.x+=(Number(b.vx)||0)*bulletSpeedMultiplier;
+    b.y+=(Number(b.vy)||0)*bulletSpeedMultiplier;
     if(b.shortRange){
-      b.rangeLeft=(b.rangeLeft??240)-Math.hypot(Number(b.vx)||0,Number(b.vy)||0);
+      b.rangeLeft=(b.rangeLeft??240)-Math.hypot(Number(b.vx)||0,Number(b.vy)||0)*bulletSpeedMultiplier;
       if(b.rangeLeft<=0){b.dead=true;return}
     }
     if(Math.hypot(b.x-player.x,b.y-player.y)<25){if(b.specialSplitBullet&&b.splitStage===0){
@@ -1032,14 +1040,15 @@ function processSpecialEntities(){
   // Special bosses and their unique attacks.
   enemies.forEach(enemy=>{
     if(!enemy.boss||!enemy.specialBoss||enemy.health<=0)return;
+    const freezeFactor=getEnemyFreezeFactor(enemy);
     if(enemy.specialType==="split"){
-      enemy.specialFireTimer=(enemy.specialFireTimer??(enemy.splitStage===0?600:enemy.splitStage===1?300:150))-1;
+      enemy.specialFireTimer=(enemy.specialFireTimer??(enemy.splitStage===0?600:enemy.splitStage===1?300:150))-freezeFactor;
       if(enemy.specialFireTimer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
         const stage=enemy.splitStage||0;
         const speed=stage===0?2.5:stage===1?5:10;
         const size=stage===0?18:stage===1?10:6;
-        enemyBullets.push({x:enemy.x,y:enemy.y+size,vx:dx/len*speed,vy:dy/len*speed,size,
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+size,vx:dx/len*speed,vy:dy/len*speed,size,
           specialSplitBullet:true,splitStage:stage,damage:stage===0?2:1});
         enemy.specialFireTimer=stage===0?600:stage===1?300:150;
       }
@@ -1047,40 +1056,40 @@ function processSpecialEntities(){
     }
     if(enemy.specialType==="mirror"){
       // Both the original and its two clones keep normal boss fire; clones are handled below at 20% slower cadence/speed.
-      enemy.x+=enemy.direction*bossSpeed*(enemy.mirrorClone?.8:1);
+      enemy.x+=enemy.direction*bossSpeed*(enemy.mirrorClone?.8:1)*freezeFactor;
       if(enemy.x<100||enemy.x>canvas.width-100)enemy.direction*=-1;
-      enemy.timer=(enemy.timer??30)-1;
+      enemy.timer=(enemy.timer??30)-freezeFactor;
       if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
         const shotSpeed=enemy.mirrorClone?1.6:2;
-        enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:dx/len*shotSpeed,vy:enemy.mirrorClone?2.4:3});
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len*shotSpeed,vy:enemy.mirrorClone?2.4:3});
         enemy.timer=enemy.mirrorClone?125:30;
       }
       if(!enemy.mirrorClone&&!enemy.cloneSpawned&&enemy.health<=enemy.maxHealth*.5)spawnMirrorClones(enemy);
       return;
     }
     if(enemy.specialType==="ice"){
-      enemy.x+=enemy.direction*bossSpeed*.9;
+      enemy.x+=enemy.direction*bossSpeed*.9*freezeFactor;
       if(enemy.x<100||enemy.x>canvas.width-100)enemy.direction*=-1;
-      enemy.timer=(enemy.timer??45)-1;
+      enemy.timer=(enemy.timer??45)-freezeFactor;
       if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
-        enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:dx/len*2,vy:3});
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len*2,vy:3});
         enemy.timer=45;
       }
       return;
     }
     if(enemy.specialType==="gates"){
-      enemy.gateTimer=(enemy.gateTimer??120)-1;
+      enemy.gateTimer=(enemy.gateTimer??120)-freezeFactor;
       if(enemy.gateTimer<=0){
         enemy.gateTimer=180;
         enemy.x=80+Math.random()*(canvas.width-160);
         enemy.y=140+Math.random()*Math.max(80,canvas.height-300);
       }
-      enemy.timer=(enemy.timer??60)-1;
+      enemy.timer=(enemy.timer??60)-freezeFactor;
       if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
-        enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:dx/len*2,vy:3});
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len*2,vy:3});
         enemy.timer=60;
       }
       return;
@@ -1088,60 +1097,60 @@ function processSpecialEntities(){
     if(enemy.specialType==="chaser"){
       const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
       const chaseSpeed=Math.max(3.8,bossSpeed*1.65);
-      enemy.x+=dx/len*chaseSpeed*worldSpeedMultiplier();enemy.y+=dy/len*chaseSpeed*worldSpeedMultiplier();
+      enemy.x+=dx/len*chaseSpeed*worldSpeedMultiplier()*freezeFactor;enemy.y+=dy/len*chaseSpeed*worldSpeedMultiplier()*freezeFactor;
       const fireRange=330;
-      enemy.timer=(enemy.timer??45)-1;
+      enemy.timer=(enemy.timer??45)-freezeFactor;
       if(Math.hypot(dx,dy)<=fireRange && enemy.timer<=0){
         for(let ss=0;ss<2;ss++){
           const base=Math.atan2(dy,dx)+(ss===0?-0.12:0.12);
-          enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:Math.cos(base)*4.5,vy:Math.sin(base)*4.5,shortRange:true,rangeLeft:fireRange});
+          enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:Math.cos(base)*4.5,vy:Math.sin(base)*4.5,shortRange:true,rangeLeft:fireRange});
         }
         enemy.timer=50;
       }
       return;
     }
     if(enemy.specialType==="teleport"){
-      enemy.specialTimer=(enemy.specialTimer??240)-1;
+      enemy.specialTimer=(enemy.specialTimer??240)-freezeFactor;
       if(!enemy.teleportHidden&&enemy.specialTimer<=0){
         enemy.specialTimer=240;
         enemy.teleportMarker={x:70+Math.random()*(canvas.width-140),y:140+Math.random()*Math.max(60,canvas.height-300),life:240};
         enemy.teleportHidden=true;
       }
       if(enemy.teleportHidden&&enemy.teleportMarker){
-        enemy.teleportMarker.life--;
+        enemy.teleportMarker.life-=freezeFactor;
         if(enemy.teleportMarker.life<=0){
           enemy.x=enemy.teleportMarker.x;enemy.y=enemy.teleportMarker.y;
           enemy.teleportMarker=null;enemy.teleportHidden=false;enemy.timer=5;
         }
       }
       if(!enemy.teleportHidden){
-        enemy.timer=(enemy.timer??5)-1;
+        enemy.timer=(enemy.timer??5)-freezeFactor;
         if(enemy.timer<=0){
           const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
-          enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:dx/len*2.2,vy:3.5});
+          enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len*2.2,vy:3.5});
           enemy.timer=120;
         }
       }
       return;
     }
     if(enemy.specialType==="inversion"){
-      enemy.x+=enemy.direction*bossSpeed*.95;
+      enemy.x+=enemy.direction*bossSpeed*.95*freezeFactor;
       if(enemy.x<100||enemy.x>canvas.width-100)enemy.direction*=-1;
-      enemy.timer=(enemy.timer??50)-1;
+      enemy.timer=(enemy.timer??50)-freezeFactor;
       if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
-        enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:dx/len*2,vy:3});
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len*2,vy:3});
         enemy.timer=50;
       }
     }
     // king/doom special bosses keep their own area but use the ordinary boss attack cadence.
     if(enemy.specialType==="king"||enemy.specialType==="doom"){
-      enemy.x+=enemy.direction*bossSpeed;
+      enemy.x+=enemy.direction*bossSpeed*freezeFactor;
       if(enemy.x<100||enemy.x>canvas.width-100)enemy.direction*=-1;
-      enemy.timer=(enemy.timer??35)-1;
+      enemy.timer=(enemy.timer??35)-freezeFactor;
       if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
-        enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:dx/len*2.2,vy:4});
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len*2.2,vy:4});
         enemy.timer=35;
       }
     }
@@ -1150,70 +1159,71 @@ function processSpecialEntities(){
   // Special enemies.
   enemies.forEach(enemy=>{
     if(enemy.boss||enemy.health<=0)return;
+    const freezeFactor=getEnemyFreezeFactor(enemy);
     if(enemy.specialType==="mirror"){
-      enemy.y+=enemy.speed*(enemy.mirrorClone?.8:1)*worldSpeedMultiplier();
-      enemy.x+=Math.sin(Date.now()/500)*.7*(enemy.mirrorClone?.8:1);
-      enemy.timer--;
+      enemy.y+=enemy.speed*(enemy.mirrorClone?.8:1)*worldSpeedMultiplier()*freezeFactor;
+      enemy.x+=Math.sin(Date.now()/500)*.7*(enemy.mirrorClone?.8:1)*freezeFactor;
+      enemy.timer-=freezeFactor;
       if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
-        enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:dx/len*(enemy.mirrorClone?0.8:1),vy:enemy.mirrorClone?2.4:3});
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len*(enemy.mirrorClone?0.8:1),vy:enemy.mirrorClone?2.4:3});
         enemy.timer=enemy.mirrorClone?125:100;
       }
     }else if(enemy.specialType==="chaser"){
       const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
       const chaseSpeed=Math.max(4.5,enemy.speed*1.35);
-      enemy.x+=dx/len*chaseSpeed;enemy.y+=dy/len*chaseSpeed;
+      enemy.x+=dx/len*chaseSpeed*freezeFactor;enemy.y+=dy/len*chaseSpeed*freezeFactor;
       const fireRange=240;
-      enemy.timer=(enemy.timer??70)-1;
+      enemy.timer=(enemy.timer??70)-freezeFactor;
       if(Math.hypot(dx,dy)<=fireRange && enemy.timer<=0){
-        enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:dx/len*4,vy:dy/len*4,shortRange:true,rangeLeft:fireRange});
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len*4,vy:dy/len*4,shortRange:true,rangeLeft:fireRange});
         enemy.timer=70;
       }
     }else if(enemy.specialType==="ice"){
-      enemy.y+=enemy.speed*worldSpeedMultiplier();enemy.x+=Math.sin(Date.now()/500)*.7*worldSpeedMultiplier();
-      enemy.timer--;
+      enemy.y+=enemy.speed*worldSpeedMultiplier()*freezeFactor;enemy.x+=Math.sin(Date.now()/500)*.7*worldSpeedMultiplier()*freezeFactor;
+      enemy.timer-=freezeFactor;
       if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
-        enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:dx/len,vy:3});
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len,vy:3});
         enemy.timer=100;
       }
     }else if(enemy.specialType==="teleport"){
       if(!enemy.teleportHidden){
-        enemy.teleportTimer=(enemy.teleportTimer??240)-1;
+        enemy.teleportTimer=(enemy.teleportTimer??240)-freezeFactor;
         if(enemy.teleportTimer<=0){
           enemy.teleportTimer=240;
           enemy.teleportMarker={x:50+Math.random()*(canvas.width-100),y:120+Math.random()*(canvas.height-220),life:240};
           enemy.teleportHidden=true;
         }
-        if(enemy.timer>0)enemy.timer--;
+        if(enemy.timer>0)enemy.timer-=freezeFactor;
         if(enemy.timer<=0){
           const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
-          enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:dx/len,vy:3});
+          enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len,vy:3});
           enemy.timer=100;
         }
       }else if(enemy.teleportMarker){
-        enemy.teleportMarker.life--;
+        enemy.teleportMarker.life-=freezeFactor;
         if(enemy.teleportMarker.life<=0){
           enemy.x=enemy.teleportMarker.x;enemy.y=enemy.teleportMarker.y;
           enemy.teleportMarker=null;enemy.teleportHidden=false;enemy.timer=5;
         }
       }
     }else if(enemy.specialType==="gate"){
-      enemy.y+=enemy.speed*worldSpeedMultiplier();enemy.gateTimer=(enemy.gateTimer??180)-1;
+      enemy.y+=enemy.speed*worldSpeedMultiplier();enemy.gateTimer=(enemy.gateTimer??180)-freezeFactor;
       if(enemy.gateTimer<=0){enemy.gateTimer=180;enemy.x=70+Math.random()*(canvas.width-140);enemy.y=120+Math.random()*Math.max(80,canvas.height-280);}
-      enemy.timer--;
+      enemy.timer-=freezeFactor;
       if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
-        enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:dx/len,vy:3});enemy.timer=100;
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len,vy:3});enemy.timer=100;
       }
     }else if(enemy.specialType==="inversion"){
-      enemy.y+=enemy.speed*worldSpeedMultiplier();enemy.timer--;
+      enemy.y+=enemy.speed*worldSpeedMultiplier();enemy.timer-=freezeFactor;
       if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
-        enemyBullets.push({x:enemy.x,y:enemy.y+20,vx:dx/len,vy:3});enemy.timer=100;
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len,vy:3});enemy.timer=100;
       }
     }else if(enemy.specialType!=="normal"){
-      enemy.y+=enemy.speed;
+      enemy.y+=enemy.speed*freezeFactor;
     }
   });
 
@@ -1226,13 +1236,13 @@ function processSpecialEntities(){
       a.y+=a.speed;
     }else if(a.specialType==="gate"){
       a.y+=a.speed*worldSpeedMultiplier();
-      a.gateTimer=(a.gateTimer??180)-1;
+      a.gateTimer=(a.gateTimer??180)-freezeFactor;
       if(a.gateTimer<=0){a.gateTimer=180;a.x=70+Math.random()*(canvas.width-140);a.y=120+Math.random()*Math.max(80,canvas.height-280);}
     }else if(a.specialType==="chaser"){
       const dx=player.x-a.x,dy=player.y-a.y,len=Math.hypot(dx,dy)||1;a.x+=dx/len*a.speed*worldSpeedMultiplier();a.y+=dy/len*a.speed*worldSpeedMultiplier();
     }else if(a.specialType==="teleport"){
       if(!a.teleportHidden){
-        a.teleportTimer=(a.teleportTimer??240)-1;
+        a.teleportTimer=(a.teleportTimer??240)-freezeFactor;
         if(a.teleportTimer<=0){
           a.teleportTimer=240;
           a.teleportMarker={x:50+Math.random()*(canvas.width-100),y:120+Math.random()*(canvas.height-220),life:240};
@@ -1269,9 +1279,9 @@ function processSpecialEntities(){
     if(!b.specialSplitBullet||b.dead)return;
     if(b.x<=b.size||b.x>=canvas.width-b.size||b.y<=b.size||b.y>=canvas.height-b.size){
       if(b.splitStage===0){
-        const a=Math.atan2(b.vy,b.vx);for(const delta of [-.35,.35])enemyBullets.push({x:b.x,y:b.y,vx:Math.cos(a+delta)*5,vy:Math.sin(a+delta)*5,size:10,specialSplitBullet:true,splitStage:1,damage:1});
+        const a=Math.atan2(b.vy,b.vx);for(const delta of [-.35,.35])enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:b.x,y:b.y,vx:Math.cos(a+delta)*5,vy:Math.sin(a+delta)*5,size:10,specialSplitBullet:true,splitStage:1,damage:1});
       }else if(b.splitStage===1){
-        const a=Math.atan2(b.vy,b.vx);for(const delta of [-.28,.28])enemyBullets.push({x:b.x,y:b.y,vx:Math.cos(a+delta)*10,vy:Math.sin(a+delta)*10,size:6,specialSplitBullet:true,splitStage:2,damage:1});
+        const a=Math.atan2(b.vy,b.vx);for(const delta of [-.28,.28])enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:b.x,y:b.y,vx:Math.cos(a+delta)*10,vy:Math.sin(a+delta)*10,size:6,specialSplitBullet:true,splitStage:2,damage:1});
       }
       b.dead=true;
     }
