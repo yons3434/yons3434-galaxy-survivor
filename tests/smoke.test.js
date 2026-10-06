@@ -87,3 +87,33 @@ test("upgrade card titles number only stackable upgrades", () => {
   assert.doesNotMatch(js, /numberedUpgradeIds=new Set\(\[[^\]]*"fullHeal"/);
   assert.doesNotMatch(js, /numberedUpgradeIds=new Set\(\[[^\]]*"healOne"/);
 });
+
+
+test("confusion upgrade is legendary, stackable, and never applies to bosses", () => {
+  assert.match(js, /id:"confusion",rarity:"אגדי",rarityClass:"legendary"/);
+  assert.match(js, /function getConfusionChance\(\)\{return Math\.min\(1,\.05\*Math\.pow\(1\.5/);
+  assert.match(js, /function getConfusionDuration\(\)\{return 4000\*Math\.pow\(1\.33/);
+  assert.match(js, /if\(confusionLevel===1\)return \.125/);
+  assert.match(js, /return \.25\*Math\.pow\(1\.5/);
+  assert.match(js, /if\(confusionLevel<=0\|\|!enemy\|\|enemy\.health<=0\|\|enemy\.boss\)return false/);
+  assert.match(js, /confusedBullet:true/);
+  assert.match(js, /target\.health-=target\.maxHealth\*\(Number\(b\.confusedDamage\)\|\|getConfusionDamageMultiplier\(\)\)/);
+  assert.match(js, /case"confusion":confusionLevel\+\+/);
+  assert.match(js, /case"confusion":return confusionLevel/);
+});
+
+test("core game buttons remain present after gameplay changes", () => {
+  for (const id of [
+    "startButton",
+    "profileButton",
+    "homeDailyMissions",
+    "leaderboardButton",
+    "collectionButton",
+    "homeButton",
+    "achievementsButton",
+    "helpButton",
+    "restartButton",
+  ]) {
+    assert.match(index, new RegExp(`id="${id}"`));
+  }
+});
