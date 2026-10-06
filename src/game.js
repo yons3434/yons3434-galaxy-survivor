@@ -723,8 +723,8 @@ function spawnBoss(type="normal"){
   showMessage(isBigSplit?"💥 בוס מתפצל הגיע!":isSpecial?"⚠️ בוס מיוחד הגיע!":"👹 בוס הגיע!");
 }
 function findNearestTarget(x,y){let nearest=null,best=Infinity;[...asteroids,...enemies].forEach(target=>{if(target.health<=0)return;const d=Math.hypot(target.x-x,target.y-y);if(d<best){best=d;nearest=target}});return nearest}
-function applyPoison(enemy){if(poisonLevel<=0||!enemy||enemy.health<=0)return;enemy.poisonTimer=240;enemy.poisonStrength=poisonLevel;if(!(enemy.poisonTick>0))enemy.poisonTick=60}
-function updatePoison(){if(poisonLevel<=0)return;enemies.forEach(enemy=>{if(enemy.health<=0||!(enemy.poisonTimer>0))return;enemy.poisonTimer--;enemy.poisonTick=(enemy.poisonTick||60)-1;if(enemy.poisonTick<=0){enemy.poisonTick=60;enemy.health-=enemy.maxHealth*.05*enemy.poisonStrength;if(enemy.health<=0)destroyEnemy(enemy)}})}
+function applyPoison(enemy){if(poisonLevel<=0||!enemy||enemy.health<=0)return;const now=performance.now();enemy.poisonUntil=now+4000;enemy.poisonStrength=poisonLevel;enemy.poisonNextTickAt=now+1000}
+function updatePoison(){if(poisonLevel<=0)return;const now=performance.now();enemies.forEach(enemy=>{if(enemy.health<=0||!(enemy.poisonUntil>now))return;if(!(enemy.poisonNextTickAt>0))enemy.poisonNextTickAt=now+1000;if(now>=enemy.poisonNextTickAt){enemy.poisonNextTickAt+=1000;enemy.health-=enemy.maxHealth*.05*enemy.poisonStrength;if(enemy.health<=0)destroyEnemy(enemy)}})}
 function addXP(amount){amount*=difficultySettings[difficulty].xp;amount*=1+xpBoostLevel*.25;xp+=amount;while(xp>=xpNeeded){xp-=xpNeeded;level++;const ach=getAchievementStats();ach.levels++;saveAchievementStats(ach);checkAchievements();xpNeeded=Math.floor(xpNeeded*1.25);if(levelHealLevel>0)player.lives=Math.min(player.maxLives,player.lives+1);addPlayerXP(10,false,"עליית רמה");if(rpgLevel>0)ammo.rpg+=5;if(shotgunLevel>0)ammo.shotgun+=15;openLevelUp()}updateHUD()}
 const numberedUpgradeIds=new Set(["damage","fireRate","maxLives","speed","extraFire","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","extraRow","lowHealthRage","poison"]);
 function getUpgradeLevel(id){
@@ -1294,7 +1294,7 @@ function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.save();ctx.tra
     if(enemy.specialType==="mirror")fill=enemy.mirrorClone?"rgba(210,190,255,.8)":"#c9a3ff";
     if(enemy.specialType==="ice")fill="#75e6ff";if(enemy.specialType==="gate")fill="#b45cff";if(enemy.specialType==="chaser")fill="#ff5733";if(enemy.specialType==="teleport")fill="#d07aff";if(enemy.specialType==="inversion")fill="#4fe0dc";if(enemy.specialType==="split"&&enemy.splitStage===1)fill="#22d65d";if(enemy.specialType==="split"&&enemy.splitStage===2)fill="#7cff9c";
     if(enemy.mirrorClone)ctx.globalAlpha=.8;
-    ctx.fillStyle=fill;ctx.fillRect(enemy.x-size,enemy.y-size,size*2,size*2);if(enemy.poisonTimer>0){ctx.save();ctx.strokeStyle="#7cff00";ctx.shadowColor="#7cff00";ctx.shadowBlur=16;ctx.lineWidth=3;ctx.strokeRect(enemy.x-size-3,enemy.y-size-3,size*2+6,size*2+6);ctx.restore()}
+    ctx.fillStyle=fill;ctx.fillRect(enemy.x-size,enemy.y-size,size*2,size*2);if(enemy.poisonUntil>performance.now()){ctx.save();ctx.strokeStyle="#7cff00";ctx.shadowColor="#7cff00";ctx.shadowBlur=16;ctx.lineWidth=3;ctx.strokeRect(enemy.x-size-3,enemy.y-size-3,size*2+6,size*2+6);ctx.restore()}
     ctx.globalAlpha=1;
     drawHealthBar(enemy.x,enemy.y-size-10,enemy.boss?120:50,7,enemy.health,enemy.maxHealth);
     if(enemy.boss){ctx.fillStyle="#fff";ctx.font="20px Arial";ctx.textAlign="center";ctx.fillText("BOSS",enemy.x,enemy.y+7)}
