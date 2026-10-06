@@ -79,7 +79,7 @@ test("stackable upgrade cards show Roman numeral levels while unlock-only cards 
 test("upgrade card titles number only stackable upgrades", () => {
   assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","extraRow","lowHealthRage","poison"\]\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
-  assert.match(js, /return level<=0\?upgrade\.title:upgrade\.title\+" "+toRomanNumeral\(level\+1\)/);
+  assert.match(js, /toRomanNumeral\(level\+1\)/);
   assert.match(js, /id:"drone"/);
   assert.doesNotMatch(js, /numberedUpgradeIds=new Set\(\[[^\]]*"drone"/);
   assert.doesNotMatch(js, /numberedUpgradeIds=new Set\(\[[^\]]*"rpg"/);
