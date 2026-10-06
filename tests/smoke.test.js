@@ -57,3 +57,11 @@ test("game assets are non-empty", () => {
   assert.ok(css.length > 1000);
   assert.ok(index.length > 1000);
 });
+
+test("poison upgrade keeps its requested scaling", () => {
+  assert.match(js, /id:"poison",rarity:"אדיר",rarityClass:"epic"/);
+  assert.match(js, /enemy\.poisonTimeLeft=4/);
+  assert.match(js, /enemy\.poisonTickTimer=1/);
+  assert.match(js, /enemy\.maxHealth\*\.05\*enemy\.poisonStrength/);
+  assert.match(js, /case"poison":poisonLevel\+\+/);
+});
