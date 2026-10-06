@@ -65,3 +65,12 @@ test("poison upgrade keeps its requested scaling", () => {
   assert.match(js, /enemy\.maxHealth\*\.05\*enemy\.poisonStrength/);
   assert.match(js, /case"poison":poisonLevel\+\+/);
 });
+
+test("stackable upgrade cards show Roman numeral levels while unlock-only cards do not", () => {
+  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage"/);
+  assert.match(js, /function getUpgradeLevel\(id\)/);
+  assert.match(js, /case"poison":return poisonLevel/);
+  assert.match(js, /return upgrade\.title\+" "\+toRomanNumeral\(getUpgradeLevel\(upgrade\.id\)\+1\)/);
+  assert.match(js, /function toRomanNumeral\(value\)/);
+  assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
+});
