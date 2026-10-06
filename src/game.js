@@ -738,6 +738,7 @@ function damagePlayer(){
     return false;
   }
   player.lives--;
+  screenShake(4,120);
   resetTemporarySpeedCombo();
   invincible=true;
   invincibleTimer=300;
