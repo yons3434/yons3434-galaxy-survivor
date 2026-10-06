@@ -60,7 +60,8 @@ test("game assets are non-empty", () => {
 
 test("poison upgrade keeps its requested scaling", () => {
   assert.match(js, /id:"poison",rarity:"אדיר",rarityClass:"epic"/);
-  assert.match(js, /enemy\\.poisonUntil=now\\+4000/);\n  assert.match(js, /enemy\\.poisonNextTickAt=now\\+1000/);
+  assert.match(js, /enemy\.poisonUntil=now\+4000/);
+  assert.match(js, /enemy\.poisonNextTickAt=now\+1000/);
   assert.match(js, /enemy\.maxHealth\*\.05\*enemy\.poisonStrength/);
   assert.match(js, /case"poison":poisonLevel\+\+/);
 });
@@ -69,7 +70,7 @@ test("stackable upgrade cards show Roman numeral levels while unlock-only cards 
   assert.match(js, /const numberedUpgradeIds=new Set\(\["damage"/);
   assert.match(js, /function getUpgradeLevel\(id\)/);
   assert.match(js, /case"poison":return poisonLevel/);
-  assert.match(js, /return upgrade\.title\+" "\+toRomanNumeral\(getUpgradeLevel\(upgrade\.id\)\+1\)/);
+  assert.match(js, /return level<=0\?upgrade\.title:upgrade\.title\+" "\+toRomanNumeral\(level\+1\)/);
   assert.match(js, /function toRomanNumeral\(value\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
 });
