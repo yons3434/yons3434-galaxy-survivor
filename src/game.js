@@ -14,7 +14,8 @@ const difficultySettings={easy:{enemyHP:.5,xp:1.5,extraLives:2,enemyTriple:false
 let level=1,xp=0,xpNeeded=100,lastBossDistance=0,bossSpeed=2,bossFightActive=false,superBossCount=0,invincible=false,invincibleTimer=0,dodgeGhostTimer=0,messageTimer=null;
 let freezeTimer=0,inversionTimer=0,specialSpawnCooldown=0;
 let screenShakePower=0,screenShakeUntil=0;
-function screenShake(power,duration){screenShakePower=Math.max(screenShakePower,power);screenShakeUntil=Math.max(screenShakeUntil,performance.now()+duration)}
+let hitEffectsEnabled=localStorage.getItem("galaxyDefenderHitEffects")!=="off";
+function screenShake(power,duration){if(!hitEffectsEnabled)return;screenShakePower=Math.max(screenShakePower,power);screenShakeUntil=Math.max(screenShakeUntil,performance.now()+duration)}
 let speedComboDistance=0,speedComboPermanentDistance=0,speedComboPermanentBonus=0,speedComboTemporaryBonus=0,speedComboPermanentLastAwardedStep=0,speedComboLastAwardedStep=0;
 // Permanent combo persists through hits; temporary combo is the only part that can reset during a run.
 const keys=Object.create(null),mouse={x:window.innerWidth/2,y:window.innerHeight/2};
@@ -1288,7 +1289,7 @@ function updateMobileControls(){
   updateMobileControlMode();
   updateMobileWeaponButtons();
 }
-function applyUiSettings(){const map={uiLuck:"rarityLuck",uiDodge:"dodgeStat",uiWeapon:"weaponName",uiAmmo:"ammo",uiDistance:"distance",uiSpeedCombo:"speedComboHud",uiLives:"lives",uiDrones:"droneCount",uiSwords:"swordCount"};Object.entries(map).forEach(([a,b])=>setHud(b,document.getElementById(a).checked));document.getElementById("dodgeValue").textContent=Math.round(dodgeChance*100)+"%";const row=document.getElementById("mobileToggleRow"),modeRow=document.getElementById("controlModeRow");row.style.display=isPhoneDevice()?"flex":"none";modeRow.style.display=isPhoneDevice()?"flex":"none";document.getElementById("mobileControlsToggle").disabled=!isPhoneDevice();controlModeSelect.disabled=!isPhoneDevice();controlModeSelect.value=mobileControlMode;updateMobileControls()}
+function applyUiSettings(){const hitEffectsToggle=document.getElementById("uiHitEffects");if(hitEffectsToggle){hitEffectsToggle.checked=hitEffectsEnabled;hitEffectsToggle.onchange=()=>{hitEffectsEnabled=hitEffectsToggle.checked;localStorage.setItem("galaxyDefenderHitEffects",hitEffectsEnabled?"on":"off");if(!hitEffectsEnabled){screenShakePower=0;screenShakeUntil=0;canvas.style.transform=""}}}const map={uiLuck:"rarityLuck",uiDodge:"dodgeStat",uiWeapon:"weaponName",uiAmmo:"ammo",uiDistance:"distance",uiSpeedCombo:"speedComboHud",uiLives:"lives",uiDrones:"droneCount",uiSwords:"swordCount"};Object.entries(map).forEach(([a,b])=>setHud(b,document.getElementById(a).checked));document.getElementById("dodgeValue").textContent=Math.round(dodgeChance*100)+"%";const row=document.getElementById("mobileToggleRow"),modeRow=document.getElementById("controlModeRow");row.style.display=isPhoneDevice()?"flex":"none";modeRow.style.display=isPhoneDevice()?"flex":"none";document.getElementById("mobileControlsToggle").disabled=!isPhoneDevice();controlModeSelect.disabled=!isPhoneDevice();controlModeSelect.value=mobileControlMode;updateMobileControls()}
 let settingsOpenedFromGame=false;
 function openGameSettings(){settingsOpenedFromGame=gameStarted;gameRunning=false;gameSettingsOverlay.style.display="flex";applyUiSettings()}
 function closeGameSettings(){gameSettingsOverlay.style.display="none";if(settingsOpenedFromGame&&gameStarted&&!paused&&!levelUpOpen&&gameOverScreen.style.display!=="flex")gameRunning=true;settingsOpenedFromGame=false;updateMobileControls()}
