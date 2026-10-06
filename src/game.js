@@ -940,7 +940,7 @@ function update(){if(!gameRunning)return;gameTime+=1/60;let speed=effectiveMoveS
     if(enemy.boss){
       if(enemy.specialBoss)return;      enemy.x+=enemy.direction*bossSpeed*freezeFactor;if(enemy.x<100||enemy.x>canvas.width-100)enemy.direction*=-1;
       enemy.timer-=freezeFactor;
-      if(enemy.timer<=0)){
+      if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
         const shots=difficultySettings[difficulty].enemyTriple?3:1;
         for(let ss=0;ss<shots;ss++){
