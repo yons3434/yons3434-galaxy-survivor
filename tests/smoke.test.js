@@ -88,7 +88,7 @@ test("pause card list merges repeated picks and extra-fire starts at II", () => 
 
 
 test("upgrade card titles number only stackable upgrades", () => {
-  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","extraRow","lowHealthRage","poison","freeze","stun","confusion"\]\)/);
+  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","lowHealthRage","poison","freeze","stun","confusion"\]\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
   assert.match(js, /toRomanNumeral\(level\+1\)/);
   assert.match(js, /id:"drone"/);
@@ -101,6 +101,7 @@ test("upgrade card titles number only stackable upgrades", () => {
 
 
 test("split bullet upgrade is legendary, stackable, transparent, and limited to three generations", () => {
+  assert.doesNotMatch(js, /id:"extraRow"/);
   assert.match(js, /id:"splitBullet",rarity:"אגדי",rarityClass:"legendary",icon:"🔱",title:"קליע מפוצל"/);
   assert.match(js, /let damageLevel=0,speedLevel=0,fireRateLevel=0,maxLivesLevel=0,extraFireLevel=0,splitBulletLevel=0/);
   assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet"/);
