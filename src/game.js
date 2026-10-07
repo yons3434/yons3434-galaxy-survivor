@@ -614,13 +614,13 @@ function shootMinigun(){const count=1+extraFireLevel;for(let i=0;i<count;i++){co
 function shootRPG(){createBullet(-Math.PI/2,4,effectiveDamage()*5,13+bulletSizeLevel,{rpg:true,piercing:false})}
 function shootShotgun(){const count=6+extraFireLevel;for(let i=0;i<count;i++){const angle=-Math.PI/2+(i-(count-1)/2)*.55/Math.max(1,count-1);createBullet(angle,9,effectiveDamage()*.5,5+bulletSizeLevel)}}
 function shootBlackHole(){createBullet(-Math.PI/2,5,effectiveDamage()*7,15+bulletSizeLevel,{blackHole:true,piercing:false,homing:false})}
-function triggerChainLightning(source){if(chainLightningLevel<=0)return;const maxJumps=2+chainLightningLevel,range=120+chainLightningLevel*10,targets=[...asteroids,...enemies].filter(t=>t.health>0);let current=source,used=new Set([source]);for(let i=0;i<maxJumps;i++){let next=null,best=Infinity;for(const t of targets){if(used.has(t))continue;const d=Math.hypot(t.x-current.x,t.y-current.y);if(d<range&&d<best){best=d;next=t}}if(!next)break;next.health-=effectiveDamage()*.65;if(enemies.includes(next)){applyPoison(next);applyStun(next)}used.add(next);explosion(next.x,next.y);current=next;if(next.health<=0){if(enemies.includes(next))destroyEnemy(next);else destroyAsteroid(next)}}}
+function triggerChainLightning(source){if(chainLightningLevel<=0)return;const maxJumps=2+chainLightningLevel,range=120+chainLightningLevel*10,targets=[...asteroids,...enemies].filter(t=>t.health>0);let current=source,used=new Set([source]);for(let i=0;i<maxJumps;i++){let next=null,best=Infinity;for(const t of targets){if(used.has(t))continue;const d=Math.hypot(t.x-current.x,t.y-current.y);if(d<range&&d<best){best=d;next=t}}if(!next)break;next.health-=effectiveDamage()*.65;applyPoison(next);applyFreeze(next);applyStun(next);used.add(next);explosion(next.x,next.y);current=next;if(next.health<=0){if(enemies.includes(next))destroyEnemy(next);else destroyAsteroid(next)}}}
 
 
 function spawnBlackHole(x,y){const hole={x,y,radius:24,life:150,maxLife:150,blackHole:true};window.activeBlackHoles=window.activeBlackHoles||[];window.activeBlackHoles.push(hole);}
-function updateBlackHoles(){const holes=window.activeBlackHoles||[];for(const h of holes){h.life--;h.radius=Math.min(90,h.radius+1.2);[...asteroids,...enemies].forEach(t=>{if(t.health<=0)return;const dx=h.x-t.x,dy=h.y-t.y,d=Math.hypot(dx,dy)||1;const pull=Math.max(0,1-d/h.radius)*2.8;t.x+=dx/d*pull;t.y+=dy/d*pull;if(d<34){t.health-=effectiveDamage()*.18;if(enemies.includes(t)){applyPoison(t);applyStun(t)}if(t.health<=0){if(enemies.includes(t))destroyEnemy(t);else destroyAsteroid(t)}}});if(h.life<=0){explosion(h.x,h.y);[...asteroids,...enemies].forEach(t=>{if(t.health<=0)return;const d=Math.hypot(t.x-h.x,t.y-h.y);if(d<110){t.health-=effectiveDamage()*3*(1-d/110);if(enemies.includes(t)){applyPoison(t);applyStun(t)}if(t.health<=0){if(enemies.includes(t))destroyEnemy(t);else destroyAsteroid(t)}}})}}window.activeBlackHoles=holes.filter(h=>h.life>0)}
+function updateBlackHoles(){const holes=window.activeBlackHoles||[];for(const h of holes){h.life--;h.radius=Math.min(90,h.radius+1.2);[...asteroids,...enemies].forEach(t=>{if(t.health<=0)return;const dx=h.x-t.x,dy=h.y-t.y,d=Math.hypot(dx,dy)||1;const pull=Math.max(0,1-d/h.radius)*2.8;t.x+=dx/d*pull;t.y+=dy/d*pull;if(d<34){t.health-=effectiveDamage()*.18;applyPoison(t);applyFreeze(t);applyStun(t);if(t.health<=0){if(enemies.includes(t))destroyEnemy(t);else destroyAsteroid(t)}}});if(h.life<=0){explosion(h.x,h.y);[...asteroids,...enemies].forEach(t=>{if(t.health<=0)return;const d=Math.hypot(t.x-h.x,t.y-h.y);if(d<110){t.health-=effectiveDamage()*3*(1-d/110);applyPoison(t);applyFreeze(t);applyStun(t);if(t.health<=0){if(enemies.includes(t))destroyEnemy(t);else destroyAsteroid(t)}}})}}window.activeBlackHoles=holes.filter(h=>h.life>0)}
 function drawBlackHoles(){(window.activeBlackHoles||[]).forEach(h=>{ctx.save();ctx.translate(h.x,h.y);const pulse=1+Math.sin(h.life*.15)*.08;ctx.scale(pulse,pulse);ctx.shadowColor="#7e57c2";ctx.shadowBlur=28;ctx.fillStyle="#050008";ctx.beginPath();ctx.arc(0,0,h.radius*.55,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#b388ff";ctx.lineWidth=4;ctx.beginPath();ctx.arc(0,0,h.radius*.8,0,Math.PI*2);ctx.stroke();ctx.strokeStyle="#fff";ctx.globalAlpha=.65;ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,h.radius,0,Math.PI*2);ctx.stroke();ctx.restore()})}
-function rpgExplosion(x,y,isMini=false){const explosionRadius=isMini?120:120;explosion(x,y);screenShake(4,120);[...asteroids,...enemies].forEach(target=>{if(target.health<=0)return;const d=Math.hypot(target.x-x,target.y-y);if(d<=explosionRadius){const damage=effectiveDamage()*8*(1-d/explosionRadius*.5);target.health-=damage;if(enemies.includes(target)){applyPoison(target);applyFreeze(target);applyStun(target)}if(target.health<=0){if(target.boss||enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}});showMessage("💥 RPG התפוצץ!") }
+function rpgExplosion(x,y,isMini=false){const explosionRadius=isMini?120:120;explosion(x,y);screenShake(4,120);[...asteroids,...enemies].forEach(target=>{if(target.health<=0)return;const d=Math.hypot(target.x-x,target.y-y);if(d<=explosionRadius){const damage=effectiveDamage()*8*(1-d/explosionRadius*.5);target.health-=damage;applyPoison(target);applyFreeze(target);applyStun(target);if(target.health<=0){if(enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}});showMessage("💥 RPG התפוצץ!") }
 function spawnAsteroid(){
   const size=Math.random()*18+12;
   const health=(10+size*.55+distance*.004)*difficultySettings[difficulty].enemyHP;
@@ -724,7 +724,7 @@ function spawnBoss(type="normal"){
 }
 function findNearestTarget(x,y){let nearest=null,best=Infinity;[...asteroids,...enemies].forEach(target=>{if(target.health<=0)return;const d=Math.hypot(target.x-x,target.y-y);if(d<best){best=d;nearest=target}});return nearest}
 function applyPoison(enemy){if(poisonLevel<=0||!enemy||enemy.health<=0)return;const now=performance.now();enemy.poisonUntil=now+4000;enemy.poisonStrength=poisonLevel;enemy.poisonNextTickAt=now+1000}
-function updatePoison(){if(poisonLevel<=0)return;const now=performance.now();enemies.forEach(enemy=>{if(enemy.health<=0||!(enemy.poisonUntil>now))return;if(!(enemy.poisonNextTickAt>0))enemy.poisonNextTickAt=now+1000;if(now>=enemy.poisonNextTickAt){enemy.poisonNextTickAt+=1000;enemy.health-=enemy.maxHealth*.05*enemy.poisonStrength;if(enemy.health<=0)destroyEnemy(enemy)}})}
+function updatePoison(){if(poisonLevel<=0)return;const now=performance.now();const tickTarget=(target,destroyFn)=>{if(target.health<=0||!(target.poisonUntil>now))return;if(!(target.poisonNextTickAt>0))target.poisonNextTickAt=now+1000;if(now>=target.poisonNextTickAt){target.poisonNextTickAt+=1000;target.health-=target.maxHealth*.05*target.poisonStrength;if(target.health<=0)destroyFn(target)}};asteroids.forEach(a=>tickTarget(a,destroyAsteroid));enemies.forEach(enemy=>tickTarget(enemy,destroyEnemy))}
 function getFreezeChance(){return Math.min(1,.1*Math.pow(1.5,Math.max(0,freezeLevel-1)))}
 function getFreezeStrength(){return Math.min(.9,.25*Math.pow(1.5,Math.max(0,freezeLevel-1)))}
 function getFreezeDuration(){return 4000*Math.pow(1.33,Math.max(0,freezeLevel-1))}
@@ -781,9 +781,9 @@ function getUpgradeCardTitle(upgrade){
 }
 function openLevelUp(){levelUpOpen=true;gameRunning=false;const availableFiltered=upgrades.filter(u=>!(u.id==="extraDrone"&&maxDrones>=5));const weighted=[];availableFiltered.forEach(upgrade=>{let weight=upgrade.rarityClass==="common"?60:upgrade.rarityClass==="rare"?25:upgrade.rarityClass==="epic"?12:upgrade.rarityClass==="legendary"?3:1;weight+=luckLevel*2;for(let i=0;i<weight;i++)weighted.push(upgrade)});const choices=[];while(choices.length<3&&weighted.length){const index=Math.floor(Math.random()*weighted.length),choice=weighted[index];if(!choices.some(x=>x.id===choice.id))choices.push(choice);weighted.splice(index,1)}upgradeContainer.innerHTML="";choices.forEach(upgrade=>{const card=document.createElement("div");card.className="upgradeCard "+upgrade.rarityClass;card.innerHTML=`<div class="rarity">${upgrade.rarity}</div><div class="upgradeIcon">${upgrade.icon}</div><div class="upgradeTitle">${getUpgradeCardTitle(upgrade)}</div><div class="upgradeDescription">${upgrade.description}</div>`;card.addEventListener("click",function(){if(!levelUpOpen)return;applyUpgrade(upgrade);selectedUpgrades.push(upgrade);const ach=getAchievementStats();const key=upgrade.rarityClass==="common"?"commonCards":upgrade.rarityClass==="rare"?"rareCards":upgrade.rarityClass==="epic"?"epicCards":upgrade.rarityClass==="legendary"?"legendaryCards":"amazingCards";ach[key]=(Number(ach[key])||0)+1;saveAchievementStats(ach);checkAchievements();levelUpScreen.style.display="none";levelUpOpen=false;gameRunning=true;updateHUD()});upgradeContainer.appendChild(card)});levelUpScreen.style.display="flex"}
 function applyUpgrade(u){switch(u.id){case"damage":damageLevel++;player.damage+=4;swordDamage+=2;break;case"fireRate":fireRateLevel++;player.fireRate=Math.max(3,player.fireRate-2);break;case"maxLives":maxLivesLevel++;player.maxLives++;player.lives++;break;case"healOne":if(!healOneUsed){healOneUsed=true;player.lives=Math.min(player.maxLives,player.lives+1)}break;case"speed":speedLevel++;player.speed+=.7;break;case"extraFire":extraFireLevel++;break;case"xpBoost":xpBoostLevel++;break;case"luck":luckLevel++;break;case"dodge":dodgeChance=Math.min(.5,dodgeChance+.08);break;case"fullHeal":if(!fullHealUsed){fullHealUsed=true;player.lives=player.maxLives}break;case"extraDrone":if(maxDrones<5){maxDrones++;extraDroneLevel++;showMessage("🛸 מקסימום מיני חלליות: "+maxDrones)}break;case"drone":if(drones.length<maxDrones)drones.push({type:"normal",angle:Math.random()*Math.PI*2,radius:70,timer:20,rotationSpeed:.025});break;case"rpg":rpgLevel++;ammo.rpg+=10;break;case"piercing":piercingLevel++;break;case"sword":swordCount++;break;case"revive":reviveAvailable=true;break;case"levelHeal":levelHealLevel++;break;case"shotgun":shotgunLevel++;ammo.shotgun+=30;break;case"droneUpgrade":if(drones.length===0)drones.push({type:"upgraded",angle:Math.random()*Math.PI*2,radius:85,timer:10,rotationSpeed:.05});else drones.forEach(d=>{if(d.type==="normal"){d.type="upgraded";d.radius=85;d.rotationSpeed=.05}});droneTier=Math.max(droneTier,1);break;case"homing":homingLevel++;break;case"chainLightning":chainLightningLevel++;break;case"rpgMiniShip":amazingDroneLevel++;if(!drones.some(d=>d.type==="rpgMini")){drones.push({type:"rpgMini",angle:Math.random()*Math.PI*2,radius:115,timer:12,rotationSpeed:.035})}break;case"blackHole":blackHoleMaxAmmo+=4;blackHoleAmmo+=4;ammo.blackHole=blackHoleAmmo;showMessage("🌌 +4 יריות חור שחור!");break;case"extraRow":extraRowLevel++;break;case"laser":laserMode=true;break;case"flamethrower":flamethrowerMode=true;flamethrowerLevel++;break;case"lowHealthRage":lowHealthBoostLevel++;break;case"poison":poisonLevel++;showMessage("☠️ רעל ×"+poisonLevel);break;case"freeze":freezeLevel++;showMessage("🧊 הקפאה ×"+freezeLevel);break;case"stun":stunLevel++;showMessage("⚡ שיתוק ×"+stunLevel);break;case"confusion":confusionLevel++;showMessage("🌀 בלבול ×"+confusionLevel);break;case"droneMega":if(drones.length===0)drones.push({type:"large",angle:Math.random()*Math.PI*2,radius:100,timer:10,rotationSpeed:.075});else drones.forEach(d=>{d.type="large";d.radius=100;d.rotationSpeed=.075});droneTier=2;break}updateHUD()}
-function updateLaser(){if(!laserOn||!laserMode||!gameRunning)return;const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1,dirX=dx/len,dirY=dy/len,maxRange=1200;[...enemies,...asteroids].forEach(target=>{if(target.health<=0)return;const ex=target.x-player.x,ey=target.y-player.y,forward=ex*dirX+ey*dirY,side=Math.abs(ex*dirY-ey*dirX);if(forward>0&&forward<maxRange&&side<35){target.health-=effectiveDamage()*.25;if(enemies.includes(target)){applyPoison(target);applyStun(target)}if(target.health<=0){if(enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}})}
-function updateFlamethrower(){if(!flamethrowerOn||!flamethrowerMode||!gameRunning)return;const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1,dirX=dx/len,dirY=dy/len,range=220;[...enemies,...asteroids].forEach(target=>{if(target.health<=0)return;const ex=target.x-player.x,ey=target.y-player.y,forward=ex*dirX+ey*dirY,side=Math.abs(ex*dirY-ey*dirX);if(forward>0&&forward<range&&side<55){target.health-=effectiveDamage()*.18;if(enemies.includes(target)){applyPoison(target);applyStun(target)}if(target.health<=0){if(enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}})}
-function updateSwords(){if(swordCount<=0)return;swordAngle+=.015+fireRateLevel*.004;for(let i=0;i<swordCount;i++){const angle=swordAngle+i*Math.PI*2/swordCount,sx=player.x+Math.cos(angle)*swordRange,sy=player.y+Math.sin(angle)*swordRange;enemies.forEach(enemy=>{if(enemy.health<=0)return;if(Math.hypot(sx-enemy.x,sy-enemy.y)<35){enemy.health-=swordDamage*(lowHealthActive()?1.25:1);applyPoison(enemy);applyFreeze(enemy);if(enemy.health<=0)destroyEnemy(enemy)}});asteroids.forEach(a=>{if(a.health<=0)return;if(Math.hypot(sx-a.x,sy-a.y)<35){a.health-=swordDamage*(lowHealthActive()?1.25:1);if(a.health<=0)destroyAsteroid(a)}});enemyBullets.forEach(b=>{if(Math.hypot(sx-b.x,sy-b.y)<30)b.dead=true})}}
+function updateLaser(){if(!laserOn||!laserMode||!gameRunning)return;const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1,dirX=dx/len,dirY=dy/len,maxRange=1200;[...enemies,...asteroids].forEach(target=>{if(target.health<=0)return;const ex=target.x-player.x,ey=target.y-player.y,forward=ex*dirX+ey*dirY,side=Math.abs(ex*dirY-ey*dirX);if(forward>0&&forward<maxRange&&side<35){target.health-=effectiveDamage()*.25;applyPoison(target);applyFreeze(target);applyStun(target);if(target.health<=0){if(enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}})}
+function updateFlamethrower(){if(!flamethrowerOn||!flamethrowerMode||!gameRunning)return;const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1,dirX=dx/len,dirY=dy/len,range=220;[...enemies,...asteroids].forEach(target=>{if(target.health<=0)return;const ex=target.x-player.x,ey=target.y-player.y,forward=ex*dirX+ey*dirY,side=Math.abs(ex*dirY-ey*dirX);if(forward>0&&forward<range&&side<55){target.health-=effectiveDamage()*.18;applyPoison(target);applyFreeze(target);applyStun(target);if(target.health<=0){if(enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}})}
+function updateSwords(){if(swordCount<=0)return;swordAngle+=.015+fireRateLevel*.004;for(let i=0;i<swordCount;i++){const angle=swordAngle+i*Math.PI*2/swordCount,sx=player.x+Math.cos(angle)*swordRange,sy=player.y+Math.sin(angle)*swordRange;enemies.forEach(enemy=>{if(enemy.health<=0)return;if(Math.hypot(sx-enemy.x,sy-enemy.y)<35){enemy.health-=swordDamage*(lowHealthActive()?1.25:1);applyPoison(enemy);applyFreeze(enemy);if(enemy.health<=0)destroyEnemy(enemy)}});asteroids.forEach(a=>{if(a.health<=0)return;if(Math.hypot(sx-a.x,sy-a.y)<35){a.health-=swordDamage*(lowHealthActive()?1.25:1);applyPoison(a);applyFreeze(a);if(a.health<=0)destroyAsteroid(a)}});enemyBullets.forEach(b=>{if(Math.hypot(sx-b.x,sy-b.y)<30)b.dead=true})}}
 function updateDrones(){drones.forEach(drone=>{drone.angle+=drone.rotationSpeed;drone.x=player.x+Math.cos(drone.angle)*drone.radius;drone.y=player.y+Math.sin(drone.angle)*drone.radius;drone.timer--;if(drone.timer>0)return;const target=findNearestTarget(drone.x,drone.y);if(target){const dx=target.x-drone.x,dy=target.y-drone.y,baseAngle=Math.atan2(dy,dx);let count=1;if(drone.type==="upgraded")count=3;if(drone.type==="large")count=7;if(drone.type==="rpgMini")count=1;for(let i=0;i<count;i++){const spread=count===1?0:(i-(count-1)/2)*.13;createDroneBullet(drone,baseAngle+spread,drone.type==="rpgMini"?12:(drone.type==="large"?7+droneDamageLevel*4:5+droneDamageLevel*3),drone.type==="large"?6:drone.type==="rpgMini"?9:5)}}drone.timer=drone.type==="normal"?40:drone.type==="upgraded"?20:13})}
 function createDroneBullet(drone,angle,damage,size){bullets.push({x:drone.x,y:drone.y,vx:Math.cos(angle)*7,vy:Math.sin(angle)*7,damage,size,droneBullet:true,rpg:drone.type==="rpgMini",rpgMini:drone.type==="rpgMini",homing:homingLevel>0,piercing:piercingLevel>0})}
 function damagePlayer(){
@@ -946,7 +946,9 @@ function update(){if(!gameRunning)return;gameTime+=1/60;let speed=effectiveMoveS
   // Regular entities move here; special movement is handled once in processSpecialEntities().
   asteroids.forEach(a=>{
     if(a.health<=0)return;
-    if(a.specialType==="normal")a.y+=a.speed*worldSpeedMultiplier();
+    if(updateStunnedEnemy(a))return;
+    const freezeFactor=getEnemyFreezeFactor(a);
+    if(a.specialType==="normal")a.y+=a.speed*worldSpeedMultiplier()*freezeFactor;
   });
   enemies.forEach(enemy=>{
     if(enemy.health<=0)return;
@@ -993,7 +995,7 @@ processSpecialEntities();
       if(Math.hypot(b.x-a.x,b.y-a.y)<a.size+b.size){
         if(b.blackHole){b.dead=true;spawnBlackHole(b.x,b.y);return}
         if(b.rpg){b.dead=true;rpgExplosion(b.x,b.y,b.rpgMini===true);return}
-        a.health-=b.damage;
+        a.health-=b.damage;applyPoison(a);applyFreeze(a);applyStun(a);
         if(chainLightningLevel>0)triggerChainLightning(a);
         if(!b.piercing)b.dead=true;
         if(a.health<=0)destroyAsteroid(a);
@@ -1262,16 +1264,18 @@ function processSpecialEntities(){
   // Special meteor movement/effects.
   asteroids.forEach(a=>{
     if(a.health<=0)return;
+    if(updateStunnedEnemy(a))return;
+    const freezeFactor=getEnemyFreezeFactor(a);
     if(a.specialType==="mirror"){
-      a.y+=a.speed*worldSpeedMultiplier();
+      a.y+=a.speed*worldSpeedMultiplier()*freezeFactor;
     }else if(a.specialType==="ice"){
-      a.y+=a.speed;
+      a.y+=a.speed*freezeFactor;
     }else if(a.specialType==="gate"){
-      a.y+=a.speed*worldSpeedMultiplier();
+      a.y+=a.speed*worldSpeedMultiplier()*freezeFactor;
       a.gateTimer=(a.gateTimer??180)-freezeFactor;
       if(a.gateTimer<=0){a.gateTimer=180;a.x=70+Math.random()*(canvas.width-140);a.y=120+Math.random()*Math.max(80,canvas.height-280);}
     }else if(a.specialType==="chaser"){
-      const dx=player.x-a.x,dy=player.y-a.y,len=Math.hypot(dx,dy)||1;a.x+=dx/len*a.speed*worldSpeedMultiplier();a.y+=dy/len*a.speed*worldSpeedMultiplier();
+      const dx=player.x-a.x,dy=player.y-a.y,len=Math.hypot(dx,dy)||1;a.x+=dx/len*a.speed*worldSpeedMultiplier()*freezeFactor;a.y+=dy/len*a.speed*worldSpeedMultiplier()*freezeFactor;
     }else if(a.specialType==="teleport"){
       if(!a.teleportHidden){
         a.teleportTimer=(a.teleportTimer??240)-freezeFactor;
@@ -1281,7 +1285,7 @@ function processSpecialEntities(){
           a.teleportHidden=true;
         }
       }else if(a.teleportMarker){
-        a.teleportMarker.life--;
+        a.teleportMarker.life-=freezeFactor;
         if(a.teleportMarker.life<=0){
           a.x=a.teleportMarker.x;a.y=a.teleportMarker.y;a.teleportMarker=null;a.teleportHidden=false;a.shatterTimer=15;
         }
@@ -1289,10 +1293,10 @@ function processSpecialEntities(){
       if(a.shatterTimer>0){a.shatterTimer--;if(a.shatterTimer===0){explosion(a.x,a.y);if(Math.hypot(a.x-player.x,a.y-player.y)<110)damagePlayer();}}
     }else if(a.specialType==="inversion"){
       if(!a.inversionReturning){
-        a.y+=a.speed*worldSpeedMultiplier();
+        a.y+=a.speed*worldSpeedMultiplier()*freezeFactor;
         if(a.y>=canvas.height-a.size){a.y=canvas.height-a.size;a.inversionReturning=true;}
       }else{
-        a.y-=a.speed*worldSpeedMultiplier();
+        a.y-=a.speed*worldSpeedMultiplier()*freezeFactor;
         if(a.y<-a.size)a.health=0;
       }
     }
@@ -1326,7 +1330,7 @@ function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.save();ctx.tra
   if(difficulty==="impossible"){ctx.shadowColor="#00ffff";ctx.shadowBlur=25}else ctx.shadowBlur=0;
   if(a.clone)ctx.globalAlpha=.8;
   ctx.fillStyle=a.specialType==="ice"?"#8eeeff":a.specialType==="gate"?"#b060ff":a.specialType==="chaser"?"#ff5533":a.specialType==="inversion"?"#42d8dc":"#777";
-  ctx.beginPath();ctx.arc(a.x,a.y,a.size,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#aaa";ctx.stroke();drawHealthBar(a.x,a.y-a.size-10,Math.max(35,a.size*2.2),6,a.health,a.maxHealth);
+  ctx.beginPath();ctx.arc(a.x,a.y,a.size,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#aaa";ctx.stroke();if(a.poisonUntil>performance.now()){ctx.save();ctx.strokeStyle="#7cff00";ctx.shadowColor="#7cff00";ctx.shadowBlur=16;ctx.lineWidth=3;ctx.beginPath();ctx.arc(a.x,a.y,a.size+4,0,Math.PI*2);ctx.stroke();ctx.restore()}if(a.freezeUntil>performance.now()){const freezeGlow=Number(a.freezeStrength)||0;ctx.save();ctx.globalAlpha=.55+.45*freezeGlow;ctx.strokeStyle="#9ff7ff";ctx.shadowColor="#8eeeff";ctx.shadowBlur=12+38*freezeGlow;ctx.lineWidth=3+4*freezeGlow;ctx.beginPath();ctx.arc(a.x,a.y,a.size+6+freezeGlow*4,0,Math.PI*2);ctx.stroke();ctx.restore()}drawHealthBar(a.x,a.y-a.size-10,Math.max(35,a.size*2.2),6,a.health,a.maxHealth);
 });
   enemies.forEach(enemy=>{
     if(enemy.teleportHidden&&enemy.teleportMarker){ctx.save();ctx.globalAlpha=.8;ctx.shadowColor="#bf62ff";ctx.shadowBlur=25;ctx.strokeStyle="#d070ff";ctx.lineWidth=5;ctx.beginPath();ctx.arc(enemy.teleportMarker.x,enemy.teleportMarker.y,30,0,Math.PI*2);ctx.stroke();ctx.restore();return}
