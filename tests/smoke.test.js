@@ -114,7 +114,7 @@ test("split bullet upgrade is legendary, stackable, transparent, and limited to 
   assert.match(js, /function getSplitBulletAlpha\(generation\)\{return generation<=0\?1:generation===1\?\.75:generation===2\?\.5:\.25\}/);
   assert.match(js, /const chance=\(generation===1\?\.05:\.01\)\*Math\.min\(10,splitBulletLevel\)/);
   assert.match(js, /if\(generation>=3\)return false/);
-  assert.match(js, /splitGeneration:Math\.min\(3,\(Number\(b\.splitGeneration\)\|\|0\)\+1\)/);
+  assert.match(js, /const levelValue=Math\.max\(1,splitBulletLevel\),count=getSplitBulletCount\(\),generation=Math\.min\(3,\(Number\(b\.splitGeneration\)\|\|0\)\+1\)/);
   assert.match(js, /childDamage=b\.damage\*levelValue\/count/);
   assert.match(js, /splitMaxTravel:maxTravel/);
   assert.match(js, /if\(b\.blackHole\)\{b\.dead=true;spawnBlackHole\(b\.x,b\.y\);return\}/);
