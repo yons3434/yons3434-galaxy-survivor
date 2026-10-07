@@ -113,6 +113,25 @@ test("confusion upgrade is legendary, stackable, and never applies to bosses", (
   assert.match(js, /case"confusion":return confusionLevel/);
 });
 
+test("Escape closes game windows and returns to the home screen", () => {
+  assert.match(js, /function returnToHome\(\)\{/);
+  assert.match(js, /profileOverlay\.style\.display="none"/);
+  assert.match(js, /achievementsOverlay\.style\.display="none"/);
+  assert.match(js, /leaderboard\.style\.display="none"/);
+  assert.match(js, /collectionOverlay\.style\.display="none"/);
+  assert.match(js, /helpOverlay\.style\.display="none"/);
+  assert.match(js, /gameSettingsOverlay\.style\.display="none"/);
+  assert.match(js, /pauseMenu\.style\.display="none"/);
+  assert.match(js, /levelUpScreen\.style\.display="none"/);
+  assert.match(js, /gameOverScreen\.style\.display="none"/);
+  assert.match(js, /gameStarted=false;gameRunning=false;paused=false;levelUpOpen=false/);
+  assert.match(js, /startScreen\.style\.display="flex"/);
+  assert.match(js, /if\(e\.key==="Escape"\)\{e\.preventDefault\(\);returnToHome\(\);return\}/);
+  assert.match(js, /if\(key==="p"\)\{e\.preventDefault\(\);if\(gameStarted\)togglePause\(\);return\}/);
+  assert.match(js, /P — עצירה \/ המשך/);
+  assert.match(js, /Esc — סגירה וחזרה למסך הבית/);
+});
+
 test("core game buttons remain present after gameplay changes", () => {
   for (const id of [
     "startButton",
