@@ -136,3 +136,14 @@ test("stun upgrade is epic, stackable, stuns bosses, and does not apply from swo
   assert.doesNotMatch(js, /enemy\.health-=swordDamage\([^;]+\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\)/);
   assert.match(js, /if\(enemy\.boss\)\{\s*if\(updateStunnedEnemy\(enemy\)\)return;/);
 });
+
+
+test("poison, freeze, and stun also affect meteors while confusion remains enemy-only", () => {
+  assert.match(js, /asteroids\.forEach\(a=>tickTarget\(a,destroyAsteroid\)/);
+  assert.match(js, /a\.health-=b\.damage;applyPoison\(a\);applyFreeze\(a\);applyStun\(a\);/);
+  assert.match(js, /asteroids\.forEach\(a=>\{\n    if\(a\.health<=0\)return;\n    if\(updateStunnedEnemy\(a\)\)return;/);
+  assert.match(js, /const freezeFactor=getEnemyFreezeFactor\(a\)/);
+  assert.match(js, /applyPoison\(a\);applyFreeze\(a\);if\(a\.health<=0\)destroyAsteroid\(a\)/);
+  assert.match(js, /function applyConfusion\(enemy\).*enemy\.boss/);
+  assert.doesNotMatch(js, /applyConfusion\(a\)/);
+});
