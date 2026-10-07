@@ -124,17 +124,8 @@ test("split bullet upgrade is legendary, stackable, transparent, and limited to 
   assert.match(js, /bullets\.forEach\(b=>\{ctx\.save\(\);ctx\.globalAlpha=getSplitBulletAlpha/);
 });
 
-test("confusion upgrade is legendary, stackable, and never applies to bosses", () => {
-  assert.match(js, /id:"confusion",rarity:"אגדי",rarityClass:"legendary"/);
-  assert.match(js, /function getConfusionChance\(\)\{return Math\.min\(1,\.05\*Math\.pow\(1\.5/);
-  assert.match(js, /function getConfusionDuration\(\)\{return 4000\*Math\.pow\(1\.33/);
-  assert.match(js, /if\(confusionLevel===1\)return \.125/);
-  assert.match(js, /return \.25\*Math\.pow\(1\.5/);
-  assert.match(js, /if\(confusionLevel<=0\|\|!enemy\|\|enemy\.health<=0\|\|enemy\.boss\)return false/);
-  assert.match(js, /confusedBullet:true/);
-  assert.match(js, /target\.health-=target\.maxHealth\*\(Number\(b\.confusedDamage\)\|\|getConfusionDamageMultiplier\(\)\)/);
-  assert.match(js, /case"confusion":confusionLevel\+\+/);
-  assert.match(js, /case"confusion":return confusionLevel/);
+test("confusion upgrade card is removed", () => {
+  assert.doesNotMatch(js, /id:"confusion"/);
 });
 
 test("Escape closes game windows and returns to the home screen", () => {
