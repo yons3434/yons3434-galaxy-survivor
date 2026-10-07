@@ -117,3 +117,19 @@ test("core game buttons remain present after gameplay changes", () => {
     assert.match(index, new RegExp(`id="${id}"`));
   }
 });
+
+
+test("stun upgrade is epic, stackable, has the requested scaling, and never affects bosses", () => {
+  assert.match(js, /id:"stun",rarity:"אדיר",rarityClass:"epic"/);
+  assert.match(js, /function getStunChance\(\)\{return Math\.min\(1,\.05\*Math\.pow\(1\.5/);
+  assert.match(js, /function getStunDuration\(\)\{return 1000\*Math\.pow\(1\.5/);
+  assert.match(js, /function applyStun\(enemy\).*enemy\.boss/);
+  assert.match(js, /function updateStunnedEnemy\(enemy\)/);
+  assert.match(js, /\*\.15\)/);
+  assert.match(js, /Math\.PI\*2\/.2/);
+  assert.match(js, /case"stun":return stunLevel/);
+  assert.match(js, /case"stun":stunLevel\+\+/);
+  assert.match(js, /"poison","freeze","stun","confusion"/);
+  assert.match(js, /applyFreeze\(enemy\);applyStun\(enemy\)/);
+  assert.match(js, /if\(updateStunnedEnemy\(enemy\)\)return;/);
+});
