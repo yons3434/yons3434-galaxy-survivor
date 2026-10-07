@@ -62,7 +62,7 @@ test("poison upgrade keeps its requested scaling", () => {
   assert.match(js, /id:"poison",rarity:"אדיר",rarityClass:"epic"/);
   assert.match(js, /enemy\.poisonUntil=now\+4000/);
   assert.match(js, /enemy\.poisonNextTickAt=now\+1000/);
-  assert.match(js, /enemy\.maxHealth\*\.05\*enemy\.poisonStrength/);
+  assert.match(js, /target\.maxHealth\*\.05\*target\.poisonStrength/);
   assert.match(js, /case"poison":poisonLevel\+\+/);
 });
 
