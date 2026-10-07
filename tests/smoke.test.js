@@ -78,12 +78,12 @@ test("stackable upgrade cards show Roman numeral levels while unlock-only cards 
 
 
 test("pause card list merges repeated picks and extra-fire starts at II", () => {
-  assert.match(js, /function getSelectedUpgradeCardTitle\\(upgrade,count\\)/);
-  assert.match(js, /if\\(upgrade\\.id==="extraFire"\\)return upgrade\\.title+" "\+toRomanNumeral\\(count\\+1\\)/);
-  assert.match(js, /const grouped=\\[\\];/);
-  assert.match(js, /byId\\.set\\(upgrade\\.id,group\\)/);
-  assert.match(js, /group\\.count\\+\\+/);
-  assert.match(js, /getSelectedUpgradeCardTitle\\(upgrade,count\\)/);
+  assert.match(js, /function getSelectedUpgradeCardTitle\(upgrade,count\)/);
+  assert.match(js, /if\(upgrade\.id==="extraFire"\)return upgrade\.title\+" "\+toRomanNumeral\(count\+1\)/);
+  assert.match(js, /const grouped=\[\];/);
+  assert.match(js, /byId\.set\(upgrade\.id,group\)/);
+  assert.match(js, /group\.count\+\+/);
+  assert.match(js, /getSelectedUpgradeCardTitle\(upgrade,count\)/);
 });
 
 
