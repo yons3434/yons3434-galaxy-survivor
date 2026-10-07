@@ -88,7 +88,7 @@ test("pause card list merges repeated picks and extra-fire starts at II", () => 
 
 
 test("upgrade card titles number only stackable upgrades", () => {
-  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","extraRow","lowHealthRage","poison","freeze","stun","confusion"\]\)/);
+  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","extraRow","lowHealthRage","poison","freeze","stun","confusion"\]\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
   assert.match(js, /toRomanNumeral\(level\+1\)/);
   assert.match(js, /id:"drone"/);
@@ -99,6 +99,29 @@ test("upgrade card titles number only stackable upgrades", () => {
   assert.doesNotMatch(js, /numberedUpgradeIds=new Set\(\[[^\]]*"healOne"/);
 });
 
+
+test("split bullet upgrade is legendary, stackable, transparent, and limited to three generations", () => {
+  assert.match(js, /id:"splitBullet",rarity:"אגדי",rarityClass:"legendary",icon:"🔱",title:"קליע מפוצל"/);
+  assert.match(js, /let damageLevel=0,speedLevel=0,fireRateLevel=0,maxLivesLevel=0,extraFireLevel=0,splitBulletLevel=0/);
+  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet"/);
+  assert.match(js, /case"splitBullet":return splitBulletLevel/);
+  assert.match(js, /case"splitBullet":splitBulletLevel\+\+/);
+  assert.match(js, /function getSplitBulletCount\(\)\{return Math\.max\(0,splitBulletLevel\+1\)\}/);
+  assert.match(js, /function getSplitBulletSpread\(\)\{return \(20\+Math\.max\(0,splitBulletLevel-1\)\*5\)\*Math\.PI\/180\}/);
+  assert.match(js, /function getSplitBulletSpeedMultiplier\(\)\{return 1\+Math\.max\(0,Math\.min\(9,splitBulletLevel-1\)\)\*\.1\}/);
+  assert.match(js, /function getSplitBulletRangeMultiplier\(\)\{return getSplitBulletSpeedMultiplier\(\)\}/);
+  assert.match(js, /function getSplitBulletSizeMultiplier\(\)\{return 1\+Math\.max\(0,Math\.min\(9,splitBulletLevel-1\)\)\*\.05\}/);
+  assert.match(js, /function getSplitBulletAlpha\(generation\)\{return generation<=0\?1:generation===1\?\.75:generation===2\?\.5:\.25\}/);
+  assert.match(js, /const chance=\(generation===1\?\.05:\.01\)\*Math\.min\(10,splitBulletLevel\)/);
+  assert.match(js, /if\(generation>=3\)return false/);
+  assert.match(js, /splitGeneration:Math\.min\(3,\(Number\(b\.splitGeneration\)\|\|0\)\+1\)/);
+  assert.match(js, /childDamage=b\.damage\*levelValue\/count/);
+  assert.match(js, /splitMaxTravel:maxTravel/);
+  assert.match(js, /if\(b\.blackHole\)\{b\.dead=true;spawnBlackHole\(b\.x,b\.y\);return\}/);
+  assert.match(js, /if\(b\.rpg\)\{b\.dead=true;rpgExplosion\(b\.x,b\.y,b\.rpgMini===true\);return\}/);
+  assert.match(js, /if\(shouldSplitBullet\(b\)\)\{b\.dead=true;spawnSplitBullets\(b\);return\}/);
+  assert.match(js, /bullets\.forEach\(b=>\{ctx\.save\(\);ctx\.globalAlpha=getSplitBulletAlpha/);
+});
 
 test("confusion upgrade is legendary, stackable, and never applies to bosses", () => {
   assert.match(js, /id:"confusion",rarity:"אגדי",rarityClass:"legendary"/);
