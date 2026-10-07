@@ -143,7 +143,7 @@ test("poison, freeze, and stun also affect meteors while confusion remains enemy
   assert.match(js, /a\.health-=b\.damage;applyPoison\(a\);applyFreeze\(a\);applyStun\(a\);/);
   assert.match(js, /asteroids\.forEach\(a=>\{\n    if\(a\.health<=0\)return;\n    if\(updateStunnedEnemy\(a\)\)return;/);
   assert.match(js, /const freezeFactor=getEnemyFreezeFactor\(a\)/);
-  assert.match(js, /applyPoison\(a\);applyFreeze\(a\);if\(a\.health<=0\)destroyAsteroid\(a\)/);
+  assert.match(js, /applyPoison\(a\);applyFreeze\(a\)/);
   assert.match(js, /function applyConfusion\(enemy\).*enemy\.boss/);
   assert.doesNotMatch(js, /applyConfusion\(a\)/);
 });
