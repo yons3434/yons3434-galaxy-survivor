@@ -119,17 +119,20 @@ test("core game buttons remain present after gameplay changes", () => {
 });
 
 
-test("stun upgrade is epic, stackable, has the requested scaling, and never affects bosses", () => {
+test("stun upgrade is epic, stackable, stuns bosses, and does not apply from swords", () => {
   assert.match(js, /id:"stun",rarity:"אדיר",rarityClass:"epic"/);
   assert.match(js, /function getStunChance\(\)\{return Math\.min\(1,\.05\*Math\.pow\(1\.5/);
   assert.match(js, /function getStunDuration\(\)\{return 1000\*Math\.pow\(1\.5/);
-  assert.match(js, /function applyStun\(enemy\).*enemy\.boss/);
+  assert.match(js, /function isStunnedEnemy\(enemy\)\{return !!\(enemy&&enemy\.health>0&&enemy\.stunnedUntil>performance\.now\(\)\)\}/);
+  assert.match(js, /function applyStun\(enemy\)\{if\(stunLevel<=0\|\|!enemy\|\|enemy\.health<=0\|\|isStunnedEnemy\(enemy\)\)return false/);
   assert.match(js, /function updateStunnedEnemy\(enemy\)/);
   assert.match(js, /\*\.15\)/);
   assert.match(js, /Math\.PI\*2\/.2/);
   assert.match(js, /case"stun":return stunLevel/);
   assert.match(js, /case"stun":stunLevel\+\+/);
   assert.match(js, /"poison","freeze","stun","confusion"/);
-  assert.match(js, /applyFreeze\(enemy\);applyStun\(enemy\)/);
   assert.match(js, /if\(updateStunnedEnemy\(enemy\)\)return;/);
+  assert.match(js, /enemy\.health-=b\.damage;applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\);/);
+  assert.doesNotMatch(js, /enemy\.health-=swordDamage\([^;]+\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\)/);
+  assert.match(js, /if\(enemy\.boss\)\{\s*if\(updateStunnedEnemy\(enemy\)\)return;/);
 });
