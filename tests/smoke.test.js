@@ -141,24 +141,14 @@ test("confusion upgrade card is removed", () => {
   assert.doesNotMatch(js, /id:"confusion"/);
 });
 
-test("Escape closes game windows and returns to the home screen", () => {
-  assert.match(js, /function returnToHome\(\)\{/);
-  assert.match(js, /profileOverlay\.style\.display="none"/);
-  assert.match(js, /achievementsOverlay\.style\.display="none"/);
-  assert.match(js, /leaderboard\.style\.display="none"/);
-  assert.match(js, /collectionOverlay\.style\.display="none"/);
-  assert.match(js, /helpOverlay\.style\.display="none"/);
-  assert.match(js, /gameSettingsOverlay\.style\.display="none"/);
-  assert.match(js, /pauseMenu\.style\.display="none"/);
-  assert.match(js, /levelUpScreen\.style\.display="none"/);
-  assert.match(js, /gameOverScreen\.style\.display="none"/);
-  assert.match(js, /gameStarted=false;gameRunning=false;paused=false;levelUpOpen=false/);
-  assert.match(js, /startScreen\.style\.display="flex"/);
-  assert.match(js, /if\(e\.key==="Escape"\)\{e\.preventDefault\(\);returnToHome\(\);return\}/);
+test("Escape closes overlays or pauses without exiting the game", () => {
+  assert.match(js, /function handleEscapeKey\(\)\{/);
+  assert.match(js, /if\(e\.key==="Escape"\)\{e\.preventDefault\(\);handleEscapeKey\(\);return\}/);
+  assert.match(js, /if\(!gameStarted\|\|levelUpOpen\|\|gameOverScreen\.style\.display==="flex"\)return/);
+  assert.match(js, /if\(!paused\)togglePause\(\)/);
+  assert.match(js, /Esc — סגירת חלון פתוח או עצירת המשחק/);
   assert.match(js, /if\(key==="p"\)\{e\.preventDefault\(\);if\(gameStarted\)togglePause\(\);return\}/);
-  assert.match(js, /P — עצירה \/ המשך/);
-  assert.match(js, /Esc — סגירה וחזרה למסך הבית/);
-});
+});;
 
 test("core game buttons remain present after gameplay changes", () => {
   for (const id of [
