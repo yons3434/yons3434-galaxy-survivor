@@ -195,3 +195,16 @@ test("poison, freeze, and stun also affect meteors while confusion remains enemy
   assert.match(js, /function applyConfusion\(enemy\).*enemy\.boss/);
   assert.doesNotMatch(js, /applyConfusion\(a\)/);
 });
+
+
+test("expanded choice card adds one level-up option per pick up to six, then disappears for the current game", () => {
+  assert.match(js, /id:"expandedChoice",rarity:"אדיר",rarityClass:"epic",icon:"🃏",title:"בחירה מורחבת"/);
+  assert.match(js, /"continuousFire","expandedChoice"\]\)/);
+  assert.match(js, /case"expandedChoice":return expandedChoiceLevel/);
+  assert.match(js, /const choices=\[\],choiceCount=Math\.min\(6,3\+expandedChoiceLevel\)/);
+  assert.match(js, /u\.id==="expandedChoice"&&expandedChoiceLevel>=3/);
+  assert.match(js, /case"expandedChoice":expandedChoiceLevel=Math\.min\(3,expandedChoiceLevel\+1\)/);
+  assert.match(js, /expandedChoiceLevel=0;distance=0/);
+  assert.match(js, /upgrade\.id==="expandedChoice"&&expandedChoiceLevel===2\?'[^']*מקסימום!/);
+  assert.match(css, /\.upgradeMaxLabel/);
+});
