@@ -11,7 +11,9 @@ const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 test("split project has the expected entry files", () => {
   assert.match(index, /src\/style\.css/);
   assert.match(index, /src\/game\.js/);
-  assert.equal((index.match(/<script/g) || []).length, 2);
+  assert.equal((index.match(/<script/g) || []).length, 3);
+  assert.match(index, /src\/burn\.js/);
+  assert.ok(index.indexOf("src/burn.js") < index.indexOf("src/game.js"));
   assert.match(index, /cdn\.jsdelivr\.net\/npm\/\@supabase\/supabase-js/);
 });
 
@@ -58,6 +60,17 @@ test("game assets are non-empty", () => {
   assert.ok(index.length > 1000);
 });
 
+test("burn upgrade is legendary, stackable, and has an animated effect", () => {
+  assert.match(js, /id:"burn",rarity:"אגדי",rarityClass:"legendary",icon:"🔥",title:"צריבה"/);
+  assert.match(js, /case"burn":return burnLevel/);
+  assert.match(js, /case"burn":burnLevel=Math\.min\(GalaxyBurn\.maxLevel,burnLevel\+1\)/);
+  assert.match(js, /function applyBurn\(target,continuous=false\)/);
+  assert.match(js, /function updateBurn\(\)/);
+  assert.match(js, /function drawBurnEffect\(target,size,isSquare\)/);
+  assert.match(js, /applyBurn\(enemy\)/);
+  assert.match(js, /burnLevel>=GalaxyBurn\.maxLevel/);
+});
+
 test("poison upgrade keeps its requested scaling", () => {
   assert.match(js, /id:"poison",rarity:"אדיר",rarityClass:"epic"/);
   assert.match(js, /enemy\.poisonUntil=now\+4000/);
@@ -88,7 +101,7 @@ test("pause card list merges repeated picks and extra-fire starts at II", () => 
 
 
 test("upgrade card titles number only stackable upgrades", () => {
-  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","lowHealthRage","poison","freeze","stun","confusion"\]\)/);
+  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire"\]\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
   assert.match(js, /toRomanNumeral\(level\+1\)/);
   assert.match(js, /id:"drone"/);
