@@ -45,7 +45,7 @@ test("different enemies have independent streaks and old streaks reset", () => {
   const first = {}, second = {};
   assert.equal(damage(first, 100, {}, 1000), 100);
   assert.equal(damage(second, 50, {}, 1100), 50);
-  assert.equal(damage(first, 100, {}, 1200), 110);
+  assert.ok(Math.abs(damage(first, 100, {}, 1200) - 110) < 1e-9);
   assert.equal(damage(first, 100, {}, 3000), 100);
 });
 
