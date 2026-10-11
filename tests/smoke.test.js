@@ -11,7 +11,9 @@ const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 test("split project has the expected entry files", () => {
   assert.match(index, /src\/style\.css/);
   assert.match(index, /src\/game\.js/);
-  assert.equal((index.match(/<script/g) || []).length, 2);
+  assert.equal((index.match(/<script/g) || []).length, 3);
+  assert.match(index, /src\/burn\.js/);
+  assert.ok(index.indexOf("src/burn.js") < index.indexOf("src/game.js"));
   assert.match(index, /cdn\.jsdelivr\.net\/npm\/\@supabase\/supabase-js/);
 });
 
@@ -58,6 +60,17 @@ test("game assets are non-empty", () => {
   assert.ok(index.length > 1000);
 });
 
+test("burn upgrade is legendary, stackable, and has an animated effect", () => {
+  assert.match(js, /id:"burn",rarity:"אגדי",rarityClass:"legendary",icon:"🔥",title:"צריבה"/);
+  assert.match(js, /case"burn":return burnLevel/);
+  assert.match(js, /case"burn":burnLevel=Math\.min\(GalaxyBurn\.maxLevel,burnLevel\+1\)/);
+  assert.match(js, /function applyBurn\(target,continuous=false\)/);
+  assert.match(js, /function updateBurn\(\)/);
+  assert.match(js, /function drawBurnEffect\(target,size,isSquare\)/);
+  assert.match(js, /applyBurn\(enemy\)/);
+  assert.match(js, /burnLevel>=GalaxyBurn\.maxLevel/);
+});
+
 test("poison upgrade keeps its requested scaling", () => {
   assert.match(js, /id:"poison",rarity:"אדיר",rarityClass:"epic"/);
   assert.match(js, /enemy\.poisonUntil=now\+4000/);
@@ -88,7 +101,7 @@ test("pause card list merges repeated picks and extra-fire starts at II", () => 
 
 
 test("upgrade card titles number only stackable upgrades", () => {
-  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","lowHealthRage","poison","freeze","stun","confusion"\]\)/);
+  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire"\]\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
   assert.match(js, /toRomanNumeral\(level\+1\)/);
   assert.match(js, /id:"drone"/);
@@ -175,9 +188,9 @@ test("stun upgrade is epic, stackable, stuns bosses, and does not apply from swo
   assert.match(js, /Math\.PI\*2\/.2/);
   assert.match(js, /case"stun":return stunLevel/);
   assert.match(js, /case"stun":stunLevel\+\+/);
-  assert.match(js, /"poison","freeze","stun","confusion"/);
+  assert.match(js, /"poison","burn","freeze","stun","confusion"/);
   assert.match(js, /if\(updateStunnedEnemy\(enemy\)\)return;/);
-  assert.match(js, /enemy\.health-=b\.damage;applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\);/);
+  assert.match(js, /enemy\.health-=getContinuousFireDamage\(enemy,b\.damage,b,performance\.now\(\)\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\);applyBurn\(enemy\);/);
   assert.doesNotMatch(js, /enemy\.health-=swordDamage\([^;]+\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\)/);
   assert.match(js, /if\(enemy\.boss\)\{\s*if\(updateStunnedEnemy\(enemy\)\)return;/);
 });
@@ -185,7 +198,7 @@ test("stun upgrade is epic, stackable, stuns bosses, and does not apply from swo
 
 test("poison, freeze, and stun also affect meteors while confusion remains enemy-only", () => {
   assert.match(js, /asteroids\.forEach\(a=>tickTarget\(a,destroyAsteroid\)/);
-  assert.match(js, /a\.health-=b\.damage;applyPoison\(a\);applyFreeze\(a\);applyStun\(a\);/);
+  assert.match(js, /a\.health-=getContinuousFireDamage\(a,b\.damage,b,performance\.now\(\)\);applyPoison\(a\);applyFreeze\(a\);applyStun\(a\);applyBurn\(a\);/);
   assert.match(js, /asteroids\.forEach\(a=>\{\n    if\(a\.health<=0\)return;\n    if\(updateStunnedEnemy\(a\)\)return;/);
   assert.match(js, /const freezeFactor=getEnemyFreezeFactor\(a\)/);
   assert.match(js, /applyPoison\(a\);applyFreeze\(a\)/);
