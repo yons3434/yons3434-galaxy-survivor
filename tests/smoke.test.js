@@ -208,3 +208,22 @@ test("expanded choice card adds one level-up option per pick up to six, then dis
   assert.match(js, /upgrade\.id==="expandedChoice"&&expandedChoiceLevel===2\?'[^']*מקסימום!/);
   assert.match(css, /\.upgradeMaxLabel/);
 });
+
+
+test("vortex upgrade attracts player bullets, damages affected targets, and scales chance and duration", () => {
+  assert.match(js, /id:"vortex",rarity:"אדיר",rarityClass:"epic",icon:"🌀",title:"מערבולת"/);
+  assert.match(js, /"continuousFire","expandedChoice","vortex"\]\)/);
+  assert.match(js, /case"vortex":return vortexLevel/);
+  assert.match(js, /function getVortexChance\(\)\{return Math\.min\(\.6,\.1\+\.05\*Math\.max\(0,vortexLevel-1\)\)\}/);
+  assert.match(js, /function getVortexDuration\(\)\{return Math\.min\(10000,2000\+1000\*Math\.max\(0,vortexLevel-1\)\)\}/);
+  assert.match(js, /function applyVortex\(target\)/);
+  assert.match(js, /function pullBulletTowardVortex\(b\)/);
+  assert.match(js, /pullBulletTowardVortex\(b\)/);
+  assert.match(js, /if\(!absorbedByVortex\)applyVortex\(a\)/);
+  assert.match(js, /if\(!absorbedByVortex\)applyVortex\(enemy\)/);
+  assert.match(js, /function drawVortexEffect\(target,size,isSquare\)/);
+  assert.match(js, /drawVortexEffect\(a,a\.size,false\)/);
+  assert.match(js, /drawVortexEffect\(enemy,size,true\)/);
+  assert.match(js, /case"vortex":vortexLevel\+\+/);
+  assert.match(js, /vortexLevel=0;distance=0/);
+});
