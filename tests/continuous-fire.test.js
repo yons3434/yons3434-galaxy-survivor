@@ -1,0 +1,63 @@
+const test = require("node:test");
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+
+const source = fs.readFileSync(
+  path.join(__dirname, "..", "src", "game.js"),
+  "utf8"
+);
+
+function loadContinuousFireDamage(level) {
+  const start = source.indexOf("function getContinuousFireDamage(");
+  assert.notEqual(start, -1, "continuous-fire damage helper exists");
+  const end = source.indexOf("\nfunction ", start + 10);
+  assert.notEqual(end, -1, "helper has a clear function boundary");
+  const helperSource = source.slice(start, end).trim();
+  return new Function("continuousFireLevel", "return (" + helperSource + ");")(level);
+}
+
+test("continuous-fire card is epic and supports Roman-numeral upgrades", () => {
+  assert.match(source, /id:"continuousFire",rarity:"אדיר",rarityClass:"epic",icon:"🎯",title:"ירי רציף"/);
+  assert.match(source, /"continuousFire"\]\);/);
+  assert.match(source, /case"continuousFire":return continuousFireLevel;/);
+  assert.match(source, /case"continuousFire":continuousFireLevel\+\+/);
+});
+
+test("first hit uses base damage and each later hit grows by 10% per card level", () => {
+  const damage = loadContinuousFireDamage(1);
+  const target = {};
+  assert.equal(damage(target, 100, {}, 1000), 100);
+  assert.equal(damage(target, 100, {}, 1100), 110);
+  assert.equal(damage(target, 100, {}, 1200), 121);
+});
+
+test("each card upgrade adds another 10 percentage points to growth", () => {
+  const damage = loadContinuousFireDamage(3);
+  const target = {};
+  assert.equal(damage(target, 100, {}, 1000), 100);
+  assert.equal(damage(target, 100, {}, 1100), 130);
+  assert.equal(damage(target, 100, {}, 1200), 169);
+});
+
+test("different enemies have independent streaks and old streaks reset", () => {
+  const damage = loadContinuousFireDamage(1);
+  const first = {}, second = {};
+  assert.equal(damage(first, 100, {}, 1000), 100);
+  assert.equal(damage(second, 50, {}, 1100), 50);
+  assert.equal(damage(first, 100, {}, 1200), 110);
+  assert.equal(damage(first, 100, {}, 3000), 100);
+});
+
+test("a piercing projectile does not repeatedly increase the streak while overlapping one target", () => {
+  const damage = loadContinuousFireDamage(1);
+  const target = {}, bullet = {};
+  assert.equal(damage(target, 100, bullet, 1000), 100);
+  assert.equal(damage(target, 100, bullet, 1010), 100);
+  assert.equal(damage(target, 100, {}, 1020), 110);
+});
+
+test("continuous-fire bonus is applied to both meteorites and enemy ships", () => {
+  assert.match(source, /a\.health-=getContinuousFireDamage\(a,b\.damage,b,performance\.now\(\)\)/);
+  assert.match(source, /enemy\.health-=getContinuousFireDamage\(enemy,b\.damage,b,performance\.now\(\)\)/);
+});
