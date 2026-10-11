@@ -230,7 +230,7 @@ test("vortex upgrade attracts player bullets, damages affected targets, and scal
 
 test("whirlpool upgrades increase its visible size, suction range, and damage", () => {
   assert.match(js, /function getVortexSizeMultiplier\(\)\{return Math\.min\(2,1\+\.2\*Math\.max\(0,vortexLevel-1\)\)\}/);
-  assert.match(js, /function getVortexDamageMultiplier\(\)\{return Math\.pow\(1\.25,Math\.max\(0,vortexLevel-1\)\)\}/);
+  assert.match(js, /function getVortexDamageMultiplier\(\)\{return Math\.min\(3,1\+\.25\*Math\.max\(1,vortexLevel\)\)\}/);
   assert.match(js, /best=180\*getVortexSizeMultiplier\(\)/);
   assert.match(js, /size\*\.58\*getVortexSizeMultiplier\(\)/);
   assert.match(js, /b\.damage\*vortexDamageMultiplier/);
