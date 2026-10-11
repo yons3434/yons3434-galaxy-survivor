@@ -28,8 +28,8 @@ test("first hit uses base damage and each later hit grows by 10% per card level"
   const damage = loadContinuousFireDamage(1);
   const target = {};
   assert.equal(damage(target, 100, {}, 1000), 100);
-  assert.equal(damage(target, 100, {}, 1100), 110);
-  assert.equal(damage(target, 100, {}, 1200), 121);
+  assert.ok(Math.abs(damage(target, 100, {}, 1100) - 110) < 1e-9);
+  assert.ok(Math.abs(damage(target, 100, {}, 1200) - 121) < 1e-9);
 });
 
 test("each card upgrade adds another 10 percentage points to growth", () => {
