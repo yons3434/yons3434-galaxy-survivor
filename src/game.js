@@ -779,9 +779,11 @@ function getContinuousFireDamage(target,baseDamage,bullet,now){if(continuousFire
 function applyPoison(enemy){if(poisonLevel<=0||!enemy||enemy.health<=0)return;const now=performance.now();enemy.poisonUntil=now+4000;enemy.poisonStrength=poisonLevel;enemy.poisonNextTickAt=now+1000}
 function getVortexChance(){return Math.min(.6,.1+.05*Math.max(0,vortexLevel-1))}
 function getVortexDuration(){return Math.min(10000,3000+1000*Math.max(0,vortexLevel-1))}
+function getVortexSizeMultiplier(){return Math.min(2,1+.2*Math.max(0,vortexLevel-1))}
+function getVortexDamageMultiplier(){return Math.min(3,1+.25*Math.max(1,vortexLevel))}
 function applyVortex(target){if(vortexLevel<=0||!target||target.health<=0)return false;if(Math.random()>=getVortexChance())return false;target.vortexUntil=performance.now()+getVortexDuration();target.vortexStrength=vortexLevel;return true}
-function pullBulletTowardVortex(b){if(!b||b.dead||b.enemyBullet)return;const now=performance.now();let target=null,best=180;for(const candidate of [...asteroids,...enemies]){if(candidate.health<=0||!(candidate.vortexUntil>now))continue;const d=Math.hypot(candidate.x-b.x,candidate.y-b.y);if(d<best){best=d;target=candidate}}if(!target)return;const dx=target.x-b.x,dy=target.y-b.y,d=Math.hypot(dx,dy)||1,speed=Math.hypot(b.vx,b.vy)||1;let vx=b.vx*.72+dx/d*speed*.28,vy=b.vy*.72+dy/d*speed*.28;const adjusted=Math.hypot(vx,vy)||1;b.vx=vx/adjusted*speed;b.vy=vy/adjusted*speed}
-function drawVortexEffect(target,size,isSquare){if(!(target.vortexUntil>performance.now()))return;const t=performance.now()*.006,strength=Math.min(1,.5+(Number(target.vortexStrength)||1)*.08),r=Math.max(5,size*.58);ctx.save();ctx.translate(target.x,target.y);ctx.globalAlpha=.75;ctx.shadowColor="#b388ff";ctx.shadowBlur=12+strength*18;ctx.fillStyle="#10051d";ctx.beginPath();ctx.arc(0,0,r*.55,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#d7a8ff";ctx.lineWidth=Math.max(1.5,size*.06);ctx.beginPath();ctx.arc(0,0,r*.7,0,Math.PI*2);ctx.stroke();ctx.strokeStyle="#8e24aa";ctx.lineWidth=Math.max(1.5,size*.07);ctx.beginPath();for(let i=0;i<=42;i++){const p=i/42,angle=t+p*Math.PI*4,rr=r*(.08+p*.58),x=Math.cos(angle)*rr,y=Math.sin(angle)*rr;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.stroke();ctx.fillStyle="#000";ctx.beginPath();ctx.arc(0,0,r*.16,0,Math.PI*2);ctx.fill();ctx.restore()}
+function pullBulletTowardVortex(b){if(!b||b.dead||b.enemyBullet)return;const now=performance.now();let target=null,best=180*getVortexSizeMultiplier();for(const candidate of [...asteroids,...enemies]){if(candidate.health<=0||!(candidate.vortexUntil>now))continue;const d=Math.hypot(candidate.x-b.x,candidate.y-b.y);if(d<best){best=d;target=candidate}}if(!target)return;const dx=target.x-b.x,dy=target.y-b.y,d=Math.hypot(dx,dy)||1,speed=Math.hypot(b.vx,b.vy)||1;let vx=b.vx*.72+dx/d*speed*.28,vy=b.vy*.72+dy/d*speed*.28;const adjusted=Math.hypot(vx,vy)||1;b.vx=vx/adjusted*speed;b.vy=vy/adjusted*speed}
+function drawVortexEffect(target,size,isSquare){if(!(target.vortexUntil>performance.now()))return;const t=performance.now()*.006,strength=Math.min(1,.5+(Number(target.vortexStrength)||1)*.08),r=Math.max(5,size*.58*getVortexSizeMultiplier());ctx.save();ctx.translate(target.x,target.y);ctx.globalAlpha=.75;ctx.shadowColor="#b388ff";ctx.shadowBlur=12+strength*18;ctx.fillStyle="#10051d";ctx.beginPath();ctx.arc(0,0,r*.55,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#d7a8ff";ctx.lineWidth=Math.max(1.5,size*.06);ctx.beginPath();ctx.arc(0,0,r*.7,0,Math.PI*2);ctx.stroke();ctx.strokeStyle="#8e24aa";ctx.lineWidth=Math.max(1.5,size*.07);ctx.beginPath();for(let i=0;i<=42;i++){const p=i/42,angle=t+p*Math.PI*4,rr=r*(.08+p*.58),x=Math.cos(angle)*rr,y=Math.sin(angle)*rr;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.stroke();ctx.fillStyle="#000";ctx.beginPath();ctx.arc(0,0,r*.16,0,Math.PI*2);ctx.fill();ctx.restore()}
 function updatePoison(){if(poisonLevel<=0)return;const now=performance.now();const tickTarget=(target,destroyFn)=>{if(target.health<=0||!(target.poisonUntil>now))return;if(!(target.poisonNextTickAt>0))target.poisonNextTickAt=now+1000;if(now>=target.poisonNextTickAt){target.poisonNextTickAt+=1000;target.health-=target.maxHealth*.05*target.poisonStrength;if(target.health<=0)destroyFn(target)}};asteroids.forEach(a=>tickTarget(a,destroyAsteroid));enemies.forEach(enemy=>tickTarget(enemy,destroyEnemy))}
 function applyBurn(target,continuous=false){
   if(burnLevel<=0||!target||target.health<=0)return false;
@@ -1132,7 +1134,8 @@ processSpecialEntities();
         if(b.rpg){b.dead=true;rpgExplosion(b.x,b.y,b.rpgMini===true);return}
         if(shouldSplitBullet(b)){b.dead=true;spawnSplitBullets(b);return}
         const absorbedByVortex=a.vortexUntil>performance.now();
-        a.health-=getContinuousFireDamage(a,b.damage,b,performance.now());applyPoison(a);applyFreeze(a);applyStun(a);applyBurn(a);
+        const vortexDamageMultiplier=absorbedByVortex?getVortexDamageMultiplier():1;
+        a.health-=getContinuousFireDamage(a,b.damage*vortexDamageMultiplier,b,performance.now());applyPoison(a);applyFreeze(a);applyStun(a);applyBurn(a);
         if(!absorbedByVortex)applyVortex(a);
         if(chainLightningLevel>0)triggerChainLightning(a);
         if(absorbedByVortex||!b.piercing)b.dead=true;
@@ -1148,7 +1151,8 @@ processSpecialEntities();
         if(b.rpg){b.dead=true;rpgExplosion(b.x,b.y,b.rpgMini===true);return}
         if(shouldSplitBullet(b)){b.dead=true;spawnSplitBullets(b);return}
         const absorbedByVortex=enemy.vortexUntil>performance.now();
-        enemy.health-=getContinuousFireDamage(enemy,b.damage,b,performance.now());applyPoison(enemy);applyFreeze(enemy);applyStun(enemy);applyBurn(enemy);
+        const vortexDamageMultiplier=absorbedByVortex?getVortexDamageMultiplier():1;
+        enemy.health-=getContinuousFireDamage(enemy,b.damage*vortexDamageMultiplier,b,performance.now());applyPoison(enemy);applyFreeze(enemy);applyStun(enemy);applyBurn(enemy);
         if(!absorbedByVortex)applyVortex(enemy);
         if(enemy.boss)screenShake(2,80);
         if(chainLightningLevel>0)triggerChainLightning(enemy);
