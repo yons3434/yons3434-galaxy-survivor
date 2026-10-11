@@ -215,7 +215,7 @@ test("vortex upgrade attracts player bullets, damages affected targets, and scal
   assert.match(js, /"continuousFire","expandedChoice","vortex"\]\)/);
   assert.match(js, /case"vortex":return vortexLevel/);
   assert.match(js, /function getVortexChance\(\)\{return Math\.min\(\.6,\.1\+\.05\*Math\.max\(0,vortexLevel-1\)\)\}/);
-  assert.match(js, /function getVortexDuration\(\)\{return Math\.min\(10000,2000\+1000\*Math\.max\(0,vortexLevel-1\)\)\}/);
+  assert.match(js, /function getVortexDuration\(\)\{return Math\.min\(10000,3000\+1000\*Math\.max\(0,vortexLevel-1\)\)\}/);
   assert.match(js, /function applyVortex\(target\)/);
   assert.match(js, /function pullBulletTowardVortex\(b\)/);
   assert.match(js, /pullBulletTowardVortex\(b\)/);
