@@ -259,3 +259,9 @@ test("damage numbers cap lethal overkill and rapid-hit totals at the target's re
   assert.match(js, /entry\.amount=Math\.min\(entry\.startHealth,entry\.amount\+actualDamage\)/);
   assert.ok(js.includes("startHealth:Math.max(actualDamage,(Number(target.health)||0)+damage)"));
 });
+
+test("all boss types receive five times their previous base health", () => {
+  assert.match(js, /if\(isBigSplit\)health=\(700\+distance\*\.5\)\*5\*difficultySettings\[difficulty\]\.enemyHP/);
+  assert.match(js, /else if\(isSpecial\)health=\(550\+distance\*\.45\)\*5\*difficultySettings\[difficulty\]\.enemyHP/);
+  assert.match(js, /else health=\(350\+distance\*\.35\)\*5\*difficultySettings\[difficulty\]\.enemyHP/);
+});
