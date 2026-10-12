@@ -246,7 +246,7 @@ test("normal enemies start at 100 health, meteorites have five times health, and
 
 
 test("laser and flamethrower show their actual continuous damage", () => {
-  assert.match(js, /const laserDamage=laserHeatLevel>0?dps\*dt:effectiveDamage\(\)\*\.25;target\.health-=laserDamage;showDamageNumber\(target,laserDamage\)/);
+  assert.match(js, /const laserDamage=laserHeatLevel>0\?dps\*dt:effectiveDamage\(\)\*\.25;target\.health-=laserDamage;showDamageNumber\(target,laserDamage\)/);
   assert.match(js, /const flameDamage=effectiveDamage\(\)\*\.18\*scale;target\.health-=flameDamage;showDamageNumber\(target,flameDamage\)/);
 });
 
