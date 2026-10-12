@@ -101,7 +101,7 @@ test("pause card list merges repeated picks and extra-fire starts at II", () => 
 
 
 test("upgrade card titles number only stackable upgrades", () => {
-  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire","expandedChoice","vortex"\]\)/);
+  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire","expandedChoice"\]\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
   assert.match(js, /toRomanNumeral\(level\+1\)/);
   assert.match(js, /id:"drone"/);
@@ -210,29 +210,6 @@ test("expanded choice card adds one level-up option per pick up to six, then dis
 });
 
 
-test("vortex upgrade attracts player bullets, damages affected targets, and scales chance and duration", () => {
-  assert.match(js, /id:"vortex",rarity:"אדיר",rarityClass:"epic",icon:"🌀",title:"מערבולת"/);
-  assert.match(js, /"continuousFire","expandedChoice","vortex"\]\)/);
-  assert.match(js, /case"vortex":return vortexLevel/);
-  assert.match(js, /function getVortexChance\(\)\{return Math\.min\(\.6,\.1\+\.05\*Math\.max\(0,vortexLevel-1\)\)\}/);
-  assert.match(js, /function getVortexDuration\(\)\{return Math\.min\(10000,3000\+1000\*Math\.max\(0,vortexLevel-1\)\)\}/);
-  assert.match(js, /function applyVortex\(target\)/);
-  assert.match(js, /function pullBulletTowardVortex\(b\)/);
-  assert.match(js, /pullBulletTowardVortex\(b\)/);
-  assert.match(js, /if\(!absorbedByVortex\)applyVortex\(a\)/);
-  assert.match(js, /if\(!absorbedByVortex\)applyVortex\(enemy\)/);
-  assert.match(js, /function drawVortexEffect\(target,size,isSquare\)/);
-  assert.match(js, /drawVortexEffect\(a,a\.size,false\)/);
-  assert.match(js, /drawVortexEffect\(enemy,size,true\)/);
-  assert.match(js, /case"vortex":vortexLevel\+\+/);
-  assert.match(js, /vortexLevel=0;distance=0/);
-});
 
-test("whirlpool upgrades increase its visible size, suction range, and damage", () => {
-  assert.match(js, /function getVortexSizeMultiplier\(\)\{return Math\.min\(2,1\+\.2\*Math\.max\(0,vortexLevel-1\)\)\}/);
-  assert.match(js, /function getVortexDamageMultiplier\(\)\{return Math\.min\(3,1\+\.25\*Math\.max\(1,vortexLevel\)\)\}/);
-  assert.match(js, /best=180\*getVortexSizeMultiplier\(\)/);
-  assert.match(js, /size\*\.58\*getVortexSizeMultiplier\(\)/);
-  assert.match(js, /b\.damage\*vortexDamageMultiplier/);
-  assert.equal((js.match(/b\.damage\*vortexDamageMultiplier/g)||[]).length, 2);
-});
+
+
