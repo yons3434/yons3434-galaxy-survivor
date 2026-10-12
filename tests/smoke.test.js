@@ -311,7 +311,7 @@ test("continuous fire upgrade is rare and grows damage by 20 percentage points p
 test("Ultra Mode card has the intended rarity, 20% movement speed, double distance, and point drain", () => {
   assert.match(js, /id:"ultraMode",rarity:"אולטרה",rarityClass:"ultra",icon:"🌈",title:"מצב אולטרה"/);
   assert.match(js, /ultraPointsCap=5000/);
-  assert.match(js, /Math.min(500\/60,ultraPoints)/);
+  assert.match(js, /Math\.min\(500\/60,ultraPoints\)/);
   assert.match(js, /if\(ultraModeActive\)v\*=1\.2/);
   assert.match(js, /distanceSpeed\*worldMultiplier\*\(ultraModeActive\?2:1\)/);
   assert.match(js, /if\(invincible\|\|ultraModeActive\|\|!gameRunning\)return false/);
