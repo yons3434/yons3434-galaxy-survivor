@@ -771,9 +771,9 @@ function spawnBoss(type="normal"){
   const isSpecial=isSpecialRaw||isBigSplit;
   const specialType=isBigSplit?"split":requestedSpecial;
   let health;
-  if(isBigSplit)health=(700+distance*.5)*difficultySettings[difficulty].enemyHP;
-  else if(isSpecial)health=(550+distance*.45)*difficultySettings[difficulty].enemyHP;
-  else health=(350+distance*.35)*difficultySettings[difficulty].enemyHP;
+  if(isBigSplit)health=(700+distance*.5)*5*difficultySettings[difficulty].enemyHP;
+  else if(isSpecial)health=(550+distance*.45)*5*difficultySettings[difficulty].enemyHP;
+  else health=(350+distance*.35)*5*difficultySettings[difficulty].enemyHP;
   const side=Math.random()<.5?100:canvas.width-100;
   const boss={boss:true,bigBoss:isBigSplit,splitBoss:isBigSplit,specialBoss:isSpecial,specialType,x:side,y:120,health,maxHealth:health,direction:side<canvas.width/2?1:-1,timer:isBigSplit?999999:30,mirrorClone:false,cloneSpawned:false,specialTimer:0,phase:1,splitStage:isBigSplit?0:undefined,specialFireTimer:isBigSplit?600:0};
   enemies.push(boss);
