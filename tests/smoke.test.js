@@ -101,7 +101,7 @@ test("pause card list merges repeated picks and extra-fire starts at II", () => 
 
 
 test("upgrade card titles number only stackable upgrades", () => {
-  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire","expandedChoice"\]\)/);
+  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire","expandedChoice","flamethrower"\]\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
   assert.match(js, /toRomanNumeral\(level\+1\)/);
   assert.match(js, /id:"drone"/);
@@ -215,7 +215,7 @@ test("expanded choice card adds one level-up option per pick up to six, then dis
   assert.match(js, /u\.id==="expandedChoice"&&expandedChoiceLevel>=3/);
   assert.match(js, /case"expandedChoice":expandedChoiceLevel=Math\.min\(3,expandedChoiceLevel\+1\)/);
   assert.match(js, /expandedChoiceLevel=0;distance=0/);
-  assert.match(js, /upgrade\.id==="expandedChoice"&&expandedChoiceLevel===2\?'[^']*מקסימום!/);
+  assert.match(js, /\(upgrade\.id==="expandedChoice"&&expandedChoiceLevel===2\)\|\|\(upgrade\.id==="flamethrower"&&flamethrowerLevel===9\)/);
   assert.match(css, /\.upgradeMaxLabel/);
 });
 
