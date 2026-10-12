@@ -248,3 +248,8 @@ test("poison and burn damage-over-time ticks display their actual damage", () =>
   assert.match(js, /const poisonDamage=target\.maxHealth\*\.05\*target\.poisonStrength;target\.health-=poisonDamage;showDamageNumber\(target,poisonDamage\)/);
   assert.match(js, /const burnDamage=GalaxyBurn\.getTickDamage\(target\.maxHealth,target\.burnStrength,isBoss\);\s*target\.health-=burnDamage;\s*showDamageNumber\(target,burnDamage\)/);
 });
+
+test("sword hits show their actual damage against enemies and meteorites", () => {
+  assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\);enemy\.health-=swordHitDamage;showDamageNumber\(enemy,swordHitDamage\)/);
+  assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\);a\.health-=swordHitDamage;showDamageNumber\(a,swordHitDamage\)/);
+});
