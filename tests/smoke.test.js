@@ -253,3 +253,9 @@ test("sword hits show their actual damage against enemies and meteorites", () =>
   assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\);enemy\.health-=swordHitDamage;showDamageNumber\(enemy,swordHitDamage\)/);
   assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\);a\.health-=swordHitDamage;showDamageNumber\(a,swordHitDamage\)/);
 });
+
+test("damage numbers cap lethal overkill and rapid-hit totals at the target's remaining health", () => {
+  assert.match(js, /const actualDamage=target\.health<=0\?Math\.max\(0,damage\+target\.health\):damage/);
+  assert.match(js, /entry\.amount=Math\.min\(entry\.startHealth,entry\.amount\+actualDamage\)/);
+  assert.match(js, /startHealth:Math\.max\(0,Number\(target\.health\)\|\|0\)\+actualDamage/);
+});
