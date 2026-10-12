@@ -101,7 +101,7 @@ test("pause card list merges repeated picks and extra-fire starts at II", () => 
 
 
 test("upgrade card titles number only stackable upgrades", () => {
-  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","homing","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire","expandedChoice","flamethrower","laserHeat"\]\)/);
+  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire","expandedChoice","flamethrower","laserHeat"\]\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
   assert.match(js, /toRomanNumeral\(level\+1\)/);
   assert.match(js, /id:"drone"/);
