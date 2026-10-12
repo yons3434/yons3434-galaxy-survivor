@@ -293,3 +293,11 @@ test("splitting bosses move and bounce while their special attack timer runs", (
   assert.match(js, /else if\(enemy\.x>canvas\.width-edge\)\{enemy\.x=canvas\.width-edge;enemy\.direction=-1\}/);
   assert.match(js, /enemy\.specialFireTimer=stage===0\?600:stage===1\?300:150/);
 });
+
+test("piercing upgrade is rare and adds one extra target penetration per level", () => {
+  assert.match(js, /id:"piercing",rarity:"נדיר",rarityClass:"rare",icon:"🏹",title:"יריות חודרות"/);
+  assert.match(js, /pierceRemaining:piercingLevel,hitTargets:\[\]/);
+  assert.match(js, /function consumeBulletPierce\(b,target\)/);
+  assert.match(js, /if\(\(Number\(b\.pierceRemaining\)\|\|0\)>0\)\{b\.pierceRemaining--;return true\}/);
+  assert.doesNotMatch(js, /if\(!b\.piercing\)b\.dead=true/);
+});
