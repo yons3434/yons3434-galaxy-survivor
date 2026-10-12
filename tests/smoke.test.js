@@ -73,8 +73,8 @@ test("burn upgrade is legendary, stackable, and has an animated effect", () => {
 
 test("poison upgrade keeps its requested scaling", () => {
   assert.match(js, /id:"poison",rarity:"אדיר",rarityClass:"epic"/);
-  assert.match(js, /target\.poisonUntil=now\+4000/);
-  assert.match(js, /target\.poisonNextTickAt=now\+1000/);
+  assert.match(js, /enemy\.poisonUntil=now\+4000/);
+  assert.match(js, /enemy\.poisonNextTickAt=now\+1000/);
   assert.match(js, /target\.maxHealth\*\.05\*target\.poisonStrength/);
   assert.match(js, /case"poison":poisonLevel\+\+/);
 });
