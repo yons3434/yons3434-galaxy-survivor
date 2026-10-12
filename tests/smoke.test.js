@@ -150,6 +150,16 @@ test("Escape closes overlays or pauses without exiting the game", () => {
   assert.match(js, /if\(key==="p"\)\{e\.preventDefault\(\);if\(gameStarted\)togglePause\(\);return\}/);
 });;
 
+test("meteorites break into fading angular rock fragments and the effect can be toggled in settings", () => {
+  assert.match(js, /function spawnMeteoriteFragments\(a\)/);
+  assert.match(js, /meteoriteFragments\.push\(/);
+  assert.match(js, /spawnMeteoriteFragments\(a\)/);
+  assert.match(js, /meteoriteFragments\.forEach\(f=>\{/);
+  assert.match(js, /galaxyDefenderMeteoriteBreakEffect/);
+  assert.match(js, /uiMeteoriteBreak/);
+  assert.match(index, /id="uiMeteoriteBreak"/);
+});
+
 test("core game buttons remain present after gameplay changes", () => {
   for (const id of [
     "startButton",
