@@ -1216,7 +1216,13 @@ function processSpecialEntities(){
     const freezeFactor=getEnemyFreezeFactor(enemy);
     if(updateStunnedEnemy(enemy))return;
     if(enemy.specialType==="split"){
-      enemy.specialFireTimer=(enemy.specialFireTimer??(enemy.splitStage===0?600:enemy.splitStage===1?300:150))-freezeFactor;
+      const stage=enemy.splitStage||0;
+      const splitMoveFactor=stage===0?1:stage===1?1.25:1.5;
+      enemy.x+=enemy.direction*bossSpeed*splitMoveFactor*freezeFactor;
+      const edge=stage===0?100:stage===1?65:45;
+      if(enemy.x<edge){enemy.x=edge;enemy.direction=1}
+      else if(enemy.x>canvas.width-edge){enemy.x=canvas.width-edge;enemy.direction=-1}
+      enemy.specialFireTimer=(enemy.specialFireTimer??(stage===0?600:stage===1?300:150))-freezeFactor;
       if(enemy.specialFireTimer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
         const stage=enemy.splitStage||0;
