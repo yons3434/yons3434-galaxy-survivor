@@ -682,7 +682,7 @@ function drawBlackHoles(){(window.activeBlackHoles||[]).forEach(h=>{ctx.save();c
 function rpgExplosion(x,y,isMini=false){const explosionRadius=isMini?120:120;explosion(x,y);screenShake(4,120);[...asteroids,...enemies].forEach(target=>{if(target.health<=0)return;const d=Math.hypot(target.x-x,target.y-y);if(d<=explosionRadius){const damage=effectiveDamage()*8*(1-d/explosionRadius*.5);target.health-=damage;applyPoison(target);applyFreeze(target);applyStun(target);applyBurn(target);if(target.health<=0){if(enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}});showMessage("💥 RPG התפוצץ!") }
 function spawnAsteroid(){
   const size=Math.random()*18+12;
-  const health=(10+size*.55+distance*.004)*difficultySettings[difficulty].enemyHP;
+  const health=(10+size*.55+distance*.004)*5*difficultySettings[difficulty].enemyHP;
   const special=activeSpecialBossArea;
   let type="normal";
   if(special==="mirror")type="mirror";
@@ -695,7 +695,7 @@ function spawnAsteroid(){
   asteroids.push({x:Math.random()*canvas.width,y:-50,size,health,maxHealth:health,speed:2+Math.random()*2+distance/1500,specialType:type,splitOnDeath,teleportTimer:240,teleportMarker:null,teleportHidden:false,gateTimer:Math.random()*100,clone:false,cloneSpawned:false,splitDone:false,inversionReturning:false,shatterTimer:0});
 }
 function spawnEnemy(){
-  const health=(18+distance*.012)*difficultySettings[difficulty].enemyHP;
+  const health=(100+distance*.012)*difficultySettings[difficulty].enemyHP;
   const special=activeSpecialBossArea;
   let type="normal";
   if(special==="mirror")type="mirror";
@@ -1132,7 +1132,7 @@ processSpecialEntities();
         if(b.blackHole){b.dead=true;spawnBlackHole(b.x,b.y);return}
         if(b.rpg){b.dead=true;rpgExplosion(b.x,b.y,b.rpgMini===true);return}
         if(shouldSplitBullet(b)){b.dead=true;spawnSplitBullets(b);return}
-        const hitDamage=getContinuousFireDamage(a,b.damage,b,performance.now());a.health-=hitDamage;showDamageNumber(a,hitDamage);applyPoison(a);applyFreeze(a);applyStun(a);applyBurn(a);
+        const hitDamage=getContinuousFireDamage(a,b.damage*5,b,performance.now());a.health-=hitDamage;showDamageNumber(a,hitDamage);applyPoison(a);applyFreeze(a);applyStun(a);applyBurn(a);
         if(chainLightningLevel>0)triggerChainLightning(a);
         if(!b.piercing)b.dead=true;
         if(a.health<=0)destroyAsteroid(a);
@@ -1146,7 +1146,7 @@ processSpecialEntities();
         if(b.blackHole){b.dead=true;spawnBlackHole(b.x,b.y);return}
         if(b.rpg){b.dead=true;rpgExplosion(b.x,b.y,b.rpgMini===true);return}
         if(shouldSplitBullet(b)){b.dead=true;spawnSplitBullets(b);return}
-        const hitDamage=getContinuousFireDamage(enemy,b.damage,b,performance.now());enemy.health-=hitDamage;showDamageNumber(enemy,hitDamage);applyPoison(enemy);applyFreeze(enemy);applyStun(enemy);applyBurn(enemy);
+        const hitDamage=getContinuousFireDamage(enemy,b.damage*5,b,performance.now());enemy.health-=hitDamage;showDamageNumber(enemy,hitDamage);applyPoison(enemy);applyFreeze(enemy);applyStun(enemy);applyBurn(enemy);
         if(enemy.boss)screenShake(2,80);
         if(chainLightningLevel>0)triggerChainLightning(enemy);
         if(!b.piercing)b.dead=true;
