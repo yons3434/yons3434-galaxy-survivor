@@ -271,3 +271,17 @@ test("all boss types receive five times their previous base health", () => {
   assert.match(js, /else if\(isSpecial\)health=\(550\+distance\*\.45\)\*5\*difficultySettings\[difficulty\]\.enemyHP/);
   assert.match(js, /else health=\(350\+distance\*\.35\)\*5\*difficultySettings\[difficulty\]\.enemyHP/);
 });
+
+test("flamethrower upgrades cap at X, show maximum label, scale damage and range by 50 points, and burn for five ticks", () => {
+  assert.match(js, /"continuousFire","expandedChoice","flamethrower"\]\)/);
+  assert.match(js, /u\.id==="flamethrower"&&flamethrowerLevel>=10/);
+  assert.match(js, /upgrade\.id==="flamethrower"&&flamethrowerLevel===9/);
+  assert.match(js, /flamethrowerLevel=Math\.min\(10,flamethrowerLevel\+1\)/);
+  assert.match(js, /scale=1\+\.5\*\(level-1\),range=220\*scale/);
+  assert.match(js, /flameDamage=effectiveDamage\(\)\*\.18\*scale/);
+  assert.match(js, /burnPercent=\.2\+\.1\*\(level-1\)/);
+  assert.match(js, /flameBurnUntil=now\+2500/);
+  assert.match(js, /flameBurnTicksRemaining=5/);
+  assert.match(js, /flameBurnNextTickAt=now\+500/);
+  assert.match(js, /updateFlamethrowerBurn\(\)/);
+});
