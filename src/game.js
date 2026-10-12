@@ -784,7 +784,7 @@ function spawnBoss(type="normal"){
 function findNearestTarget(x,y){let nearest=null,best=Infinity;[...asteroids,...enemies].forEach(target=>{if(target.health<=0)return;const d=Math.hypot(target.x-x,target.y-y);if(d<best){best=d;nearest=target}});return nearest}
 function getContinuousFireDamage(target,baseDamage,bullet,now){if(continuousFireLevel<=0||!target||!Number.isFinite(baseDamage)||baseDamage<0)return baseDamage;if(target.continuousFireLastBullet===bullet)return baseDamage;const lastDamage=Number(target.continuousFireLastDamage)||0,lastHitAt=Number(target.continuousFireLastHitAt)||0;const continuing=lastDamage>0&&now-lastHitAt<=1500;const rawDamage=continuing?lastDamage*(1+.1*continuousFireLevel):baseDamage;const damage=Math.round(rawDamage*1e10)/1e10;target.continuousFireLastDamage=damage;target.continuousFireLastHitAt=now;target.continuousFireLastBullet=bullet;return damage}
 function applyPoison(enemy){if(poisonLevel<=0||!enemy||enemy.health<=0)return;const now=performance.now();enemy.poisonUntil=now+4000;enemy.poisonStrength=poisonLevel;enemy.poisonNextTickAt=now+1000}
-function updatePoison(){if(poisonLevel<=0)return;const now=performance.now();const tickTarget=(target,destroyFn)=>{if(target.health<=0||!(target.poisonUntil>now))return;if(!(target.poisonNextTickAt>0))target.poisonNextTickAt=now+1000;if(now>=target.poisonNextTickAt){target.poisonNextTickAt+=1000;target.health-=target.maxHealth*.05*target.poisonStrength;if(target.health<=0)destroyFn(target)}};asteroids.forEach(a=>tickTarget(a,destroyAsteroid));enemies.forEach(enemy=>tickTarget(enemy,destroyEnemy))}
+function updatePoison(){if(poisonLevel<=0)return;const now=performance.now();const tickTarget=(target,destroyFn)=>{if(target.health<=0||!(target.poisonUntil>now))return;if(!(target.poisonNextTickAt>0))target.poisonNextTickAt=now+1000;if(now>=target.poisonNextTickAt){target.poisonNextTickAt+=1000;const poisonDamage=target.maxHealth*.05*target.poisonStrength;target.health-=poisonDamage;showDamageNumber(target,poisonDamage);if(target.health<=0)destroyFn(target)}};asteroids.forEach(a=>tickTarget(a,destroyAsteroid));enemies.forEach(enemy=>tickTarget(enemy,destroyEnemy))}
 function applyBurn(target,continuous=false){
   if(burnLevel<=0||!target||target.health<=0)return false;
   if(continuous&&target.burnUntil>performance.now())return false;
@@ -803,7 +803,9 @@ function updateBurn(){
     if(target.health<=0||!(target.burnUntil>now))return;
     while(target.burnTicksRemaining>0&&now>=target.burnNextTickAt){
       const isBoss=!!(target.boss&&enemies.includes(target));
-      target.health-=GalaxyBurn.getTickDamage(target.maxHealth,target.burnStrength,isBoss);
+      const burnDamage=GalaxyBurn.getTickDamage(target.maxHealth,target.burnStrength,isBoss);
+      target.health-=burnDamage;
+      showDamageNumber(target,burnDamage);
       target.burnTicksRemaining--;
       target.burnNextTickAt+=GalaxyBurn.tickIntervalMs;
       if(target.health<=0){destroyFn(target);return}
