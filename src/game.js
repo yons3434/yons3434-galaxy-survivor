@@ -1092,7 +1092,27 @@ function update(){if(!gameRunning)return;gameTime+=1/60;for(let i=meteoriteFragm
     const freezeFactor=getEnemyFreezeFactor(enemy);
     if(enemy.boss){
       if(updateStunnedEnemy(enemy))return;
-      if(enemy.specialBoss)return;      enemy.x+=enemy.direction*bossSpeed*freezeFactor;if(enemy.x<100||enemy.x>canvas.width-100)enemy.direction*=-1;
+      // Split bosses are updated in this main entity loop so they cannot be skipped by
+      // the generic special-boss early return.
+      if(enemy.specialType==="split"){
+        const stage=Number(enemy.splitStage)||0;
+        const moveFactor=stage===0?1:stage===1?1.25:1.5;
+        const edge=stage===0?100:stage===1?65:45;
+        enemy.x+=(Number(enemy.direction)||1)*bossSpeed*moveFactor*freezeFactor;
+        if(enemy.x<edge){enemy.x=edge;enemy.direction=1}
+        else if(enemy.x>canvas.width-edge){enemy.x=canvas.width-edge;enemy.direction=-1}
+        enemy.specialFireTimer=(Number.isFinite(enemy.specialFireTimer)?enemy.specialFireTimer:(stage===0?600:stage===1?300:150))-freezeFactor;
+        if(enemy.specialFireTimer<=0){
+          const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
+          const shotSpeed=stage===0?2.5:stage===1?5:10;
+          const shotSize=stage===0?18:stage===1?10:6;
+          enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+shotSize,vx:dx/len*shotSpeed,vy:dy/len*shotSpeed,size:shotSize,specialSplitBullet:true,splitStage:stage,damage:stage===0?2:1});
+          enemy.specialFireTimer=stage===0?600:stage===1?300:150;
+        }
+        return;
+      }
+      if(enemy.specialBoss)return;
+      enemy.x+=enemy.direction*bossSpeed*freezeFactor;if(enemy.x<100||enemy.x>canvas.width-100)enemy.direction*=-1;
       enemy.timer-=freezeFactor;
       if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
@@ -1212,7 +1232,7 @@ function processSpecialEntities(){
 
   // Special bosses and their unique attacks.
   enemies.forEach(enemy=>{
-    if(!enemy.boss||!enemy.specialBoss||enemy.health<=0)return;
+    if(!enemy.boss||!enemy.specialBoss||enemy.health<=0||enemy.specialType==="split")return;
     const freezeFactor=getEnemyFreezeFactor(enemy);
     if(updateStunnedEnemy(enemy))return;
     if(enemy.specialType==="split"){
