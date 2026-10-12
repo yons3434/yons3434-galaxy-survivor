@@ -247,7 +247,7 @@ test("normal enemies start at 100 health, meteorites have five times health, and
 
 test("laser and flamethrower show their actual continuous damage", () => {
   assert.match(js, /const laserDamage=effectiveDamage\(\)\*\.25;target\.health-=laserDamage;showDamageNumber\(target,laserDamage\)/);
-  assert.match(js, /const flameDamage=effectiveDamage\(\)\*\.18;target\.health-=flameDamage;showDamageNumber\(target,flameDamage\)/);
+  assert.match(js, /const flameDamage=effectiveDamage\(\)\*\.18\*scale;target\.health-=flameDamage;showDamageNumber\(target,flameDamage\)/);
 });
 
 test("poison and burn damage-over-time ticks display their actual damage", () => {
@@ -273,7 +273,7 @@ test("all boss types receive five times their previous base health", () => {
 });
 
 test("flamethrower upgrades cap at X, show maximum label, scale damage and range by 50 points, and burn for five ticks", () => {
-  assert.match(js, /"continuousFire","expandedChoice","flamethrower","flamethrower"\]\)/);
+  assert.match(js, /"continuousFire","expandedChoice","flamethrower"\]\)/);
   assert.match(js, /u\.id==="flamethrower"&&flamethrowerLevel>=10/);
   assert.match(js, /upgrade\.id==="flamethrower"&&flamethrowerLevel===9/);
   assert.match(js, /flamethrowerLevel=Math\.min\(10,flamethrowerLevel\+1\)/);
