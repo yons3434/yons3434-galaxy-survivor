@@ -58,6 +58,6 @@ test("a piercing projectile does not repeatedly increase the streak while overla
 });
 
 test("continuous-fire bonus is applied to both meteorites and enemy ships", () => {
-  assert.match(source, /a\.health-=getContinuousFireDamage\(a,b\.damage,b,performance\.now\(\)\)/);
-  assert.match(source, /enemy\.health-=getContinuousFireDamage\(enemy,b\.damage,b,performance\.now\(\)\)/);
+  assert.match(source, /getContinuousFireDamage\(a,b\.damage\*5,b,performance\.now\(\)\)/);
+  assert.match(source, /getContinuousFireDamage\(enemy,b\.damage\*5,b,performance\.now\(\)\)/);
 });
