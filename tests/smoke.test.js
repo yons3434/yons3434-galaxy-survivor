@@ -223,3 +223,16 @@ test("expanded choice card adds one level-up option per pick up to six, then dis
 
 
 
+
+
+test("red floating damage numbers show actual bullet damage, accumulate rapid hits, and can be toggled in settings", () => {
+  assert.match(js, /function showDamageNumber\(target,damage\)/);
+  assert.match(js, /entry\.amount\+=damage/);
+  assert.match(js, /now-n\.lastHitAt<=300/);
+  assert.match(js, /ctx\.fillStyle="#ff3030"/);
+  assert.match(js, /showDamageNumber\(a,hitDamage\)/);
+  assert.match(js, /showDamageNumber\(enemy,hitDamage\)/);
+  assert.match(js, /galaxyDefenderDamageNumbers/);
+  assert.match(js, /uiDamageNumbers/);
+  assert.match(index, /id="uiDamageNumbers"/);
+});
