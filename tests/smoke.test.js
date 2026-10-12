@@ -293,3 +293,17 @@ test("splitting bosses move and bounce while their special attack timer runs", (
   assert.match(js, /else if\(enemy\.x>canvas\.width-edge\)\{enemy\.x=canvas\.width-edge;enemy\.direction=-1\}/);
   assert.match(js, /enemy\.specialFireTimer=stage===0\?600:stage===1\?300:150/);
 });
+
+
+test("Ultra Mode card is twice as rare as Amazing, enables a 5000-point pool, and consumes 500 points per second", () => {
+  assert.match(js, /id:"ultraMode",rarity:"אולטרה",rarityClass:"ultra",icon:"🌈",title:"מצב אולטרה"/);
+  assert.match(js, /rarityClass==="amazing"\?2:1/);
+  assert.match(js, /weight\+=luckLevel\*4/);
+  assert.match(js, /ultraPointsCap=5000/);
+  assert.match(js, /ultraPointsCap\+=500/);
+  assert.match(js, /Math\.min\(500\/60,ultraPoints\)/);
+  assert.match(js, /if\(invincible\|\|ultraModeActive\|\|!gameRunning\)return false/);
+  assert.match(js, /distanceSpeed\*worldMultiplier\*\(ultraModeActive\?2:1\)/);
+  assert.match(html, /id="ultraModeButton"/);
+  assert.match(css, /#ultraModeButton/);
+});
