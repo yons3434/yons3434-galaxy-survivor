@@ -315,6 +315,6 @@ test("Ultra Mode card has the intended rarity, 20% movement speed, double distan
   assert.match(js, /if\(ultraModeActive\)v\*=1\.2/);
   assert.match(js, /distanceSpeed\*worldMultiplier\*\(ultraModeActive\?2:1\)/);
   assert.match(js, /if\(invincible\|\|ultraModeActive\|\|!gameRunning\)return false/);
-  assert.match(html, /id="ultraModeButton"/);
+  assert.match(index, /id="ultraModeButton"/);
   assert.match(css, /#ultraModeButton/);
 });
