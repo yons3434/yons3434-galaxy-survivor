@@ -301,3 +301,8 @@ test("piercing upgrade is rare and adds one extra target penetration per level",
   assert.match(js, /if\(\(Number\(b\.pierceRemaining\)\|\|0\)>0\)\{b\.pierceRemaining--;return true\}/);
   assert.doesNotMatch(js, /if\(!b\.piercing\)b\.dead=true/);
 });
+
+test("continuous fire upgrade is rare and grows damage by 20 percentage points per level", () => {
+  assert.match(js, /id:"continuousFire",rarity:"נדיר",rarityClass:"rare",icon:"🎯",title:"ירי רציף"/);
+  assert.match(js, /lastDamage\*\(1\+\.2\*continuousFireLevel\)/);
+});
