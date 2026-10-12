@@ -236,3 +236,10 @@ test("red floating damage numbers show actual bullet damage, accumulate rapid hi
   assert.match(js, /uiDamageNumbers/);
   assert.match(index, /id="uiDamageNumbers"/);
 });
+
+test("normal enemies start at 100 health, meteorites have five times health, and bullet damage is multiplied by five", () => {
+  assert.match(js, /const health=\(10\+size\*\.55\+distance\*\.004\)\*5\*difficultySettings\[difficulty\]\.enemyHP/);
+  assert.match(js, /const health=\(100\+distance\*\.012\)\*difficultySettings\[difficulty\]\.enemyHP/);
+  assert.match(js, /getContinuousFireDamage\(a,b\.damage\*5,b,performance\.now\(\)\)/);
+  assert.match(js, /getContinuousFireDamage\(enemy,b\.damage\*5,b,performance\.now\(\)\)/);
+});
