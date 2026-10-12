@@ -210,3 +210,14 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 #homeDailyMissions .homeDailyButtonText{font-size:17px;font-weight:bold;color:#90e0ef}
 #homeDailyMissions .homeDailyButtonCount{font-size:12px;color:#ffd166}
 @media(max-width:700px){#homeDailyMissions{left:23%;width:175px;height:70px}.homeDailyButtonIcon{font-size:23px!important}.homeDailyButtonText{font-size:14px!important}}
+
+/* Ultra Mode card and in-game points button */
+#ultraModeButton{display:none;position:fixed;left:50%;bottom:18px;transform:translateX(-50%);width:112px;height:112px;border-radius:50%;padding:8px;margin:0;z-index:140;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;white-space:normal;color:#fff;background:linear-gradient(135deg,#27d85c,#19b7ff,#9b4dff,#ff365e,#ffd52e);border:3px solid #fff;box-shadow:0 0 22px rgba(170,90,255,.8),inset 0 0 14px rgba(255,255,255,.35);font-size:14px;line-height:1.2;touch-action:manipulation}
+#ultraModeButton small{font-size:10px;font-weight:800;line-height:1.1}
+#ultraModeButton.active{animation:ultraPulse .8s infinite alternate;box-shadow:0 0 36px rgba(255,255,255,.95),0 0 58px rgba(180,70,255,.85)}
+#ultraModeButton:hover{transform:translateX(-50%) scale(1.05);filter:brightness(1.12)}
+@keyframes ultraPulse{from{filter:hue-rotate(0deg) brightness(1)}to{filter:hue-rotate(70deg) brightness(1.25)}}
+.upgradeCard.ultra{border-color:#fff;background:linear-gradient(135deg,rgba(39,216,92,.22),rgba(25,183,255,.2),rgba(155,77,255,.25),rgba(255,54,94,.2),rgba(255,213,46,.2));box-shadow:0 0 28px rgba(180,90,255,.65)}
+.upgradeCard.ultra .rarity,.selectedCard.ultra .title,.helpCard.ultra .title{color:#fff;text-shadow:0 0 7px #28d9ff,0 0 12px #b44cff}
+.selectedCard.ultra{border-color:#fff;background:linear-gradient(135deg,#167f48,#116b99,#5a2589,#a8203d,#9a7915);box-shadow:0 0 22px rgba(180,90,255,.7)}
+.helpCard.ultra{border-right-color:#b44cff;box-shadow:0 0 18px rgba(180,90,255,.45)}
