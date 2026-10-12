@@ -243,3 +243,8 @@ test("normal enemies start at 100 health, meteorites have five times health, and
   assert.match(js, /getContinuousFireDamage\(a,b\.damage\*5,b,performance\.now\(\)\)/);
   assert.match(js, /getContinuousFireDamage\(enemy,b\.damage\*5,b,performance\.now\(\)\)/);
 });
+
+test("poison and burn damage-over-time ticks display their actual damage", () => {
+  assert.match(js, /const poisonDamage=target\.maxHealth\*\.05\*target\.poisonStrength;target\.health-=poisonDamage;showDamageNumber\(target,poisonDamage\)/);
+  assert.match(js, /const burnDamage=GalaxyBurn\.getTickDamage\(target\.maxHealth,target\.burnStrength,isBoss\);\s*target\.health-=burnDamage;\s*showDamageNumber\(target,burnDamage\)/);
+});
