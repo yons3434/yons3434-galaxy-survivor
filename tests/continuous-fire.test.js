@@ -19,7 +19,7 @@ function loadContinuousFireDamage(level) {
 
 test("continuous-fire card is epic and supports Roman-numeral upgrades", () => {
   assert.match(source, /id:"continuousFire",rarity:"אדיר",rarityClass:"epic",icon:"🎯",title:"ירי רציף"/);
-  assert.match(source, /"continuousFire","expandedChoice"\]\);/);
+  assert.match(source, /"continuousFire","expandedChoice","flamethrower"\]\);/);
   assert.match(source, /case"continuousFire":return continuousFireLevel;/);
   assert.match(source, /case"continuousFire":continuousFireLevel\+\+/);
 });
