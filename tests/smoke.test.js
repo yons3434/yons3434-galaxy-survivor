@@ -214,7 +214,7 @@ test("expanded choice card adds one level-up option per pick up to six, then dis
   assert.match(js, /const choices=\[\],choiceCount=Math\.min\(6,3\+expandedChoiceLevel\)/);
   assert.match(js, /u\.id==="expandedChoice"&&expandedChoiceLevel>=3/);
   assert.match(js, /case"expandedChoice":expandedChoiceLevel=Math\.min\(3,expandedChoiceLevel\+1\)/);
-  assert.match(js, /expandedChoiceLevel=0;distance=0/);
+  assert.match(js, /expandedChoiceLevel=0;ultraUnlocked=false;ultraModeActive=false;ultraPoints=0;ultraPointsCap=0;ultraSpentForHeart=0;ultraShields=0;distance=0/);
   assert.match(js, /\(upgrade\.id==="expandedChoice"&&expandedChoiceLevel===2\)\|\|\(upgrade\.id==="flamethrower"&&flamethrowerLevel===9\)/);
   assert.match(css, /\.upgradeMaxLabel/);
 });
@@ -246,7 +246,7 @@ test("normal enemies start at 100 health, meteorites have five times health, and
 
 
 test("laser and flamethrower show their actual continuous damage", () => {
-  assert.match(js, /const laserDamage=laserHeatLevel>0\?dps\*dt:effectiveDamage\(\)\*\.25;target\.health-=laserDamage;showDamageNumber\(target,laserDamage\)/);
+  assert.match(js, /const laserDamage=laserHeatLevel>0\?dps\*dt\*\(ultraModeActive\?2:1\):effectiveDamage\(\)\*\.25;target\.health-=laserDamage;showDamageNumber\(target,laserDamage\)/);
   assert.match(js, /const flameDamage=effectiveDamage\(\)\*\.18\*scale;target\.health-=flameDamage;showDamageNumber\(target,flameDamage\)/);
 });
 
@@ -256,8 +256,8 @@ test("poison and burn damage-over-time ticks display their actual damage", () =>
 });
 
 test("sword hits show their actual damage against enemies and meteorites", () => {
-  assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\);enemy\.health-=swordHitDamage;showDamageNumber\(enemy,swordHitDamage\)/);
-  assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\);a\.health-=swordHitDamage;showDamageNumber\(a,swordHitDamage\)/);
+  assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\)\*\(ultraModeActive\?2:1\);enemy\.health-=swordHitDamage;showDamageNumber\(enemy,swordHitDamage\)/);
+  assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\)\*\(ultraModeActive\?2:1\);a\.health-=swordHitDamage;showDamageNumber\(a,swordHitDamage\)/);
 });
 
 test("damage numbers cap lethal overkill and rapid-hit totals at the target's remaining health", () => {
