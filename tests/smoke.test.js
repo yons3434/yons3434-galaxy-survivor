@@ -318,3 +318,17 @@ test("Ultra Mode card has the intended rarity, 20% movement speed, double distan
   assert.match(index, /id="ultraModeButton"/);
   assert.match(css, /#ultraModeButton/);
 });
+
+
+test("keyboard controls work by physical key position on English and Hebrew layouts", () => {
+  assert.match(js, /e\.code\.startsWith\("Key"\)\?e\.code\.slice\(3\)\.toLowerCase\(\):e\.key\.toLowerCase\(\)/);
+  assert.match(js, /keys\[key\]=true/);
+  assert.match(js, /keys\[key\]=false/);
+  assert.match(js, /e\.code==="Digit1"\|\|e\.key==="1"/);
+  assert.match(js, /if\(key==="q"\)\{switchWeapon\("rpg"\)/);
+  assert.match(js, /if\(key==="r"\)\{switchWeapon\("shotgun"\)/);
+  assert.match(js, /if\(key==="f"\)\{/);
+  assert.match(js, /if\(key==="e"\)\{/);
+  assert.match(js, /if\(key==="b"\)\{switchWeapon\("blackHole"\)/);
+  assert.match(js, /if\(key==="l"\)\{/);
+});
