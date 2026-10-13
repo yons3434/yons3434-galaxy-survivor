@@ -294,14 +294,12 @@ test("splitting bosses move and bounce while their special attack timer runs", (
   assert.match(js, /enemy\.specialFireTimer=stage===0\?600:stage===1\?300:150/);
 });
 
-test("piercing bullets hit each target twice and add one extra target penetration per level", () => {
+test("piercing bullets hit each target once and immediately continue through the allowed number of targets", () => {
   assert.match(js, /id:"piercing",rarity:"נדיר",rarityClass:"rare",icon:"🏹",title:"יריות חודרות"/);
-  assert.match(js, /pierceRemaining:piercingLevel,piercingEnabled:piercingLevel>0,hitTargets:\[\],targetHitCounts:\[\]/);
+  assert.match(js, /pierceRemaining:piercingLevel,hitTargets:\[\]/);
   assert.match(js, /function consumeBulletPierce\(b,target\)/);
-  assert.match(js, /const requiredHits=b\.piercingEnabled\?2:1/);
-  assert.match(js, /record\.count\+\+/);
-  assert.match(js, /if\(record\.count<requiredHits\)return true/);
-  assert.match(js, /if\(\(Number\(b\.pierceRemaining\)\|\|0\)>0\)\{b\.pierceRemaining--;return true\}/);
+  assert.match(js, /b\.hitTargets\.push\(target\);if\(\(Number\(b\.pierceRemaining\)\|\|0\)>0\)\{b\.pierceRemaining--;return true\}return false/);
+  assert.doesNotMatch(js, /targetHitCounts|const requiredHits=b\.piercingEnabled\?2:1/);
   assert.doesNotMatch(js, /if\(!b\.piercing\)b\.dead=true/);
 });
 
