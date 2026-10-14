@@ -216,7 +216,7 @@ test("expanded choice card adds one level-up option per pick up to six, then dis
   assert.match(js, /const choices=window\.GalaxyLuck\.chooseUpgradeChoices\(availableFiltered,luckLevel,Math\.min\(6,3\+expandedChoiceLevel\)\)/);
   assert.match(js, /u\.id==="expandedChoice"&&expandedChoiceLevel>=3/);
   assert.match(js, /case"expandedChoice":expandedChoiceLevel=Math\.min\(3,expandedChoiceLevel\+1\)/);
-  assert.match(js, /expandedChoiceLevel=0;ultraUnlocked=false;ultraModeActive=false;ultraPoints=0;ultraPointsCap=0;ultraSpentForShield=0;ultraShields=0;distance=0/);
+  assert.match(js, /expandedChoiceLevel=0;ultraUnlocked=false;ultraModeActive=false;ultraPoints=0;ultraPointsCap=0;ultraSpentForShield=0;ultraShields=0;[\s\S]*?distance=0/);
   assert.match(js, /\(upgrade\.id==="expandedChoice"&&expandedChoiceLevel===2\)\|\|\(upgrade\.id==="flamethrower"&&flamethrowerLevel===9\)/);
   assert.match(css, /\.upgradeMaxLabel/);
 });
