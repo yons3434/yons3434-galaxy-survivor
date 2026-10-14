@@ -221,3 +221,7 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 .upgradeCard.ultra .rarity,.selectedCard.ultra .title,.helpCard.ultra .title{color:#fff;text-shadow:0 0 7px #28d9ff,0 0 12px #b44cff}
 .selectedCard.ultra{border-color:#fff;background:linear-gradient(135deg,#167f48,#116b99,#5a2589,#a8203d,#9a7915);box-shadow:0 0 22px rgba(180,90,255,.7)}
 .helpCard.ultra{border-right-color:#b44cff;box-shadow:0 0 18px rgba(180,90,255,.45)}
+
+/* Ultra mode unavailable: gray button during cooldown or with insufficient points */
+#ultraModeButton.disabled,#ultraModeButton:disabled{background:linear-gradient(135deg,#777,#555)!important;border-color:#999!important;color:#ddd!important;box-shadow:none!important;filter:grayscale(1)!important;animation:none!important;cursor:not-allowed;opacity:.78}
+#ultraModeButton.disabled:hover,#ultraModeButton:disabled:hover{transform:translateX(-50%);filter:grayscale(1)!important}
