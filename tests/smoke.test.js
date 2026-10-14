@@ -11,7 +11,9 @@ const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 test("split project has the expected entry files", () => {
   assert.match(index, /src\/style\.css/);
   assert.match(index, /src\/game\.js/);
-  assert.equal((index.match(/<script/g) || []).length, 3);
+  assert.equal((index.match(/<script/g) || []).length, 4);
+  assert.match(index, /src\/luck\.js/);
+  assert.ok(index.indexOf("src/luck.js") < index.indexOf("src/game.js"));
   assert.match(index, /src\/burn\.js/);
   assert.ok(index.indexOf("src/burn.js") < index.indexOf("src/game.js"));
   assert.match(index, /cdn\.jsdelivr\.net\/npm\/\@supabase\/supabase-js/);
@@ -190,7 +192,7 @@ test("stun upgrade is epic, stackable, stuns bosses, and does not apply from swo
   assert.match(js, /case"stun":stunLevel\+\+/);
   assert.match(js, /"poison","burn","freeze","stun","confusion"/);
   assert.match(js, /if\(updateStunnedEnemy\(enemy\)\)return;/);
-  assert.match(js, /const hitDamage=getContinuousFireDamage\(enemy,b\.damage\*5,b,performance\.now\(\)\);enemy\.health-=hitDamage;showDamageNumber\(enemy,hitDamage\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\);applyBurn\(enemy\);/);
+  assert.match(js, /const hitDamage=getContinuousFireDamage\\(enemy,b\\.damage\\*5\\*piercingHit\\.multiplier,b,performance\\.now\\(\\)\\);enemy\\.health-=hitDamage;showDamageNumber\(enemy,hitDamage\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\);applyBurn\(enemy\);/);
   assert.doesNotMatch(js, /enemy\.health-=swordDamage\([^;]+\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\)/);
   assert.match(js, /if\(enemy\.boss\)\{\s*if\(updateStunnedEnemy\(enemy\)\)return;/);
 });
@@ -198,7 +200,7 @@ test("stun upgrade is epic, stackable, stuns bosses, and does not apply from swo
 
 test("poison, freeze, and stun also affect meteors while confusion remains enemy-only", () => {
   assert.match(js, /asteroids\.forEach\(a=>tickTarget\(a,destroyAsteroid\)/);
-  assert.match(js, /const hitDamage=getContinuousFireDamage\(a,b\.damage\*5,b,performance\.now\(\)\);a\.health-=hitDamage;showDamageNumber\(a,hitDamage\);applyPoison\(a\);applyFreeze\(a\);applyStun\(a\);applyBurn\(a\);/);
+  assert.match(js, /const hitDamage=getContinuousFireDamage\\(a,b\\.damage\\*5\\*piercingHit\\.multiplier,b,performance\\.now\\(\\)\\);a\\.health-=hitDamage;showDamageNumber\(a,hitDamage\);applyPoison\(a\);applyFreeze\(a\);applyStun\(a\);applyBurn\(a\);/);
   assert.match(js, /asteroids\.forEach\(a=>\{\n    if\(a\.health<=0\)return;\n    if\(updateStunnedEnemy\(a\)\)return;/);
   assert.match(js, /const freezeFactor=getEnemyFreezeFactor\(a\)/);
   assert.match(js, /applyPoison\(a\);applyFreeze\(a\)/);
@@ -211,7 +213,7 @@ test("expanded choice card adds one level-up option per pick up to six, then dis
   assert.match(js, /id:"expandedChoice",rarity:"אדיר",rarityClass:"epic",icon:"🃏",title:"בחירה מורחבת"/);
   assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat"\]\)/);
   assert.match(js, /case"expandedChoice":return expandedChoiceLevel/);
-  assert.match(js, /const choices=\[\],choiceCount=Math\.min\(6,3\+expandedChoiceLevel\)/);
+  assert.match(js, /const choices=window\.GalaxyLuck\.chooseUpgradeChoices\(availableFiltered,luckLevel,Math\.min\(6,3\+expandedChoiceLevel\)\)/);
   assert.match(js, /u\.id==="expandedChoice"&&expandedChoiceLevel>=3/);
   assert.match(js, /case"expandedChoice":expandedChoiceLevel=Math\.min\(3,expandedChoiceLevel\+1\)/);
   assert.match(js, /expandedChoiceLevel=0;ultraUnlocked=false;ultraModeActive=false;ultraPoints=0;ultraPointsCap=0;ultraSpentForHeart=0;ultraShields=0;distance=0/);
