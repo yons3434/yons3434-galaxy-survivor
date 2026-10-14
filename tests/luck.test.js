@@ -5,7 +5,7 @@ const { RARITY_ORDER, RARITY_CHANCES, getRarityChances, chooseUpgradeChoices } =
 test("luck table has 16 rows whose rarity chances each total 100%", () => {
   assert.equal(RARITY_CHANCES.length, 16);
   for (const row of RARITY_CHANCES) {
-    assert.equal(row.reduce((sum, value) => sum + value, 0), 100);
+    assert.ok(Math.abs(row.reduce((sum, value) => sum + value, 0) - 100) < 1e-9);
     assert.ok(row.every(value => value >= 0));
   }
 });
