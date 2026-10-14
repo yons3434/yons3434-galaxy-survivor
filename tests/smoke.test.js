@@ -192,7 +192,7 @@ test("stun upgrade is epic, stackable, stuns bosses, and does not apply from swo
   assert.match(js, /case"stun":stunLevel\+\+/);
   assert.match(js, /"poison","burn","freeze","stun","confusion"/);
   assert.match(js, /if\(updateStunnedEnemy\(enemy\)\)return;/);
-  assert.match(js, /const hitDamage=getContinuousFireDamage\\(enemy,b\\.damage\\*5\\*piercingHit\\.multiplier,b,performance\\.now\\(\\)\\);enemy\\.health-=hitDamage;showDamageNumber\(enemy,hitDamage\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\);applyBurn\(enemy\);/);
+  assert.match(js, /const hitDamage=getContinuousFireDamage\(enemy,b\.damage\*5\*piercingHit\.multiplier,b,performance\.now\(\)\);enemy\\.health-=hitDamage;showDamageNumber\(enemy,hitDamage\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\);applyBurn\(enemy\);/);
   assert.doesNotMatch(js, /enemy\.health-=swordDamage\([^;]+\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\)/);
   assert.match(js, /if\(enemy\.boss\)\{\s*if\(updateStunnedEnemy\(enemy\)\)return;/);
 });
@@ -200,7 +200,7 @@ test("stun upgrade is epic, stackable, stuns bosses, and does not apply from swo
 
 test("poison, freeze, and stun also affect meteors while confusion remains enemy-only", () => {
   assert.match(js, /asteroids\.forEach\(a=>tickTarget\(a,destroyAsteroid\)/);
-  assert.match(js, /const hitDamage=getContinuousFireDamage\\(a,b\\.damage\\*5\\*piercingHit\\.multiplier,b,performance\\.now\\(\\)\\);a\\.health-=hitDamage;showDamageNumber\(a,hitDamage\);applyPoison\(a\);applyFreeze\(a\);applyStun\(a\);applyBurn\(a\);/);
+  assert.match(js, /const hitDamage=getContinuousFireDamage\(a,b\.damage\*5\*piercingHit\.multiplier,b,performance\.now\(\)\);a\\.health-=hitDamage;showDamageNumber\(a,hitDamage\);applyPoison\(a\);applyFreeze\(a\);applyStun\(a\);applyBurn\(a\);/);
   assert.match(js, /asteroids\.forEach\(a=>\{\n    if\(a\.health<=0\)return;\n    if\(updateStunnedEnemy\(a\)\)return;/);
   assert.match(js, /const freezeFactor=getEnemyFreezeFactor\(a\)/);
   assert.match(js, /applyPoison\(a\);applyFreeze\(a\)/);
@@ -242,8 +242,8 @@ test("red floating damage numbers show actual bullet damage, accumulate rapid hi
 test("normal enemies start at 100 health, meteorites have five times health, and bullet damage is multiplied by five", () => {
   assert.match(js, /const health=\(10\+size\*\.55\+distance\*\.004\)\*5\*difficultySettings\[difficulty\]\.enemyHP/);
   assert.match(js, /const health=\(100\+distance\*\.012\)\*difficultySettings\[difficulty\]\.enemyHP/);
-  assert.match(js, /getContinuousFireDamage\(a,b\.damage\*5,b,performance\.now\(\)\)/);
-  assert.match(js, /getContinuousFireDamage\(enemy,b\.damage\*5,b,performance\.now\(\)\)/);
+  assert.match(js, /getContinuousFireDamage\(a,b\.damage\*5\*piercingHit\.multiplier,b,performance\.now\(\)\)/);
+  assert.match(js, /getContinuousFireDamage\(enemy,b\.damage\*5\*piercingHit\.multiplier,b,performance\.now\(\)\)/);
 });
 
 
