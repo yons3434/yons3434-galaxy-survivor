@@ -225,3 +225,14 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 /* Ultra mode unavailable: gray button during cooldown or with insufficient points */
 #ultraModeButton.disabled,#ultraModeButton:disabled{background:linear-gradient(135deg,#777,#555)!important;border-color:#999!important;color:#ddd!important;box-shadow:none!important;filter:grayscale(1)!important;animation:none!important;cursor:not-allowed;opacity:.78}
 #ultraModeButton.disabled:hover,#ultraModeButton:disabled:hover{transform:translateX(-50%);filter:grayscale(1)!important}
+
+
+/* Separate Ultra Laser ability button */
+#ultraModeButton{left:calc(50% + 72px)}
+#ultraLaserButton{display:none;position:fixed;left:calc(50% - 72px);bottom:18px;transform:translateX(-50%);width:112px;height:112px;border-radius:50%;padding:8px;margin:0;z-index:140;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;white-space:normal;color:#fff;background:linear-gradient(135deg,#27d85c,#19b7ff,#9b4dff,#ff365e,#ffd52e);border:3px solid #fff;box-shadow:0 0 22px rgba(170,90,255,.8),inset 0 0 14px rgba(255,255,255,.35);font-size:13px;line-height:1.2;touch-action:manipulation}
+#ultraLaserButton small{font-size:10px;font-weight:800;line-height:1.1}
+#ultraLaserButton.active{animation:ultraPulse .8s infinite alternate;box-shadow:0 0 36px rgba(255,255,255,.95),0 0 58px rgba(180,70,255,.85)}
+#ultraLaserButton:hover{transform:translateX(-50%) scale(1.05);filter:brightness(1.12)}
+#ultraLaserButton.disabled,#ultraLaserButton:disabled{background:linear-gradient(135deg,#777,#555)!important;border-color:#999!important;color:#ddd!important;box-shadow:none!important;filter:grayscale(1)!important;animation:none!important;cursor:not-allowed;opacity:.78}
+#ultraLaserButton.disabled:hover,#ultraLaserButton:disabled:hover{transform:translateX(-50%);filter:grayscale(1)!important}
+@media(max-width:700px){#ultraModeButton{left:calc(50% + 61px);width:96px;height:96px;bottom:14px}#ultraLaserButton{left:calc(50% - 61px);width:96px;height:96px;bottom:14px}}
