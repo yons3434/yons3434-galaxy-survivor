@@ -591,7 +591,7 @@ function speedComboStepMeters(){
 function speedComboStepValue(){return difficulty==="super"?.02:.01}
 function speedComboMultiplier(){return Math.min(10,1+speedComboPermanentBonus+speedComboTemporaryBonus)}
 function worldSpeedMultiplier(){return speedComboMultiplier()}
-function effectiveMoveSpeed(){let v=player.speed;if(lowHealthActive())v*=1.5;if(freezeTimer>0)v*=.5;if(ultraModeActive)v*=1.2;return v}
+function effectiveMoveSpeed(){let v=player.speed;if(lowHealthActive())v*=1.5;if(freezeTimer>0)v*=.5;if(ultraModeActive)v*=1.2;if(ultraLaserActive)v*=.5;return v}
 function resetTemporarySpeedCombo(){
   // A hit resets ONLY the non-fixed combo.
   // The permanent combo and its distance counter are intentionally untouched.
@@ -948,7 +948,9 @@ function updateUltraLaser(){
   ultraPoints=Math.max(0,ultraPoints-spend);
   if(dt>0){
     const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1,dirX=dx/len,dirY=dy/len,range=1400,damage=750*dt;
-    [...enemies,...asteroids].forEach(target=>{if(target.health<=0)return;const ex=target.x-player.x,ey=target.y-player.y,forward=ex*dirX+ey*dirY,side=Math.abs(ex*dirY-ey*dirX);if(forward>0&&forward<range&&side<58){target.health-=damage;showDamageNumber(target,damage);if(target.health<=0){if(enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}});
+    [...enemies,...asteroids].forEach(target=>{if(target.health<=0)return;const ex=target.x-player.x,ey=target.y-player.y,forward=ex*dirX+ey*dirY,side=Math.abs(ex*dirY-ey*dirX);if(forward>0&&forward<range&&side<58){if(enemies.includes(target)){const push= Math.min(9,4+Math.max(0,58-side)*.08);target.x+=dirX*push;target.y+=dirY*push;}target.health-=damage;showDamageNumber(target,damage);if(target.health<=0){if(enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}});
+  // Deflect hostile projectiles that cross the active beam.
+  enemyBullets.forEach(b=>{if(b.dead)return;const bx=b.x-player.x,by=b.y-player.y,forward=bx*dirX+by*dirY,side=Math.abs(bx*dirY-by*dirX);if(forward>0&&forward<range&&side<62){const dot=b.vx*dirX+b.vy*dirY;b.vx-=2*dot*dirX;b.vy-=2*dot*dirY;b.deflectedByUltraLaser=true;}});
   }
   if(elapsed>=10){ultraLaserActive=false;ultraLaserFadeUntil=now+500;ultraLaserCooldownUntil=now+20000;ultraLaserPointsSpent=5000;showMessage("🌈 אולטרה לייזר הסתיים — טעינה של 20 שניות");}
   updateUltraLaserButton();
