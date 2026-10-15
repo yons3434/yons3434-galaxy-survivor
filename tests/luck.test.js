@@ -22,8 +22,8 @@ test("ultra rarity chance rises at every level from 0 through XV", () => {
   }
 });
 
-test("all higher rarity chances rise at every level from 0 through XV", () => {
-  for (const rarity of RARITY_ORDER.filter(r => r !== "common")) {
+test("epic, legendary, amazing, and ultra chances rise at every level from 0 through XV", () => {
+  for (const rarity of RARITY_ORDER.filter(r => !["common", "rare"].includes(r))) {
     for (let level = 1; level <= 15; level++) {
       assert.ok(
         getRarityChances(level)[rarity] > getRarityChances(level - 1)[rarity],
