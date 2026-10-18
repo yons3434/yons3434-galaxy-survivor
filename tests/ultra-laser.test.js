@@ -20,10 +20,9 @@ test("Ultra Laser button is present and separately styled", () => {
   assert.match(css, /#ultraLaserButton\.disabled/);
 });
 
-test("Ultra Laser uses the agreed 10-second, 750 DPS, 500 points/second and 20-second cooldown", () => {
+test("Ultra Laser costs 5,000 points over 10 seconds and has a 20-second cooldown", () => {
   assert.match(game, /elapsed>=10/);
   assert.match(game, /targetSpent=Math\.min\(5000,elapsed\*500\)/);
-  assert.match(game, /damage=750\*dt/);
   assert.match(game, /ultraLaserCooldownUntil=now\+20000/);
 });
 
@@ -38,4 +37,13 @@ test("Ultra Laser cannot start without 5,000 points and stops dealing damage at 
   assert.match(game, /if\(ultraPoints<5000\)\{showMessage/);
   assert.match(game, /if\(elapsed>=10\)\{ultraLaserActive=false/);
   assert.match(game, /if\(!ultraLaserActive\|\|!gameRunning\)return/);
+});
+
+test("Ultra Laser effects scale with Ultra Mode and bosses are not pushed", () => {
+  assert.match(game, /baseDps=laserHeatLevel>0/);
+  assert.match(game, /ultraModeActive\?5:2/);
+  assert.match(game, /const thickness=ultraModeActive\?3:1/);
+  assert.match(game, /ultraLaserActive&&ultraModeActive\)v\*=\.5/);
+  assert.match(game, /if\(ultraModeActive&&!isBoss\)/);
+  assert.match(game, /if\(ultraModeActive\)\{\s*\/\/ Only the empowered Ultra Laser deflects hostile projectiles\./);
 });
