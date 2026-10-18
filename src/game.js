@@ -986,8 +986,8 @@ function drawUltraLaser(){
   const alpha=ultraLaserActive?1:Math.max(0,Math.min(1,(ultraLaserFadeUntil-now)/500));
   const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1,endX=player.x+dx/len*1400,endY=player.y+dy/len*1400;
   const colors=["#ff1744","#ff9800","#ffeb3b","#35e06f","#19b7ff","#6a4cff","#e040fb"];
-  const thickness=ultraModeActive?3:1;
-  ctx.save();ctx.globalAlpha=alpha;ctx.lineCap="round";colors.forEach((color,i)=>{ctx.strokeStyle=color;ctx.shadowColor=color;ctx.shadowBlur=8*thickness;ctx.lineWidth=(12-i*1.1)*thickness;ctx.beginPath();ctx.moveTo(player.x+dx/len*18,player.y+dy/len*18);ctx.lineTo(endX,endY);ctx.stroke()});ctx.restore();
+  const thickness=(12+laserHeat*3)*(ultraModeActive?3:1);
+  ctx.save();ctx.globalAlpha=alpha;ctx.lineCap="round";colors.forEach((color,i)=>{ctx.strokeStyle=color;ctx.shadowColor=color;ctx.shadowBlur=8*(ultraModeActive?3:1);ctx.lineWidth=(thickness-i*(thickness/11))*1;ctx.beginPath();ctx.moveTo(player.x+dx/len*18,player.y+dy/len*18);ctx.lineTo(endX,endY);ctx.stroke()});ctx.restore();
 }
 function updateLaser(){
   const dt=1/60;
