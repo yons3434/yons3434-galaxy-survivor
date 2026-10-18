@@ -2,6 +2,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
+const vm = require("node:vm");
 
 const root = path.join(__dirname, "..");
 const game = fs.readFileSync(path.join(root, "src", "game.js"), "utf8");
@@ -51,4 +52,8 @@ test("Ultra Mini Spaceship button is disabled without enough points or during co
   assert.match(moduleSource, /ultraPoints < POINT_COST/);
   assert.match(moduleSource, /ultraMiniCooldownUntil/);
   assert.match(moduleSource, /button\.disabled = unavailable/);
+});
+
+test("Ultra Mini Spaceship script parses as valid JavaScript", () => {
+  assert.doesNotThrow(() => new vm.Script(moduleSource, { filename: "src/ultra-mini-ships.js" }));
 });
