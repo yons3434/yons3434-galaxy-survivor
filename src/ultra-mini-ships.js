@@ -133,7 +133,7 @@
           }
         });
         const brokenDuringDamage = ship.beams.some(beam => !beam.target || beam.target.health <= 0);
-        if (brokenDuringDamage) {
+        if (brokenBeam || brokenDuringDamage) {
           const impactPoint = ship.lastImpact;
           ship.beams = ship.beams.filter(beam => beam.target && beam.target.health > 0);
           connectNextBeam(ship, now, impactPoint);
