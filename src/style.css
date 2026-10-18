@@ -236,3 +236,10 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 #ultraLaserButton.disabled,#ultraLaserButton:disabled{background:linear-gradient(135deg,#777,#555)!important;border-color:#999!important;color:#ddd!important;box-shadow:none!important;filter:grayscale(1)!important;animation:none!important;cursor:not-allowed;opacity:.78}
 #ultraLaserButton.disabled:hover,#ultraLaserButton:disabled:hover{transform:translateX(-50%);filter:grayscale(1)!important}
 @media(max-width:700px){#ultraModeButton{left:calc(50% + 61px);width:96px;height:96px;bottom:14px}#ultraLaserButton{left:calc(50% - 61px);width:96px;height:96px;bottom:14px}}
+
+/* Ultra Mini Spaceship card ability button */
+#ultraMiniShipButton{display:none;position:fixed;left:calc(50% - 190px);bottom:18px;transform:translateX(-50%);width:112px;height:112px;border-radius:50%;padding:8px;margin:0;z-index:140;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;white-space:normal;color:#fff;background:linear-gradient(135deg,#18c9d2,#7c4dff,#ff4fbb);border:3px solid #fff;box-shadow:0 0 22px rgba(90,220,255,.65),inset 0 0 14px rgba(255,255,255,.35);font-size:12px;line-height:1.2;touch-action:manipulation}
+#ultraMiniShipButton small{font-size:10px;font-weight:800;line-height:1.1}
+#ultraMiniShipButton.active{animation:ultraPulse .8s infinite alternate;box-shadow:0 0 36px rgba(255,255,255,.95),0 0 58px rgba(180,70,255,.85)}
+#ultraMiniShipButton.disabled,#ultraMiniShipButton:disabled{background:linear-gradient(135deg,#777,#555)!important;border-color:#999!important;color:#ddd!important;box-shadow:none!important;filter:grayscale(1)!important;animation:none!important;cursor:not-allowed;opacity:.78}
+@media(max-width:700px){#ultraMiniShipButton{left:calc(50% - 168px);width:82px;height:82px;bottom:14px;font-size:10px}}
