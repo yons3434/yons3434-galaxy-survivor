@@ -87,13 +87,14 @@
     updateHUD();
   }
 
-  function connectNextBeam(ship, now) {
+  function connectNextBeam(ship, now, impactPoint = null) {
     if (!ultraMiniModeActive || ultraMiniConnections >= MAX_CONNECTIONS) return;
     const excluded = new Set(ship.beams.filter(beam => beam.target && beam.target.health > 0).map(beam => beam.target));
-    const origin = ship.beams.length ? ship.beams[ship.beams.length - 1].target : ship;
+    const origin = impactPoint || ship.lastImpact || (ship.beams.length ? ship.beams[ship.beams.length - 1].target : ship);
     const target = nearestTarget(origin.x, origin.y, excluded);
     if (!target) return;
     ship.beams.push({ target, connectedAt: now });
+    ship.lastImpact = null;
     ultraMiniConnections += 1;
     ship.chainAt = now + CHAIN_INTERVAL_MS;
     if (ultraMiniConnections >= MAX_CONNECTIONS) finishUltraMiniMode("🛸 הקרן ה־20 התחברה — מצב האולטרה הסתיים!");
@@ -118,17 +119,29 @@
       ship.y = player.y + Math.sin(ship.angle) * SHIP_ORBIT_Y;
 
       if (ultraMiniModeActive && ultraModeActive) {
+        const brokenBeam = ship.beams.find(beam => !beam.target || beam.target.health <= 0);
+        if (brokenBeam && brokenBeam.target) ship.lastImpact = { x: brokenBeam.target.x, y: brokenBeam.target.y };
         ship.beams = ship.beams.filter(beam => beam.target && beam.target.health > 0);
         ship.beams.forEach(beam => {
           const damage = ULTRA_DPS * dt;
           beam.target.health -= damage;
           if (damage > 0) showDamageNumber(beam.target, damage);
           if (beam.target.health <= 0) {
+            ship.lastImpact = { x: beam.target.x, y: beam.target.y };
             if (enemies.includes(beam.target)) destroyEnemy(beam.target);
             else if (asteroids.includes(beam.target)) destroyAsteroid(beam.target);
           }
         });
-        if (now >= ship.chainAt && ultraMiniConnections < MAX_CONNECTIONS) connectNextBeam(ship, now);
+        const brokenDuringDamage = ship.beams.some(beam => !beam.target || beam.target.health <= 0);
+        if (brokenDuringDamage) {
+          const impactPoint = ship.lastImpact;
+          ship.beams = ship.beams.filter(beam => beam.target && beam.target.health > 0);
+          connectNextBeam(ship, now, impactPoint);
+        } else if (ship.lastImpact && now >= ship.chainAt) {
+          connectNextBeam(ship, now, ship.lastImpact);
+        } else if (now >= ship.chainAt && ultraMiniConnections < MAX_CONNECTIONS) {
+          connectNextBeam(ship, now);
+        }
         return;
       }
 
@@ -226,6 +239,12 @@
         remaining ? "⏳ " + remaining + " שניות" :
           Math.floor(ultraPoints).toLocaleString("en-US") + " / 3,000 נקודות") + "</small>";
   }
+
+  const originalGetUpgradeCardTitle = getUpgradeCardTitle;
+  getUpgradeCardTitle = function (upgrade) {
+    if (upgrade.id === "ultraMiniShip") return upgrade.title + " " + ["I", "II", "III", "IV", "V"][ultraMiniShipLevel];
+    return originalGetUpgradeCardTitle(upgrade);
+  };
 
   const originalApplyUpgrade = applyUpgrade;
   applyUpgrade = function (upgrade) {
