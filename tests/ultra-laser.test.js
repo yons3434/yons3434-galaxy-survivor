@@ -47,3 +47,8 @@ test("Ultra Laser effects scale with Ultra Mode and bosses are not pushed", () =
   assert.match(game, /if\(ultraModeActive&&!isBoss\)/);
   assert.match(game, /if\(ultraModeActive\)\{\s*\/\/ Only the empowered Ultra Laser deflects hostile projectiles\./);
 });
+
+test("Ultra Laser matches the regular laser's heat-dependent thickness and triples it only in Ultra Mode", () => {
+  assert.match(game, /const thickness=\(12\+laserHeat\*3\)\*\(ultraModeActive\?3:1\)/);
+  assert.match(game, /ctx\.lineWidth=\(thickness-i\*\(thickness\/11\)\)\*1/);
+});
