@@ -42,7 +42,7 @@ test("Ultra Laser cannot start without 5,000 points and stops dealing damage at 
 test("Ultra Laser effects scale with Ultra Mode and bosses are not pushed", () => {
   assert.match(game, /baseDps=laserHeatLevel>0/);
   assert.match(game, /ultraModeActive\?5:2/);
-  assert.match(game, /const thickness=ultraModeActive\?3:1/);
+  assert.match(game, /const thickness=\(12\+laserHeat\*3\)\*\(ultraModeActive\?3:1\)/);
   assert.match(game, /ultraLaserActive&&ultraModeActive\)v\*=\.5/);
   assert.match(game, /if\(ultraModeActive&&!isBoss\)/);
   assert.match(game, /if\(ultraModeActive\)\{\s*\/\/ Only the empowered Ultra Laser deflects hostile projectiles\./);
