@@ -47,7 +47,7 @@ const ACHIEVEMENTS_KEY="galaxyDefenderAchievements_v1";
 const ACHIEVEMENTS_STATS_KEY="galaxyDefenderAchievementStats_v1";
 const PLAYER_XP_KEY="galaxyDefenderPlayerXP_v1";
 let playerXPData=loadPlayerXPData();
-function loadPlayerXPData(){try{const x=JSON.parse(localStorage.getItem(PLAYER_XP_KEY)||"{}");return {xp:Number(x.xp)||0,paidCategoryBonuses:x.paidCategoryBonuses&&typeof x.paidCategoryBonuses==="object"?x.paidCategoryBonuses:{}}}catch(e){return {xp:0,paidCategoryBonuses:{}}}}
+function loadPlayerXPData(){try{const x=JSON.parse(localStorage.getItem(PLAYER_XP_KEY)||"{}");return {xp:Number(x.xp)||0,paidCategoryBonuses:x.paidCategoryBonuses&&typeof x.paidCategoryBonuses==="object"?x.paidCategoryBonuses:{},paidAllAchievementsBonus:!!x.paidAllAchievementsBonus}}catch(e){return {xp:0,paidCategoryBonuses:{},paidAllAchievementsBonus:false}}}
 function savePlayerXPData(){try{localStorage.setItem(PLAYER_XP_KEY,JSON.stringify(playerXPData))}catch(e){}}
 function playerLevelFromXP(total){return Math.floor(Math.max(0,total)/1000)+1}
 function playerLevelProgress(total){const level=playerLevelFromXP(total),base=(level-1)*1000;return {level,into:total-base,needed:1000}}
@@ -952,7 +952,7 @@ function updateUltraLaser(){
     const baseDps=laserHeatLevel>0
       ? (15+5*(laserHeatLevel-1))+((40+10*(laserHeatLevel-1))-(15+5*(laserHeatLevel-1)))*laserHeat
       : effectiveDamage()*.25*60;
-    const damage=baseDps*(ultraModeActive?5:2)*dt;
+    const damage=baseDps*(ultraModeActive?5:2)*dt;\n     enemies.forEach(target=>{if(target.health>0){const ex=target.x-player.x,ey=target.y-player.y,len=Math.hypot(mouse.x-player.x,mouse.y-player.y)||1,forward=(ex*(mouse.x-player.x)+ey*(mouse.y-player.y))/len,side=Math.abs(ex*(mouse.y-player.y)-ey*(mouse.x-player.x))/len;if(forward>0&&forward<1400&&side<Math.max(10,player.size*.45))target.ultraLaserHit=true;}});
     [...enemies,...asteroids].forEach(target=>{
       if(target.health<=0)return;
       const ex=target.x-player.x,ey=target.y-player.y,forward=ex*dirX+ey*dirY,side=Math.abs(ex*dirY-ey*dirX);
