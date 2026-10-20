@@ -243,3 +243,9 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 #ultraMiniShipButton.active{animation:ultraPulse .8s infinite alternate;box-shadow:0 0 36px rgba(255,255,255,.95),0 0 58px rgba(180,70,255,.85)}
 #ultraMiniShipButton.disabled,#ultraMiniShipButton:disabled{background:linear-gradient(135deg,#777,#555)!important;border-color:#999!important;color:#ddd!important;box-shadow:none!important;filter:grayscale(1)!important;animation:none!important;cursor:not-allowed;opacity:.78}
 @media(max-width:700px){#ultraMiniShipButton{left:calc(50% - 168px);width:82px;height:82px;bottom:14px;font-size:10px}}
+
+/* Ultra achievement rarity: cyan/turquoise glow */
+.achievementCard.ultra{border-color:#00d9d0;box-shadow:0 0 24px rgba(0,217,208,.85)}
+.achievementCard.unlocked.ultra{animation:achievementUltra 1.6s infinite alternate}
+.achievementToast.ultra{border-color:#00d9d0;box-shadow:0 0 35px rgba(0,217,208,.85)}
+@keyframes achievementUltra{from{box-shadow:0 0 12px rgba(0,217,208,.5)}to{box-shadow:0 0 28px rgba(0,217,208,1)}}
