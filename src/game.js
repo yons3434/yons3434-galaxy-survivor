@@ -952,7 +952,8 @@ function updateUltraLaser(){
     const baseDps=laserHeatLevel>0
       ? (15+5*(laserHeatLevel-1))+((40+10*(laserHeatLevel-1))-(15+5*(laserHeatLevel-1)))*laserHeat
       : effectiveDamage()*.25*60;
-    const damage=baseDps*(ultraModeActive?5:2)*dt;\n     enemies.forEach(target=>{if(target.health>0){const ex=target.x-player.x,ey=target.y-player.y,len=Math.hypot(mouse.x-player.x,mouse.y-player.y)||1,forward=(ex*(mouse.x-player.x)+ey*(mouse.y-player.y))/len,side=Math.abs(ex*(mouse.y-player.y)-ey*(mouse.x-player.x))/len;if(forward>0&&forward<1400&&side<Math.max(10,player.size*.45))target.ultraLaserHit=true;}});
+    const damage=baseDps*(ultraModeActive?5:2)*dt;
+     enemies.forEach(target=>{if(target.health>0){const ex=target.x-player.x,ey=target.y-player.y,len=Math.hypot(mouse.x-player.x,mouse.y-player.y)||1,forward=(ex*(mouse.x-player.x)+ey*(mouse.y-player.y))/len,side=Math.abs(ex*(mouse.y-player.y)-ey*(mouse.x-player.x))/len;if(forward>0&&forward<1400&&side<Math.max(10,player.size*.45))target.ultraLaserHit=true;}});
     [...enemies,...asteroids].forEach(target=>{
       if(target.health<=0)return;
       const ex=target.x-player.x,ey=target.y-player.y,forward=ex*dirX+ey*dirY,side=Math.abs(ex*dirY-ey*dirX);
