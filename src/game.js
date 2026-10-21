@@ -21,24 +21,10 @@ let hitEffectsEnabled=localStorage.getItem("galaxyDefenderHitEffects")!=="off";
 let meteoriteBreakEffectEnabled=localStorage.getItem("galaxyDefenderMeteoriteBreakEffect")!=="off";
 let damageNumbersEnabled=localStorage.getItem("galaxyDefenderDamageNumbers")!=="off";
 const meteoriteFragments=[];
-const enemyDeathFragments=[];
 const floatingDamageNumbers=[];
 function showDamageNumber(target,damage){if(!damageNumbersEnabled||!target||!Number.isFinite(damage)||damage<=0)return;const actualDamage=target.health<=0?Math.max(0,damage+target.health):damage;if(actualDamage<=0)return;const now=performance.now();let entry=floatingDamageNumbers.find(n=>n.target===target&&now-n.lastHitAt<=300);if(entry){entry.amount=Math.min(entry.startHealth,entry.amount+actualDamage);entry.lastHitAt=now;entry.startAt=now}else floatingDamageNumbers.push({target,amount:actualDamage,startHealth:Math.max(actualDamage,(Number(target.health)||0)+damage),lastHitAt:now,startAt:now});}
 function drawFloatingDamageNumbers(){if(!damageNumbersEnabled){floatingDamageNumbers.length=0;return}const now=performance.now();for(let i=floatingDamageNumbers.length-1;i>=0;i--){const n=floatingDamageNumbers[i],age=now-n.startAt;if(age>=750||!n.target){floatingDamageNumbers.splice(i,1);continue}const target=n.target,size=target.boss?(target.specialType==="split"?(target.splitStage===2?38:62):55):(Number(target.size)||25);ctx.save();ctx.globalAlpha=Math.max(0,1-age/750);ctx.font="bold 19px Arial";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#ff3030";ctx.shadowColor="#ff1010";ctx.shadowBlur=9;ctx.fillText("-"+Math.round(n.amount),target.x,target.y-size-20-age*.035);ctx.restore()}}
 function spawnMeteoriteFragments(a){if(!meteoriteBreakEffectEnabled||!a||a.fragmentsSpawned)return;a.fragmentsSpawned=true;const count=10+Math.floor(Math.random()*5);for(let i=0;i<count;i++){const sides=5+Math.floor(Math.random()*3),shape=[];for(let j=0;j<sides;j++)shape.push(.58+Math.random()*.52);meteoriteFragments.push({x:a.x,y:a.y,vx:(Math.random()-.5)*7,vy:(Math.random()-.5)*7-1,rotation:Math.random()*Math.PI*2,spin:(Math.random()-.5)*.22,size:3+Math.random()*5,life:38+Math.floor(Math.random()*22),maxLife:60,shade:90+Math.floor(Math.random()*70),shape})}}
-function spawnEnemyDeathEffect(enemy){
-  if(!enemy||enemy.deathEffectSpawned)return;
-  enemy.deathEffectSpawned=true;
-  const boss=!!enemy.boss;
-  const size=boss?(enemy.specialType==="split"?(enemy.splitStage===2?38:enemy.splitStage===1?55:70):55):22;
-  const color=enemy.specialType==="ice"?"#75e6ff":enemy.specialType==="gate"?"#b45cff":enemy.specialType==="chaser"?"#ff5733":enemy.specialType==="teleport"?"#d07aff":enemy.specialType==="inversion"?"#4fe0dc":enemy.splitBoss?"#22d65d":boss?"#ff1744":"#9c27b0";
-  const count=boss?34+Math.floor(Math.random()*13):8+Math.floor(Math.random()*5);
-  for(let i=0;i<count;i++){
-    const angle=Math.random()*Math.PI*2,speed=(boss?2.4:1.5)+Math.random()*(boss?6:3.5),life=(boss?42:26)+Math.floor(Math.random()*(boss?25:18));
-    enemyDeathFragments.push({x:enemy.x,y:enemy.y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-(boss?1.2:.4),size:(boss?4:2.5)+Math.random()*(boss?6:3.5),life,maxLife:life,rotation:Math.random()*Math.PI*2,spin:(Math.random()-.5)*.3,color,boss});
-  }
-  if(boss)enemyDeathFragments.push({x:enemy.x,y:enemy.y,vx:0,vy:0,size:12,life:24,maxLife:24,rotation:0,spin:0,color:"#ffffff",boss:true,shockwave:true});
-}
 function screenShake(power,duration){if(!hitEffectsEnabled)return;screenShakePower=Math.max(screenShakePower,power);screenShakeUntil=Math.max(screenShakeUntil,performance.now()+duration)}
 let speedComboDistance=0,speedComboPermanentDistance=0,speedComboPermanentBonus=0,speedComboTemporaryBonus=0,speedComboPermanentLastAwardedStep=0,speedComboLastAwardedStep=0;
 // Permanent combo persists through hits; temporary combo is the only part that can reset during a run.
@@ -1103,7 +1089,6 @@ function spawnMirrorClones(entity){
 }
 function destroyEnemy(enemy){
   if(!enemy||enemy.health>0)return;
-  spawnEnemyDeathEffect(enemy);
   enemy.health=0;
   const ach=getAchievementStats();
   if(enemy.boss){ach.bosses++;if(difficulty==="impossible")runImpossibleBossKills++;if(enemy.bigBoss)ach.splitBosses++;if(enemy.specialBoss)ach.specialBosses++;if(difficulty==="impossible")ach.impossibleBosses++;}else{ach.enemies++;runEnemiesKilled++;if(enemy.ultraLaserHit)runUltraLaserKills++;}
@@ -1145,7 +1130,7 @@ function destroyEnemy(enemy){
     if(remaining)setSpecialBossArea(remaining.specialType||"split",true);
   }
 }
-function update(){if(!gameRunning)return;gameTime+=1/60;spendUltraModePoints();for(let i=meteoriteFragments.length-1;i>=0;i--){const f=meteoriteFragments[i];f.x+=f.vx;f.y+=f.vy;f.vx*=.985;f.vy=f.vy*.985+.035;f.rotation+=f.spin;f.life--;if(f.life<=0)meteoriteFragments.splice(i,1)}for(let i=enemyDeathFragments.length-1;i>=0;i--){const f=enemyDeathFragments[i];f.x+=f.vx;f.y+=f.vy;f.vx*=.975;f.vy=f.vy*.975+.045;f.rotation+=f.spin;f.life--;if(f.life<=0)enemyDeathFragments.splice(i,1)}let speed=effectiveMoveSpeed();
+function update(){if(!gameRunning)return;gameTime+=1/60;spendUltraModePoints();for(let i=meteoriteFragments.length-1;i>=0;i--){const f=meteoriteFragments[i];f.x+=f.vx;f.y+=f.vy;f.vx*=.985;f.vy=f.vy*.985+.035;f.rotation+=f.spin;f.life--;if(f.life<=0)meteoriteFragments.splice(i,1)}let speed=effectiveMoveSpeed();
   const inv=inversionTimer>0;
   const left=keys.arrowleft||keys.a,right=keys.arrowright||keys.d,up=keys.arrowup||keys.w,down=keys.arrowdown||keys.s;
   if(!inv){if(left)player.x-=speed;if(right)player.x+=speed;if(up)player.y-=speed;if(down)player.y+=speed;}
@@ -1625,7 +1610,7 @@ drawUltraLaser();if(laserHeatLevel>0){const barW=72,barH=7,barX=player.x-barW/2,
   });
   // Special hazard telegraphs.
   if(activeSpecialBossArea==="chaser"){window.chaserHazards=window.chaserHazards||[];window.chaserHazards.forEach(h=>{ctx.save();ctx.globalAlpha=Math.max(0,h.life/300)*.6;ctx.fillStyle="#ff2200";ctx.strokeStyle="#ff6a55";ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(h.x,h.y,h.rx,h.ry,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()})}
-  if(freezeTimer>0){ctx.save();ctx.globalAlpha=.18;ctx.fillStyle="#8eeeff";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.restore()}drones.forEach(d=>{const size=d.type==="normal"?12:d.type==="upgraded"?16:d.type==="rpgMini"?18:22;ctx.fillStyle=d.type==="large"?"#ffd600":d.type==="rpgMini"?"#ff1744":d.type==="upgraded"?"#ff9800":"#00ff88";ctx.beginPath();ctx.arc(d.x,d.y,size,0,Math.PI*2);ctx.fill();ctx.fillStyle="#fff";ctx.font="10px Arial";ctx.textAlign="center";ctx.fillText("🛸",d.x,d.y+4)});if(swordCount>0)for(let i=0;i<swordCount;i++){const angle=swordAngle+i*Math.PI*2/swordCount,sx=player.x+Math.cos(angle)*swordRange,sy=player.y+Math.sin(angle)*swordRange;ctx.save();ctx.translate(sx,sy);ctx.rotate(angle);ctx.fillStyle="#00ffff";ctx.shadowColor="#00ffff";ctx.shadowBlur=15;ctx.fillRect(-3,-25,6,50);ctx.restore()}drawBlackHoles();explosions.forEach(e=>{ctx.strokeStyle="#ff9800";ctx.lineWidth=4;ctx.beginPath();ctx.arc(e.x,e.y,e.radius,0,Math.PI*2);ctx.stroke()});meteoriteFragments.forEach(f=>{ctx.save();ctx.globalAlpha=Math.max(0,Math.min(1,f.life/f.maxLife));ctx.translate(f.x,f.y);ctx.rotate(f.rotation);ctx.fillStyle=`rgb(${f.shade},${f.shade},${f.shade})`;ctx.strokeStyle="#b8b8b8";ctx.lineWidth=1;ctx.beginPath();f.shape.forEach((r,i)=>{const angle=i/f.shape.length*Math.PI*2,px=Math.cos(angle)*f.size*r,py=Math.sin(angle)*f.size*r;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py)});ctx.closePath();ctx.fill();ctx.stroke();ctx.restore()});enemyDeathFragments.forEach(f=>{ctx.save();ctx.globalAlpha=Math.max(0,Math.min(1,f.life/f.maxLife));if(f.shockwave){const progress=1-f.life/f.maxLife;ctx.strokeStyle=f.color;ctx.shadowColor=f.color;ctx.shadowBlur=22;ctx.lineWidth=5*(1-progress)+1;ctx.beginPath();ctx.arc(f.x,f.y,progress*105,0,Math.PI*2);ctx.stroke()}else{ctx.translate(f.x,f.y);ctx.rotate(f.rotation);ctx.fillStyle=f.color;ctx.shadowColor=f.color;ctx.shadowBlur=f.boss?12:5;ctx.fillRect(-f.size/2,-f.size/2,f.size,f.size)}ctx.restore()});drawFloatingDamageNumbers()}
+  if(freezeTimer>0){ctx.save();ctx.globalAlpha=.18;ctx.fillStyle="#8eeeff";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.restore()}drones.forEach(d=>{const size=d.type==="normal"?12:d.type==="upgraded"?16:d.type==="rpgMini"?18:22;ctx.fillStyle=d.type==="large"?"#ffd600":d.type==="rpgMini"?"#ff1744":d.type==="upgraded"?"#ff9800":"#00ff88";ctx.beginPath();ctx.arc(d.x,d.y,size,0,Math.PI*2);ctx.fill();ctx.fillStyle="#fff";ctx.font="10px Arial";ctx.textAlign="center";ctx.fillText("🛸",d.x,d.y+4)});if(swordCount>0)for(let i=0;i<swordCount;i++){const angle=swordAngle+i*Math.PI*2/swordCount,sx=player.x+Math.cos(angle)*swordRange,sy=player.y+Math.sin(angle)*swordRange;ctx.save();ctx.translate(sx,sy);ctx.rotate(angle);ctx.fillStyle="#00ffff";ctx.shadowColor="#00ffff";ctx.shadowBlur=15;ctx.fillRect(-3,-25,6,50);ctx.restore()}drawBlackHoles();explosions.forEach(e=>{ctx.strokeStyle="#ff9800";ctx.lineWidth=4;ctx.beginPath();ctx.arc(e.x,e.y,e.radius,0,Math.PI*2);ctx.stroke()});meteoriteFragments.forEach(f=>{ctx.save();ctx.globalAlpha=Math.max(0,Math.min(1,f.life/f.maxLife));ctx.translate(f.x,f.y);ctx.rotate(f.rotation);ctx.fillStyle=`rgb(${f.shade},${f.shade},${f.shade})`;ctx.strokeStyle="#b8b8b8";ctx.lineWidth=1;ctx.beginPath();f.shape.forEach((r,i)=>{const angle=i/f.shape.length*Math.PI*2,px=Math.cos(angle)*f.size*r,py=Math.sin(angle)*f.size*r;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py)});ctx.closePath();ctx.fill();ctx.stroke();ctx.restore()});drawFloatingDamageNumbers()}
 function setHud(id,show){const e=document.getElementById(id);if(e)e.style.display=show?"":"none"}
 function updateMobileControlMode(){
   mobileControls.classList.toggle("joystickMode",mobileControlMode==="joystick");
