@@ -6,7 +6,7 @@ const path = require("node:path");
 const source = fs.readFileSync(path.join(__dirname, "..", "src", "game.js"), "utf8");
 
 test("heating laser starts at regular laser DPS and reaches twice that damage", () => {
-  assert.match(source, /function getBaseLaserDps\\(\\)\\{return \\(lowHealthActive\\(\\)\\?player\\.damage\\*1\\.25:player\\.damage\\)\\*15\\}/);
+  assert.match(source, /function getBaseLaserDps\(\)\{return \(lowHealthActive\(\)\?player\.damage\*1\.25:player\.damage\)\*15\}/);
   assert.equal(10 * 15, 150);
   assert.equal(20 * 15, 300);
   assert.equal(10 * 1.25 * 15, 187.5);
@@ -29,6 +29,6 @@ test("Ultra Laser scales from the regular or heated laser and beats both", () =>
   assert.equal(baseDps * 2 * 5, 1500);
 });
 
-test("player is slowed while Ultra Laser is active even when Ultra Mode is off", () => {
-  assert.match(source, /if\(ultraLaserActive\)v\*=\.5/);
+test("Ultra Laser movement penalty remains tied to Ultra Mode", () => {
+  assert.match(source, /if\(ultraLaserActive&&ultraModeActive\)v\*=\.5/);
 });
