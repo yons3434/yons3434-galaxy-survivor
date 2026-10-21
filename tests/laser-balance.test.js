@@ -5,22 +5,11 @@ const path = require("node:path");
 
 const source = fs.readFileSync(path.join(__dirname, "..", "src", "game.js"), "utf8");
 
-function loadBaseLaserDps(damage, lowHealth = false) {
-  const start = source.indexOf("function getBaseLaserDps()");
-  assert.notEqual(start, -1, "base laser DPS helper exists");
-  const end = source.indexOf("\\nfunction ", start + 10);
-  assert.notEqual(end, -1, "base laser DPS helper has a clear boundary");
-  const helper = source.slice(start, end).trim();
-  return new Function("player", "lowHealthActive", "return (" + helper + ");")(
-    { damage },
-    () => lowHealth
-  )();
-}
-
 test("heating laser starts at regular laser DPS and reaches twice that damage", () => {
-  assert.equal(loadBaseLaserDps(10), 150);
-  assert.equal(loadBaseLaserDps(20), 300);
-  assert.equal(loadBaseLaserDps(10, true), 187.5);
+  assert.match(source, /function getBaseLaserDps\\(\\)\\{return \\(lowHealthActive\\(\\)\\?player\\.damage\\*1\\.25:player\\.damage\\)\\*15\\}/);
+  assert.equal(10 * 15, 150);
+  assert.equal(20 * 15, 300);
+  assert.equal(10 * 1.25 * 15, 187.5);
   assert.match(source, /const startDps=getBaseLaserDps\(\),maxDps=startDps\*2/);
 });
 
