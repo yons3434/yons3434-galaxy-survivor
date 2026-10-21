@@ -594,7 +594,7 @@ function speedComboStepMeters(){
 function speedComboStepValue(){return difficulty==="super"?.02:.01}
 function speedComboMultiplier(){return Math.min(10,1+speedComboPermanentBonus+speedComboTemporaryBonus)}
 function worldSpeedMultiplier(){return speedComboMultiplier()}
-function effectiveMoveSpeed(){let v=player.speed;if(lowHealthActive())v*=1.5;if(freezeTimer>0)v*=.5;if(ultraModeActive)v*=1.2;if(ultraLaserActive)v*=.5;return v}
+function effectiveMoveSpeed(){let v=player.speed;if(lowHealthActive())v*=1.5;if(freezeTimer>0)v*=.5;if(ultraModeActive)v*=1.2;if(ultraLaserActive&&ultraModeActive)v*=.5;return v}
 function resetTemporarySpeedCombo(){
   // A hit resets ONLY the non-fixed combo.
   // The permanent combo and its distance counter are intentionally untouched.
