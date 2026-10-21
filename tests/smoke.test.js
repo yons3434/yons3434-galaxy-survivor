@@ -11,9 +11,11 @@ const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 test("split project has the expected entry files", () => {
   assert.match(index, /src\/style\.css/);
   assert.match(index, /src\/game\.js/);
-  assert.equal((index.match(/<script/g) || []).length, 5);
+  assert.equal((index.match(/<script/g) || []).length, 6);
   assert.match(index, /src\/luck\.js/);
   assert.ok(index.indexOf("src/luck.js") < index.indexOf("src/game.js"));
+  assert.match(index, /src\/chain-explosion\.js/);
+  assert.ok(index.indexOf("src/chain-explosion.js") < index.indexOf("src/game.js"));
   assert.match(index, /src\/burn\.js/);
   assert.ok(index.indexOf("src/burn.js") < index.indexOf("src/game.js"));
   assert.match(index, /cdn\.jsdelivr\.net\/npm\/\@supabase\/supabase-js/);
@@ -103,7 +105,7 @@ test("pause card list merges repeated picks and extra-fire starts at II", () => 
 
 
 test("upgrade card titles number only stackable upgrades", () => {
-  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire","expandedChoice","flamethrower","laserHeat"\]\)/);
+  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion"\]\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
   assert.match(js, /toRomanNumeral\(level\+1\)/);
   assert.match(js, /id:"drone"/);
@@ -211,12 +213,12 @@ test("poison, freeze, and stun also affect meteors while confusion remains enemy
 
 test("expanded choice card adds one level-up option per pick up to six, then disappears for the current game", () => {
   assert.match(js, /id:"expandedChoice",rarity:"אדיר",rarityClass:"epic",icon:"🃏",title:"בחירה מורחבת"/);
-  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat"\]\)/);
+  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion"\]\)/);
   assert.match(js, /case"expandedChoice":return expandedChoiceLevel/);
   assert.match(js, /const choices=window\.GalaxyLuck\.chooseUpgradeChoices\(availableFiltered,luckLevel,Math\.min\(6,3\+expandedChoiceLevel\)\)/);
   assert.match(js, /u\.id==="expandedChoice"&&expandedChoiceLevel>=3/);
   assert.match(js, /case"expandedChoice":expandedChoiceLevel=Math\.min\(3,expandedChoiceLevel\+1\)/);
-  assert.match(js, /expandedChoiceLevel=0;ultraUnlocked=false;ultraModeActive=false;ultraPoints=0;ultraPointsCap=0;ultraSpentForShield=0;ultraShields=0;[\s\S]*?distance=0/);
+  assert.match(js, /expandedChoiceLevel=0;[\s\S]*?ultraUnlocked=false;ultraModeActive=false;ultraPoints=0;ultraPointsCap=0;ultraSpentForShield=0;ultraShields=0;[\s\S]*?distance=0/);
   assert.match(js, /\(upgrade\.id==="expandedChoice"&&expandedChoiceLevel===2\)\|\|\(upgrade\.id==="flamethrower"&&flamethrowerLevel===9\)/);
   assert.match(css, /\.upgradeMaxLabel/);
 });
@@ -275,7 +277,7 @@ test("all boss types receive five times their previous base health", () => {
 });
 
 test("flamethrower upgrades cap at X, show maximum label, scale damage and range by 50 points, and burn for five ticks", () => {
-  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat"\]\)/);
+  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion"\]\)/);
   assert.match(js, /u\.id==="flamethrower"&&flamethrowerLevel>=10/);
   assert.match(js, /upgrade\.id==="flamethrower"&&flamethrowerLevel===9/);
   assert.match(js, /flamethrowerLevel=Math\.min\(10,flamethrowerLevel\+1\)/);
