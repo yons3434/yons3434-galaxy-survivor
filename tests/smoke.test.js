@@ -11,9 +11,11 @@ const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 test("split project has the expected entry files", () => {
   assert.match(index, /src\/style\.css/);
   assert.match(index, /src\/game\.js/);
-  assert.equal((index.match(/<script/g) || []).length, 5);
+  assert.equal((index.match(/<script/g) || []).length, 6);
   assert.match(index, /src\/luck\.js/);
   assert.ok(index.indexOf("src/luck.js") < index.indexOf("src/game.js"));
+  assert.match(index, /src\/chain-explosion\.js/);
+  assert.ok(index.indexOf("src/chain-explosion.js") < index.indexOf("src/game.js"));
   assert.match(index, /src\/burn\.js/);
   assert.ok(index.indexOf("src/burn.js") < index.indexOf("src/game.js"));
   assert.match(index, /cdn\.jsdelivr\.net\/npm\/\@supabase\/supabase-js/);
@@ -103,7 +105,7 @@ test("pause card list merges repeated picks and extra-fire starts at II", () => 
 
 
 test("upgrade card titles number only stackable upgrades", () => {
-  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire","expandedChoice","flamethrower","laserHeat"\]\)/);
+  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion"\]\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
   assert.match(js, /toRomanNumeral\(level\+1\)/);
   assert.match(js, /id:"drone"/);
