@@ -250,5 +250,5 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 .achievementToast.ultra{border-color:#00d9d0;box-shadow:0 0 35px rgba(0,217,208,.85)}
 @keyframes achievementUltra{from{box-shadow:0 0 12px rgba(0,217,208,.5)}to{box-shadow:0 0 28px rgba(0,217,208,1)}}
 
-#lowHealthHeartbeatOverlay{position:fixed;inset:0;z-index:15;pointer-events:none;opacity:0;--heartbeat-red:.2;--heartbeat-spread:7%;background:radial-gradient(ellipse at center,transparent calc(100% - var(--heartbeat-spread)),rgba(255,0,20,var(--heartbeat-red)) 100%);mix-blend-mode:screen;transition:opacity .06s linear}
-#lowHealthHeartbeatOverlay[data-severity="1"]{background:radial-gradient(ellipse at center,rgba(255,0,15,.13) 0%,rgba(255,0,15,.2) 35%,rgba(255,0,15,.36) 70%,rgba(255,0,15,.58) 100%)}
+#lowHealthHeartbeatOverlay{position:fixed;inset:0;z-index:150;pointer-events:none;opacity:0;--heartbeat-red:.48;--heartbeat-spread:7%;background:linear-gradient(90deg,rgba(255,0,22,var(--heartbeat-red)) 0%,rgba(255,0,22,0) var(--heartbeat-spread),rgba(255,0,22,0) calc(100% - var(--heartbeat-spread)),rgba(255,0,22,var(--heartbeat-red)) 100%),linear-gradient(180deg,rgba(255,0,22,var(--heartbeat-red)) 0%,rgba(255,0,22,0) var(--heartbeat-spread),rgba(255,0,22,0) calc(100% - var(--heartbeat-spread)),rgba(255,0,22,var(--heartbeat-red)) 100%);mix-blend-mode:screen;transition:opacity .04s linear}
+#lowHealthHeartbeatOverlay[data-severity="1"]{background:radial-gradient(ellipse at center,rgba(255,0,15,.12) 0%,rgba(255,0,15,.22) 35%,rgba(255,0,15,.38) 70%,rgba(255,0,15,.62) 100%)}
