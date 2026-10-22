@@ -363,10 +363,10 @@ test("Ultra shields replace the lives HUD, are removed from the Ultra button, an
 
 test("low-health heartbeat renders visible red edges and spreads across the screen as health drops", () => {
   assert.match(index, /id="lowHealthHeartbeatOverlay"/);
-  assert.match(js, /function updateLowHealthHeartbeat\\(now\\)/);
-  assert.match(js, /overlay\\.style\\.setProperty\\("--heartbeat-red",String\\(\\.48\\+\\.35\\*severity\\)\\)/);
-  assert.match(js, /overlay\\.style\\.setProperty\\("--heartbeat-spread",spread\\+"%"\\)/);
-  assert.match(css, /#lowHealthHeartbeatOverlay\\{position:fixed;inset:0;z-index:150/);
-  assert.match(css, /linear-gradient\\(90deg,rgba\\(255,0,22,var\\(--heartbeat-red\\)\\)/);
-  assert.match(js, /return hitEffectsEnabled\\?severity\\*severity\\*10\\*beat:0/);
+  assert.match(js, /function updateLowHealthHeartbeat\(now\)/);
+  assert.match(js, /overlay\.style\.setProperty\("--heartbeat-red",String\(\.48\+\.35\*severity\)\)/);
+  assert.match(js, /overlay\.style\.setProperty\("--heartbeat-spread",spread\+"%"\)/);
+  assert.match(css, /#lowHealthHeartbeatOverlay\{position:fixed;inset:0;z-index:150/);
+  assert.match(css, /linear-gradient\(90deg,rgba\(255,0,22,var\(--heartbeat-red\)\)/);
+  assert.match(js, /return hitEffectsEnabled\?severity\*severity\*10\*beat:0/);
 });
