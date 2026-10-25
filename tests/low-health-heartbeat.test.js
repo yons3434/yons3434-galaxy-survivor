@@ -33,3 +33,5 @@ test("heartbeat overlay does not block gameplay or the HUD", () => {
   assert.match(css, /#lowHealthHeartbeatOverlay\{[^}]*pointer-events:none/);
   assert.match(css, /#lowHealthHeartbeatOverlay\{[^}]*z-index:19/);
 });
+
+test("heartbeat red edges are stronger and spread farther as severity increases", () => {\n  assert.match(js, /const spread=12\\+Math\\.pow\\(severity,\\.8\\)\\*43/);\n  assert.match(js, /const strength=\\.62\\+\\.38\\*beat/);\n  assert.match(js, /String\\(\\.62\\+\\.33\\*severity\\)/);\n  assert.match(css, /rgba\\(255,0,15,\\.72\\),transparent 58%/);\n});\n
