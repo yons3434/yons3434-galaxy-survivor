@@ -31,5 +31,5 @@ test("heartbeat screen shake obeys the existing hit-effects setting", () => {
 test("heartbeat overlay does not block gameplay or the HUD", () => {
   assert.match(index, /id="lowHealthHeartbeatOverlay" aria-hidden="true"/);
   assert.match(css, /#lowHealthHeartbeatOverlay\{[^}]*pointer-events:none/);
-  assert.match(css, /#lowHealthHeartbeatOverlay\{[^}]*z-index:15/);
+  assert.match(css, /#lowHealthHeartbeatOverlay\{[^}]*z-index:19/);
 });
