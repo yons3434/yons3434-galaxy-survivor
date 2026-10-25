@@ -35,10 +35,10 @@ test("heartbeat overlay does not block gameplay or the HUD", () => {
 });
 
 test("heartbeat uses a CSS pulse and does not shake or stall the canvas", () => {
-  assert.match(js, /function updateLowHealthHeartbeat\\(now\\)/);
-  assert.match(js, /return 0\\}let speedComboDistance/);
-  assert.doesNotMatch(js, /return hitEffectsEnabled\\?severity\\*severity\\*10\\*beat/);
-  assert.match(css, /@keyframes lowHealthHeartbeatPulse/);
-  assert.match(css, /#lowHealthHeartbeatOverlay\\[data-severity\\]:not\\(\\[data-severity="0"\\]\\)/);
-  assert.match(css, /pointer-events:none/);
+  assert.ok(js.includes("function updateLowHealthHeartbeat(now)"));
+  assert.ok(js.includes("return 0}\nlet speedComboDistance"));
+  assert.ok(!js.includes("return hitEffectsEnabled?severity*severity*10*beat"));
+  assert.ok(css.includes("@keyframes lowHealthHeartbeatPulse"));
+  assert.ok(css.includes('#lowHealthHeartbeatOverlay[data-severity]:not([data-severity="0"])'));
+  assert.ok(css.includes("pointer-events:none"));
 });
