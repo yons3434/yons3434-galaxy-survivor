@@ -252,4 +252,4 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 
 #lowHealthHeartbeatOverlay{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;visibility:hidden;--heartbeat-red:.58;--heartbeat-spread:12%;background:linear-gradient(to right,rgba(255,0,15,var(--heartbeat-red)),transparent var(--heartbeat-spread)),linear-gradient(to left,rgba(255,0,15,var(--heartbeat-red)),transparent var(--heartbeat-spread)),linear-gradient(to bottom,rgba(255,0,15,var(--heartbeat-red)),transparent var(--heartbeat-spread)),linear-gradient(to top,rgba(255,0,15,var(--heartbeat-red)),transparent var(--heartbeat-spread));mix-blend-mode:normal;will-change:opacity}
 #lowHealthHeartbeatOverlay[data-active="1"]{visibility:visible;animation:lowHealthHeartbeatPulse 1.25s ease-in-out infinite}
-@keyframes lowHealthHeartbeatPulse{0%,100%{opacity:.68}12%{opacity:1}22%{opacity:.74}32%{opacity:.96}48%,78%{opacity:.68}}12%{opacity:1}22%{opacity:.76}32%{opacity:.96}48%,78%{opacity:.72}}
+@keyframes lowHealthHeartbeatPulse{0%,100%{opacity:.68}12%{opacity:1}22%{opacity:.74}32%{opacity:.96}48%,78%{opacity:.68}}
