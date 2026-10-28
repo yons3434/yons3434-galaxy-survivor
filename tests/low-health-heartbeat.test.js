@@ -12,7 +12,7 @@ test("low-health heartbeat has a persistent 0–100 intensity slider defaulting 
   assert.match(js, /galaxyDefenderHeartbeatIntensity/);
   assert.match(js, /lowHealthHeartbeatIntensity=savedHeartbeatIntensity!==null/);
   assert.match(index, /id="uiLowHealthHeartbeat" type="range" min="0" max="100" step="1" value="50"/);
-  assert.match(html, /id="heartbeatIntensityNumber" type="number" min="0" max="100" step="1" value="50"/);
+  assert.match(index, /id="heartbeatIntensityNumber" type="number" min="0" max="100" step="1" value="50"/);
   assert.match(js, /localStorage\.setItem\("galaxyDefenderHeartbeatIntensity",String\(lowHealthHeartbeatIntensity\)\)/);
   assert.match(js, /lowHealthHeartbeatIntensity===0\?"off":"on"/);
 });
