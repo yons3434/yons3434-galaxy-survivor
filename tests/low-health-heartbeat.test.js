@@ -8,11 +8,13 @@ const js = fs.readFileSync(path.join(root, "src", "game.js"), "utf8");
 const index = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 
-test("low-health heartbeat has a persistent settings toggle enabled by default", () => {
-  assert.match(js, /lowHealthHeartbeatEnabled=localStorage\.getItem\("galaxyDefenderLowHealthHeartbeat"\)!=="off"/);
-  assert.match(index, /id="uiLowHealthHeartbeat"/);
-  assert.match(index, /פעימות ❤️/);
-  assert.match(js, /localStorage\.setItem\("galaxyDefenderLowHealthHeartbeat",lowHealthHeartbeatEnabled\?"on":"off"\)/);
+test("low-health heartbeat has a persistent 0–100 intensity slider defaulting to 50", () => {
+  assert.match(js, /galaxyDefenderHeartbeatIntensity/);
+  assert.match(js, /lowHealthHeartbeatIntensity=savedHeartbeatIntensity!==null/);
+  assert.match(index, /id="uiLowHealthHeartbeat" type="range" min="0" max="100" step="1" value="50"/);
+  assert.match(index, /id="heartbeatIntensityValue">50<\/span>%/);
+  assert.match(js, /localStorage\.setItem\("galaxyDefenderHeartbeatIntensity",String\(lowHealthHeartbeatIntensity\)\)/);
+  assert.match(js, /lowHealthHeartbeatIntensity===0\?"off":"on"/);
 });
 
 test("heartbeat appears at low health and stays active in Impossible until max-lives upgrade", () => {
