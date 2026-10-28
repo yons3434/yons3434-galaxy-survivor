@@ -31,7 +31,7 @@ test("heartbeat pulse does not add screen shake; hit-effects setting stays separ
 test("heartbeat overlay does not block gameplay or the HUD", () => {
   assert.match(index, /id="lowHealthHeartbeatOverlay" aria-hidden="true"/);
   assert.match(css, /#lowHealthHeartbeatOverlay\{[^}]*pointer-events:none/);
-  assert.match(css, /#lowHealthHeartbeatOverlay\{[^}]*z-index:19/);
+  assert.match(css, /#lowHealthHeartbeatOverlay\{[^}]*z-index:9999/);
 });
 
 test("heartbeat uses a CSS pulse and does not shake or stall the canvas", () => {
@@ -39,6 +39,6 @@ test("heartbeat uses a CSS pulse and does not shake or stall the canvas", () => 
   assert.ok(js.includes("return 0}\nlet speedComboDistance"));
   assert.ok(!js.includes("return hitEffectsEnabled?severity*severity*10*beat"));
   assert.ok(css.includes("@keyframes lowHealthHeartbeatPulse"));
-  assert.ok(css.includes('#lowHealthHeartbeatOverlay[data-severity]:not([data-severity="0"])'));
+  assert.ok(css.includes('#lowHealthHeartbeatOverlay[data-active="1"]'));
   assert.ok(css.includes("pointer-events:none"));
 });
