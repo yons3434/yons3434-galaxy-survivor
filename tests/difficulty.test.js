@@ -87,3 +87,21 @@ test("heartbeat percentage controls have responsive styles", () => {
   assert.match(heartbeatCss, /\.heartbeatNumberControls input\[type="number"\]\{width:88px/);
   assert.match(heartbeatCss, /\.heartbeatIntensityControls\{display:flex;flex-direction:column/);
 });
+
+
+test("hit flash settings and overlays are wired without triggering on shield hits", () => {
+  const root = path.join(__dirname, "..");
+  const game = fs.readFileSync(path.join(root, "src", "game.js"), "utf8");
+  const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
+  const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
+  assert.match(html, /id="hitFlashOverlay"/);
+  assert.match(html, /id="uiHitFlash"/);
+  assert.match(html, /id="uiHeartbeatPulse"/);
+  assert.match(game, /function triggerHitFlash\(\)/);
+  assert.match(game, /player\.lives--;runLivesLost=true;\s*triggerHitFlash\(\);/);
+  assert.match(game, /if\(ultraShields>0\)\{ultraShields--;[\s\S]*?return true;\}/);
+  assert.match(game, /localStorage\.setItem\("galaxyDefenderHitFlash"/);
+  assert.match(game, /localStorage\.setItem\("galaxyDefenderHeartbeatPulse"/);
+  assert.match(css, /@keyframes hitFlashFade/);
+  assert.match(css, /data-pulse="0"/);
+});
