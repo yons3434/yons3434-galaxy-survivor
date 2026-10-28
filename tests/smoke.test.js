@@ -359,3 +359,14 @@ test("Ultra shields replace the lives HUD, are removed from the Ultra button, an
   assert.doesNotMatch(js, /ultraPointsCap\)\.toLocaleString\("en-US"\)\+" נקודות"\)\+\(ultraShields>0\?" · 🛡️ "+ultraShields/);
   assert.match(css, /#ultraModeButton/);
 });
+
+
+test("low-health heartbeat renders visible red edges and spreads across the screen as health drops", () => {
+  assert.match(index, /id="lowHealthHeartbeatOverlay"/);
+  assert.match(js, /function updateLowHealthHeartbeat\(now\)/);
+  assert.match(js, /overlay\.style\.setProperty\("--heartbeat-red",String\(\.58\+\.38\*bucket\)\)/);
+  assert.match(js, /overlay\.style\.setProperty\("--heartbeat-spread",String\(12\+Math\.pow\(bucket,\.8\)\*48\)\+"%"\)/);
+  assert.match(css, /#lowHealthHeartbeatOverlay\{position:fixed;inset:0;z-index:9999/);
+  assert.match(css, /linear-gradient\(to right,rgba\(255,0,15,var\(--heartbeat-red\)\)/);
+  assert.match(css, /@keyframes lowHealthHeartbeatPulse/);
+});

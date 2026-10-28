@@ -22,8 +22,8 @@ test("heartbeat appears at low health and stays active in Impossible until max-l
   assert.match(js, /case"maxLives":maxLivesLevel\+\+;player\.maxLives\+\+;player\.lives\+\+/);
 });
 
-test("heartbeat screen shake obeys the existing hit-effects setting", () => {
-  assert.match(js, /return hitEffectsEnabled\?severity\*severity\*10\*beat:0/);
+test("heartbeat pulse does not add screen shake; hit-effects setting stays separate", () => {
+  assert.ok(!js.includes("return hitEffectsEnabled?severity*severity*10*beat"));
   assert.match(js, /if\(!hitEffectsEnabled\)\{screenShakePower=0;screenShakeUntil=0;canvas\.style\.transform=""\}/);
   assert.match(js, /heartbeatShake=updateLowHealthHeartbeat\(now\)/);
 });
@@ -31,5 +31,14 @@ test("heartbeat screen shake obeys the existing hit-effects setting", () => {
 test("heartbeat overlay does not block gameplay or the HUD", () => {
   assert.match(index, /id="lowHealthHeartbeatOverlay" aria-hidden="true"/);
   assert.match(css, /#lowHealthHeartbeatOverlay\{[^}]*pointer-events:none/);
-  assert.match(css, /#lowHealthHeartbeatOverlay\{[^}]*z-index:15/);
+  assert.match(css, /#lowHealthHeartbeatOverlay\{[^}]*z-index:9999/);
+});
+
+test("heartbeat uses a CSS pulse and does not shake or stall the canvas", () => {
+  assert.ok(js.includes("function updateLowHealthHeartbeat(now)"));
+  assert.ok(js.includes("return 0}\nlet speedComboDistance"));
+  assert.ok(!js.includes("return hitEffectsEnabled?severity*severity*10*beat"));
+  assert.ok(css.includes("@keyframes lowHealthHeartbeatPulse"));
+  assert.ok(css.includes('#lowHealthHeartbeatOverlay[data-active="1"]'));
+  assert.ok(css.includes("pointer-events:none"));
 });
