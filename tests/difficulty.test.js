@@ -42,3 +42,38 @@ test("invalid difficulty falls back to normal", () => {
   const { getDifficultySettings } = loadDifficultyModule();
   assert.deepEqual(getDifficultySettings("unknown"), getDifficultySettings("normal"));
 });
+
+const heartbeatHtml = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+const heartbeatGame = fs.readFileSync(path.join(__dirname, "..", "src", "game.js"), "utf8");
+const heartbeatCss = fs.readFileSync(path.join(__dirname, "..", "src", "style.css"), "utf8");
+
+function loadHeartbeatClamp() {
+  const match = heartbeatGame.match(/function clampHeartbeatIntensity\(value,fallback=lowHealthHeartbeatIntensity\)\{([^}]*)\}/);
+  assert.ok(match, "heartbeat intensity clamp helper exists");
+  return new Function("lowHealthHeartbeatIntensity", `return function clampHeartbeatIntensity(value,fallback=lowHealthHeartbeatIntensity){${match[1]}};`)(50);
+}
+
+test("typed heartbeat intensity is rounded and clamped from 0 to 100", () => {
+  const clamp = loadHeartbeatClamp();
+  assert.equal(clamp("37"), 37);
+  assert.equal(clamp("300"), 100);
+  assert.equal(clamp("-8"), 0);
+  assert.equal(clamp("49.6"), 50);
+  assert.equal(clamp(""), 50);
+  assert.equal(clamp("not-a-number"), 50);
+});
+
+test("heartbeat numeric input, one-percent arrows, and slider stay synchronized", () => {
+  assert.match(heartbeatHtml, /id="heartbeatIntensityNumber" type="number" min="0" max="100"/);
+  assert.match(heartbeatHtml, /id="heartbeatIntensityUp"/);
+  assert.match(heartbeatHtml, /id="heartbeatIntensityDown"/);
+  assert.match(heartbeatGame, /heartbeatIntensityUp\.onclick=\(\)=>setHeartbeatIntensity\(lowHealthHeartbeatIntensity\+1\)/);
+  assert.match(heartbeatGame, /heartbeatIntensityDown\.onclick=\(\)=>setHeartbeatIntensity\(lowHealthHeartbeatIntensity-1\)/);
+  assert.match(heartbeatGame, /heartbeatIntensitySlider\.oninput=\(\)=>setHeartbeatIntensity\(heartbeatIntensitySlider\.value\)/);
+  assert.match(heartbeatGame, /localStorage\.setItem\("galaxyDefenderHeartbeatIntensity"/);
+});
+
+test("heartbeat percentage controls have responsive styles", () => {
+  assert.match(heartbeatCss, /\.heartbeatNumberControls input\[type="number"\]\{width:88px/);
+  assert.match(heartbeatCss, /\.heartbeatIntensityControls\{display:flex;flex-direction:column/);
+});
