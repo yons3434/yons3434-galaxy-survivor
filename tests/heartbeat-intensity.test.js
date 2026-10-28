@@ -9,7 +9,7 @@ const css = fs.readFileSync(path.join(__dirname, "..", "src", "style.css"), "utf
 
 test("heartbeat setting is a 0–100 slider with default intensity 50", () => {
   assert.match(html, /id="uiLowHealthHeartbeat" type="range" min="0" max="100" step="1" value="50"/);
-  assert.match(html, /id="heartbeatIntensityValue">50<\/span>%/);
+  assert.match(html, /id="heartbeatIntensityNumber" type="number" min="0" max="100" step="1" value="50"/);
 });
 
 test("heartbeat intensity persists and zero disables the effect", () => {
