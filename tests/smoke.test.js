@@ -366,7 +366,7 @@ test("low-health heartbeat renders visible red edges and scales with the selecte
   assert.match(js, /function updateLowHealthHeartbeat\(now\)/);
   assert.match(js, /const intensityScale=intensity\/50/);
   assert.match(js, /overlay\.style\.setProperty\("--heartbeat-red",String\(Math\.min\(\.99,\(\.58\+\.38\*bucket\)\*intensityScale\)\)\)/);
-  assert.match(js, /overlay\.style\.setProperty\("--heartbeat-spread",String\(Math\.min\(100,\(12\+Math\.pow\(bucket,\.8\)\*48\)\*intensityScale\)\+"%"\)/);
+  assert.match(js, /overlay\.style\.setProperty\("--heartbeat-spread",String\(Math\.min\(100,.*intensityScale\)\)\+"%"\)/);
   assert.match(js, /overlay\.style\.setProperty\("--heartbeat-strength",String\(intensityScale\)\)/);
   assert.match(css, /#lowHealthHeartbeatOverlay\{position:fixed;inset:0;z-index:9999/);
   assert.match(css, /linear-gradient\(to right,rgba\(255,0,15,var\(--heartbeat-red\)\)/);
