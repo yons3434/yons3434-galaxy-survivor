@@ -105,3 +105,11 @@ test("hit flash settings and overlays are wired without triggering on shield hit
   assert.match(css, /@keyframes hitFlashFade/);
   assert.match(css, /data-pulse="0"/);
 });
+
+
+test("chain explosion triggers for meteorites and can damage nearby meteorites", () => {
+  const game = fs.readFileSync(path.join(__dirname, "..", "src", "game.js"), "utf8");
+  assert.match(game, /function destroyAsteroid\(a\)\{[\s\S]*?if\(chainExplosionLevel>0\)\{[\s\S]*?triggerChainExplosion\(a,chainId/);
+  assert.match(game, /for\(const target of asteroids\)\{[\s\S]*?target\.health-=damage;[\s\S]*?destroyAsteroid\(target\);/);
+  assert.match(game, /target\.chainReactionId=chainId;[\s\S]*?target\.chainDepth=depth\+1;[\s\S]*?target\.chainNoChain=!!\(suppressChains\|\|boss\);/);
+});
