@@ -73,6 +73,16 @@ test("heartbeat numeric input, one-percent arrows, and slider stay synchronized"
   assert.match(heartbeatGame, /localStorage\.setItem\("galaxyDefenderHeartbeatIntensity"/);
 });
 
+test("heartbeat intensity slider color transitions from gray to yellow to red", () => {
+  const match = heartbeatGame.match(/function heartbeatIntensityColor\\(value\\)\\{([^}]*)\\}/);
+  assert.ok(match, "heartbeat intensity color helper exists");
+  const color = new Function("value", match[1]);
+  assert.equal(color(0), "#888888");
+  assert.equal(color(1), "rgb(255, 212, 0)");
+  assert.equal(color(50), "rgb(255, 107, 0)");
+  assert.equal(color(100), "rgb(255, 0, 0)");
+});
+
 test("heartbeat percentage controls have responsive styles", () => {
   assert.match(heartbeatCss, /\.heartbeatNumberControls input\[type="number"\]\{width:88px/);
   assert.match(heartbeatCss, /\.heartbeatIntensityControls\{display:flex;flex-direction:column/);
