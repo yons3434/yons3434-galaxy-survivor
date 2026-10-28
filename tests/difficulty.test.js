@@ -74,7 +74,7 @@ test("heartbeat numeric input, one-percent arrows, and slider stay synchronized"
 });
 
 test("heartbeat intensity slider color transitions from gray to yellow to red", () => {
-  const match = heartbeatGame.match(/function heartbeatIntensityColor\\(value\\)\\{([^}]*)\\}/);
+  const match = heartbeatGame.match(/function heartbeatIntensityColor\(value\)\{([^}]*)\}/);
   assert.ok(match, "heartbeat intensity color helper exists");
   const color = new Function("value", match[1]);
   assert.equal(color(0), "#888888");
