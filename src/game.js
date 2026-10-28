@@ -1045,6 +1045,11 @@ function damagePlayer(){
 }
 function destroyAsteroid(a){
   if(!a || a.health>0)return;
+  if(chainExplosionLevel>0){
+    const chainId=a.chainReactionId||(++chainExplosionSequence);
+    if(a.chainNoChain)triggerChainExplosion(a,chainId,false,true);
+    else triggerChainExplosion(a,chainId,true,false);
+  }
   spawnMeteoriteFragments(a);
   a.health=0;
   const ach=getAchievementStats();
@@ -1127,6 +1132,20 @@ function triggerChainExplosion(enemy,chainId,allowDamage,suppressChains){
       target.chainDepth=depth+1;
       target.chainNoChain=!!(suppressChains||boss);
       destroyEnemy(target);
+    }
+  }
+  for(const target of asteroids){
+    if(target===enemy||target.health<=0||target.lastChainExplosionId===chainId)continue;
+    if(Math.hypot(target.x-enemy.x,target.y-enemy.y)>radius)continue;
+    target.lastChainExplosionId=chainId;
+    target.health-=damage;
+    showDamageNumber(target,damage);
+    if(target.health<=0){
+      target.health=0;
+      target.chainReactionId=chainId;
+      target.chainDepth=depth+1;
+      target.chainNoChain=!!(suppressChains||boss);
+      destroyAsteroid(target);
     }
   }
 }
