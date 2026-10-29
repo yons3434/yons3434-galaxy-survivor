@@ -1659,7 +1659,7 @@ function drawMeteoriteCracks(a){
   ctx.save();
   ctx.beginPath();ctx.arc(a.x,a.y,size-1,0,Math.PI*2);ctx.clip();
   ctx.lineCap="square";ctx.lineJoin="miter";
-  const seed=Math.floor((Number(a.x)||0)*17+(Number(a.y)||0)*31+(Number(a.size)||0)*13);
+  const seed=Math.floor((Number(a.size)||0)*13+(Number(a.maxHealth)||0)*31+(Number(a.crackSeed)||0)*17+7919);
   let seedState=(seed>>>0)||1;
   const rand=()=>{seedState=(seedState*1664525+1013904223)>>>0;return seedState/4294967296};
   const branches=stage>=9?12:stage>=7?8:stage>=5?5:stage>=3?3:1;
