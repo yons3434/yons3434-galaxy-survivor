@@ -1649,32 +1649,76 @@ function processSpecialEntities(){
 }
 
 function drawMeteoriteCracks(a){
-if(!meteoriteCracksEnabled||!a||!Number.isFinite(Number(a.health))||!Number.isFinite(Number(a.maxHealth))||a.maxHealth<=0)return;
-const r=Math.max(0,Math.min(1,a.health/a.maxHealth));if(r>=1)return;
-const s=r<=.09?10:r<=.19?9:r<=.29?8:r<=.39?7:r<=.49?6:r<=.59?5:r<=.69?4:r<=.79?3:r<=.89?2:1;
-const p=[
-[[-.18,-.92],[-.08,-.66],[-.22,-.45],[-.08,-.24],[-.3,-.06]],
-[[-.08,-.66],[.18,-.57],[.1,-.32],[.3,-.12],[.2,.12]],
-[[-.22,-.45],[-.52,-.48],[-.62,-.22],[-.84,-.16]],
-[[-.3,-.06],[-.48,.12],[-.35,.32],[-.55,.56]],
-[[-.08,-.24],[.02,-.04],[-.08,.18],[.08,.36],[-.02,.62]],
-[[.3,-.12],[.52,-.3],[.7,-.16],[.88,-.12]],
-[[.2,.12],[.42,.22],[.32,.42],[.58,.58],[.78,.52]],
-[[.2,.12],[.12,.36],[.24,.55],[.16,.84]],
-[[-.02,.62],[-.24,.72],[-.32,.88]],[[-.55,.56],[-.72,.36],[-.86,.42]],
-[[-.62,-.22],[-.52,-.55],[-.32,-.68]],[[.7,-.16],[.58,.02],[.78,.18]],
-[[.52,-.3],[.46,-.58],[.62,-.72]],[[.32,.42],[.48,.72],[.38,.86]],
-[[-.48,.12],[-.68,.08],[-.76,-.02]],[[-.08,.18],[-.3,.28],[-.38,.48]],
-[[.1,-.32],[.02,-.52],[-.12,-.58]],[[-.72,.36],[-.56,.52],[-.58,.7]],
-[[.42,.22],[.62,.3],[.7,.44]],[[-.32,-.68],[-.12,-.78],[.02,-.7]]];
-ctx.save();ctx.translate(a.x,a.y);ctx.beginPath();ctx.arc(0,0,a.size,0,Math.PI*2);ctx.clip();
-ctx.strokeStyle="#08090b";ctx.lineJoin="miter";ctx.lineCap="square";ctx.lineWidth=Math.max(1.5,a.size*.095);
-const line=q=>{ctx.beginPath();q.forEach((v,i)=>{const x=v[0]*a.size,y=v[1]*a.size;if(!i)ctx.moveTo(x,y);else ctx.lineTo(x,y)});ctx.stroke()};
-p.slice(0,[0,2,4,6,8,10,12,14,16,18,20][s]).forEach(line);
-const b=[[[-.3,-.06],[-.52,.02],[-.46,.18]],[[-.08,-.24],[-.28,-.3],[-.4,-.22]],[[.2,.12],[.34,.02],[.48,.08]],[[-.08,.18],[.04,.3],[-.06,.42]],[[.52,-.3],[.34,-.42],[.3,-.58]],[[-.55,.56],[-.42,.66],[-.44,.8]],[[.42,.22],[.3,.3],[.34,.44]],[[-.62,-.22],[-.48,-.08],[-.52,.02]],[[.1,-.32],[.26,-.2],[.38,-.24]],[[-.32,-.68],[-.2,-.52],[-.28,-.42]],[[.58,.58],[.48,.44],[.54,.34]],[[-.24,.72],[-.08,.68],[.02,.78]]];
-if(s>=8)b.slice(0,s===8?4:s===9?8:12).forEach(line);
-if(s===10){[[[-.52,-.32],[-.2,-.12],[.34,-.48]],[[.54,-.02],[.08,.52],[-.42,.38]],[[.42,.52],[-.05,-.78],[.72,.28]],[[-.72,-.08],[-.4,-.3],[-.2,-.12]],[[-.7,.7],[-.42,.4],[-.2,.5]],[[.3,.7],[.55,.4],[.75,.45]],[[-.1,-.8],[.05,-.55],[-.2,-.4]],[[.7,-.4],[.5,-.2],[.7,0]],[[-.8,-.1],[-.6,.1],[-.7,.3]],[[.1,.1],[.3,.3],[.15,.5]]].forEach(line)}
-ctx.restore()
+  if(!meteoriteCracksEnabled||!a||!Number.isFinite(Number(a.health))||!Number.isFinite(Number(a.maxHealth))||a.maxHealth<=0)return;
+  const ratio=Math.max(0,Math.min(1,Number(a.health)/Number(a.maxHealth)));
+  if(ratio>=1)return;
+  const stage=ratio<=.09?10:ratio<=.19?9:ratio<=.29?8:ratio<=.39?7:ratio<=.49?6:ratio<=.59?5:ratio<=.69?4:ratio<=.79?3:ratio<=.89?2:1;
+  // Hand-authored, orthogonal paths: chunky pixel-art cracks rather than scribbled diagonals.
+  const paths=[
+    [[-.12,-.94],[-.12,-.68],[-.28,-.68],[-.28,-.42],[-.12,-.42],[-.12,-.16],[-.30,-.16],[-.30,.06]],
+    [[-.28,-.42],[-.52,-.42],[-.52,-.22],[-.76,-.22]],
+    [[-.30,.06],[-.48,.06],[-.48,.30],[-.66,.30],[-.66,.52]],
+    [[-.12,-.16],[.12,-.16],[.12,.08],[.32,.08],[.32,.30]],
+    [[.12,.08],[.12,.34],[-.04,.34],[-.04,.62]],
+    [[.32,.08],[.52,.08],[.52,-.12],[.76,-.12]],
+    [[.32,.30],[.52,.30],[.52,.52],[.72,.52]],
+    [[-.04,.62],[-.24,.62],[-.24,.82]],
+    [[-.66,.30],[-.82,.30]],
+    [[-.52,-.42],[-.52,-.64],[-.34,-.64]],
+    [[.52,-.12],[.52,-.36],[.72,-.36]],
+    [[.52,.30],[.52,.68],[.36,.68]],
+    [[-.12,-.68],[.08,-.68],[.08,-.82]],
+    [[-.48,.06],[-.68,.06],[-.68,-.06]],
+    [[.12,.34],[.28,.34],[.28,.52]],
+    [[-.24,.62],[-.42,.62],[-.42,.78]],
+    [[-.76,-.22],[-.76,-.42]],
+    [[.72,.52],[.82,.52]],
+    [[.72,-.36],[.72,-.56]],
+    [[.36,.68],[.36,.82]]
+  ];
+  const branches=[
+    [[-.30,-.16],[-.46,-.16],[-.46,-.02]],
+    [[-.12,-.42],[.06,-.42],[.06,-.30]],
+    [[-.48,.30],[-.34,.30],[-.34,.46]],
+    [[.12,-.16],[.12,-.34],[.28,-.34]],
+    [[.32,.08],[.32,-.04]],
+    [[.52,.52],[.36,.52]],
+    [[-.04,.34],[.12,.34]],
+    [[-.52,-.22],[-.36,-.22]],
+    [[.52,-.12],[.36,-.12],[.36,-.24]],
+    [[-.24,.62],[-.08,.62],[-.08,.78]],
+    [[.28,.34],[.44,.34],[.44,.20]],
+    [[-.68,.06],[-.68,.18]],
+    [[.08,-.82],[.24,-.82]],
+    [[-.42,.78],[-.58,.78]],
+    [[.36,.68],[.20,.68]]
+  ];
+  ctx.save();
+  ctx.translate(a.x,a.y);
+  ctx.beginPath();ctx.arc(0,0,a.size,0,Math.PI*2);ctx.clip();
+  const pixel=Math.max(2,Math.round(a.size*.11));
+  ctx.strokeStyle="#000000";ctx.lineWidth=pixel;ctx.lineCap="butt";ctx.lineJoin="miter";
+  const drawPath=path=>{
+    ctx.beginPath();
+    path.forEach((pt,i)=>{
+      const x=Math.round(pt[0]*a.size/pixel)*pixel;
+      const y=Math.round(pt[1]*a.size/pixel)*pixel;
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+  };
+  paths.slice(0,stage*2).forEach(drawPath);
+  if(stage>=5)branches.slice(0,Math.min(branches.length,(stage-4)*3)).forEach(drawPath);
+  if(stage>=8){
+    // At critical health, add short blocky fractures across the remaining surface.
+    [[[ -.78,-.02],[-.58,-.02],[-.58,.12] ],[[ -.30,-.64],[-.12,-.64] ],[[ .08,-.30],[.26,-.30],[.26,-.18] ],[[ .72,.12],[.72,.30] ],[[ -.42,.42],[-.24,.42] ],[[ .08,.68],[.08,.82] ]].forEach(drawPath);
+  }
+  if(stage===10){
+    ctx.fillStyle="#000";
+    const chips=[[-.42,-.28],[-.22,-.52],[.02,-.02],[.40,-.02],[.22,.42],[-.52,.44],[.60,.38],[-.12,.82]];
+    chips.forEach(([x,y])=>ctx.fillRect(Math.round(x*a.size/pixel)*pixel,Math.round(y*a.size/pixel)*pixel,pixel,pixel));
+  }
+  ctx.restore();
 }
 function drawHealthBar(x,y,width,height,health,maxHealth){const ratio=Math.max(0,Math.min(1,health/maxHealth));ctx.fillStyle="rgba(0,0,0,.85)";ctx.fillRect(x-width/2,y,width,height);ctx.fillStyle=ratio>.5?"#00e676":ratio>.25?"#ffeb3b":"#ff1744";ctx.fillRect(x-width/2,y,width*ratio,height);ctx.strokeStyle="#fff";ctx.strokeRect(x-width/2,y,width,height)}
 function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.save();ctx.translate(player.x,player.y);const shieldBubbleVisible=ultraShields>0||performance.now()<shieldBubbleFlashUntil;if(shieldBubbleVisible){const flashing=performance.now()<shieldBubbleFlashUntil,pulse=flashing?(Math.floor(performance.now()/130)%2===0):false;ctx.save();ctx.globalAlpha=flashing?(pulse?.78:.22):.34;ctx.fillStyle=pulse?"#e7fbff":"#36bfff";ctx.strokeStyle=pulse?"#ffffff":"#35baff";ctx.lineWidth=pulse?4:2.5;ctx.shadowColor="#18aaff";ctx.shadowBlur=pulse?34:22;ctx.beginPath();ctx.arc(0,0,41+(pulse?2:0),0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()}const ghostActive=invincible||ultraModeActive||dodgeGhostTimer>0;ctx.globalAlpha=ghostActive?.68:1;if(dodgeGhostTimer>0&&!invincible){ctx.globalAlpha=.68}const rageActive=lowHealthActive();if(ultraModeActive){ctx.fillStyle="#ffffff";ctx.shadowColor="#c77dff";ctx.shadowBlur=45}else if(rageActive){ctx.fillStyle="#ff8c00";ctx.shadowColor="#ff8c00";ctx.shadowBlur=35}else{ctx.fillStyle="#4cc9f0";ctx.shadowBlur=0}ctx.beginPath();ctx.moveTo(0,-30);ctx.lineTo(-22,25);ctx.lineTo(0,15);ctx.lineTo(22,25);ctx.closePath();ctx.fill();ctx.fillStyle="#fff";ctx.fillRect(-5,-10,10,15);ctx.restore();if(laserMode&&laserOn){const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1;ctx.save();const maxHot=laserHeatLevel>0&&laserHeat>=.999,laserColor=maxHot?(Math.floor(performance.now()/220)%2?"#ff1010":"#ff4a4a"):(laserHeatLevel>0?getLaserHeatColor():"#ff1744");ctx.strokeStyle=laserColor;ctx.shadowColor=laserColor;ctx.shadowBlur=20+laserHeat*25;ctx.lineWidth=12+laserHeat*3;ctx.beginPath();ctx.moveTo(player.x,player.y);ctx.lineTo(player.x+dx/len*1000,player.y+dy/len*1000);ctx.stroke();ctx.restore()}
