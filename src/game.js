@@ -509,6 +509,10 @@ resumeButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation()
 gameSettingsButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openGameSettings()});
 closeGameSettingsButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();closeGameSettings()});
 ["uiLuck","uiDodge","uiWeapon","uiAmmo","uiDistance","uiSpeedCombo","uiXP","uiLives","uiDrones","uiSwords"].forEach(id=>document.getElementById(id).addEventListener("change",applyUiSettings));
+const meteoriteCracksToggle=document.getElementById("uiMeteoriteCracks");
+let meteoriteCracksEnabled=localStorage.getItem("galaxyDefenderMeteoriteCracks")!=="off";
+meteoriteCracksToggle.checked=meteoriteCracksEnabled;
+meteoriteCracksToggle.addEventListener("change",()=>{meteoriteCracksEnabled=meteoriteCracksToggle.checked;localStorage.setItem("galaxyDefenderMeteoriteCracks",meteoriteCracksEnabled?"on":"off")});
  document.getElementById("mobileControlsToggle").addEventListener("change",e=>{mobileControlsEnabled=e.target.checked;updateMobileControls()});
 controlModeSelect.addEventListener("change",e=>{mobileControlMode=e.target.value;updateMobileControlMode()});
 
@@ -1647,6 +1651,38 @@ function processSpecialEntities(){
   });
 }
 
+function drawMeteoriteCracks(a){
+  if(!meteoriteCracksEnabled||!a||!Number.isFinite(a.health)||!Number.isFinite(a.maxHealth)||a.maxHealth<=0||a.health<=0)return;
+  const ratio=Math.max(0,Math.min(1,a.health/a.maxHealth));
+  if(ratio>=.99)return;
+  // Ten deliberate, blocky fissure patterns radiate from the rim toward the center.
+  const stage=Math.min(10,Math.max(1,Math.ceil((1-ratio)*10)));
+  const paths=[
+    [[-.22,-.98],[-.16,-.68],[-.28,-.49],[-.17,-.30],[.00,-.12]],
+    [[.68,-.72],[.43,-.58],[.47,-.35],[.25,-.18],[.00,-.12]],
+    [[.98,.08],[.70,.12],[.52,.30],[.31,.27],[.10,.12]],
+    [[.70,.72],[.52,.48],[.32,.53],[.16,.34],[.00,-.12]],
+    [[-.42,.91],[-.35,.65],[-.45,.45],[-.24,.28],[.00,-.12]],
+    [[-.96,.24],[-.69,.20],[-.52,.02],[-.32,.06],[.00,-.12]],
+    [[-.76,-.62],[-.54,-.48],[-.49,-.27],[-.27,-.20],[.00,-.12]],
+    [[.12,.99],[.10,.70],[-.02,.52],[.08,.31],[.00,-.12]],
+    [[.96,-.30],[.70,-.26],[.57,-.10],[.32,-.08],[.00,-.12]],
+    [[-.08,-.98],[.03,-.72],[-.08,-.52],[.08,-.33],[.00,-.12]]
+  ];
+  ctx.save();ctx.beginPath();ctx.arc(a.x,a.y,a.size,0,Math.PI*2);ctx.clip();
+  const count=Math.min(10,stage);
+  for(let i=0;i<count;i++){
+    const p=paths[i],w=Math.max(1.5,a.size*.095);
+    ctx.lineJoin="miter";ctx.lineCap="square";ctx.strokeStyle="#171717";ctx.lineWidth=w;
+    ctx.beginPath();ctx.moveTo(a.x+p[0][0]*a.size,a.y+p[0][1]*a.size);
+    for(let k=1;k<p.length;k++)ctx.lineTo(a.x+p[k][0]*a.size,a.y+p[k][1]*a.size);
+    ctx.stroke();
+    // Thin gray edge gives each fissure a carved, pixel-like stone edge.
+    ctx.strokeStyle="#3c3c3c";ctx.lineWidth=Math.max(1,w*.35);ctx.stroke();
+    if(stage>=5&&i<stage-3){const q=p[2];ctx.fillStyle="#171717";ctx.fillRect(a.x+q[0]*a.size-2,a.y+q[1]*a.size-2,4,4)}
+  }
+  ctx.restore();
+}
 function drawHealthBar(x,y,width,height,health,maxHealth){const ratio=Math.max(0,Math.min(1,health/maxHealth));ctx.fillStyle="rgba(0,0,0,.85)";ctx.fillRect(x-width/2,y,width,height);ctx.fillStyle=ratio>.5?"#00e676":ratio>.25?"#ffeb3b":"#ff1744";ctx.fillRect(x-width/2,y,width*ratio,height);ctx.strokeStyle="#fff";ctx.strokeRect(x-width/2,y,width,height)}
 function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.save();ctx.translate(player.x,player.y);const shieldBubbleVisible=ultraShields>0||performance.now()<shieldBubbleFlashUntil;if(shieldBubbleVisible){const flashing=performance.now()<shieldBubbleFlashUntil,pulse=flashing?(Math.floor(performance.now()/130)%2===0):false;ctx.save();ctx.globalAlpha=flashing?(pulse?.78:.22):.34;ctx.fillStyle=pulse?"#e7fbff":"#36bfff";ctx.strokeStyle=pulse?"#ffffff":"#35baff";ctx.lineWidth=pulse?4:2.5;ctx.shadowColor="#18aaff";ctx.shadowBlur=pulse?34:22;ctx.beginPath();ctx.arc(0,0,41+(pulse?2:0),0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()}const ghostActive=invincible||ultraModeActive||dodgeGhostTimer>0;ctx.globalAlpha=ghostActive?.68:1;if(dodgeGhostTimer>0&&!invincible){ctx.globalAlpha=.68}const rageActive=lowHealthActive();if(ultraModeActive){ctx.fillStyle="#ffffff";ctx.shadowColor="#c77dff";ctx.shadowBlur=45}else if(rageActive){ctx.fillStyle="#ff8c00";ctx.shadowColor="#ff8c00";ctx.shadowBlur=35}else{ctx.fillStyle="#4cc9f0";ctx.shadowBlur=0}ctx.beginPath();ctx.moveTo(0,-30);ctx.lineTo(-22,25);ctx.lineTo(0,15);ctx.lineTo(22,25);ctx.closePath();ctx.fill();ctx.fillStyle="#fff";ctx.fillRect(-5,-10,10,15);ctx.restore();if(laserMode&&laserOn){const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1;ctx.save();const maxHot=laserHeatLevel>0&&laserHeat>=.999,laserColor=maxHot?(Math.floor(performance.now()/220)%2?"#ff1010":"#ff4a4a"):(laserHeatLevel>0?getLaserHeatColor():"#ff1744");ctx.strokeStyle=laserColor;ctx.shadowColor=laserColor;ctx.shadowBlur=20+laserHeat*25;ctx.lineWidth=12+laserHeat*3;ctx.beginPath();ctx.moveTo(player.x,player.y);ctx.lineTo(player.x+dx/len*1000,player.y+dy/len*1000);ctx.stroke();ctx.restore()}
 drawUltraLaser();if(laserHeatLevel>0){const barW=72,barH=7,barX=player.x-barW/2,barY=player.y+39,maxHot=laserHeat>=.999,barColor=maxHot?(Math.floor(performance.now()/220)%2?"#ff1010":"#ff4a4a"):getLaserHeatColor();ctx.save();ctx.fillStyle="rgba(0,0,0,.8)";ctx.fillRect(barX-2,barY-2,barW+4,barH+4);ctx.fillStyle="#252b38";ctx.fillRect(barX,barY,barW,barH);ctx.fillStyle=barColor;ctx.shadowColor=barColor;ctx.shadowBlur=maxHot?14:5;ctx.fillRect(barX,barY,barW*laserHeat,barH);ctx.strokeStyle="#fff";ctx.lineWidth=1;ctx.strokeRect(barX,barY,barW,barH);ctx.restore()}if(flamethrowerOn){const dx=mouse.x-player.x,dy=mouse.y-player.y,len=Math.hypot(dx,dy)||1,dirX=dx/len,dirY=dy/len;ctx.save();ctx.globalAlpha=.8;ctx.shadowColor="#ff9800";ctx.shadowBlur=25;ctx.strokeStyle="#ff6d00";ctx.lineWidth=55;ctx.beginPath();ctx.moveTo(player.x+dirX*20,player.y+dirY*20);ctx.lineTo(player.x+dirX*220,player.y+dirY*220);ctx.stroke();ctx.strokeStyle="#ffff00";ctx.lineWidth=25;ctx.stroke();ctx.restore()}bullets.forEach(b=>{ctx.save();ctx.globalAlpha=getSplitBulletAlpha(Number(b.splitGeneration)||0);ctx.fillStyle=b.rpg?"#ff1744":b.droneBullet?"#00ff88":"#ffff00";ctx.beginPath();ctx.arc(b.x,b.y,b.size,0,Math.PI*2);ctx.fill();ctx.restore()});enemyBullets.forEach(b=>{ctx.fillStyle=b.confusedBullet?"#c65cff":b.specialSplitBullet?(b.splitStage===0?"#064d18":b.splitStage===1?"#25e66b":"#8dffad"):"#ff1744";ctx.beginPath();ctx.arc(b.x,b.y,b.specialSplitBullet?b.size:6,0,Math.PI*2);ctx.fill()});asteroids.forEach(a=>{
@@ -1655,7 +1691,7 @@ drawUltraLaser();if(laserHeatLevel>0){const barW=72,barH=7,barX=player.x-barW/2,
   if(a.clone)ctx.globalAlpha=.8;
   drawBurnEffect(a,a.size,false);
   ctx.fillStyle=a.specialType==="ice"?"#8eeeff":a.specialType==="gate"?"#b060ff":a.specialType==="chaser"?"#ff5533":a.specialType==="inversion"?"#42d8dc":"#777";
-  ctx.beginPath();ctx.arc(a.x,a.y,a.size,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#aaa";ctx.stroke();if(a.poisonUntil>performance.now()){ctx.save();ctx.strokeStyle="#7cff00";ctx.shadowColor="#7cff00";ctx.shadowBlur=16;ctx.lineWidth=3;ctx.beginPath();ctx.arc(a.x,a.y,a.size+4,0,Math.PI*2);ctx.stroke();ctx.restore()}if(a.freezeUntil>performance.now()){const freezeGlow=Number(a.freezeStrength)||0;ctx.save();ctx.globalAlpha=.55+.45*freezeGlow;ctx.strokeStyle="#9ff7ff";ctx.shadowColor="#8eeeff";ctx.shadowBlur=12+38*freezeGlow;ctx.lineWidth=3+4*freezeGlow;ctx.beginPath();ctx.arc(a.x,a.y,a.size+6+freezeGlow*4,0,Math.PI*2);ctx.stroke();ctx.restore()}drawHealthBar(a.x,a.y-a.size-10,Math.max(35,a.size*2.2),6,a.health,a.maxHealth);
+  ctx.beginPath();ctx.arc(a.x,a.y,a.size,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#aaa";ctx.stroke();drawMeteoriteCracks(a);if(a.poisonUntil>performance.now()){ctx.save();ctx.strokeStyle="#7cff00";ctx.shadowColor="#7cff00";ctx.shadowBlur=16;ctx.lineWidth=3;ctx.beginPath();ctx.arc(a.x,a.y,a.size+4,0,Math.PI*2);ctx.stroke();ctx.restore()}if(a.freezeUntil>performance.now()){const freezeGlow=Number(a.freezeStrength)||0;ctx.save();ctx.globalAlpha=.55+.45*freezeGlow;ctx.strokeStyle="#9ff7ff";ctx.shadowColor="#8eeeff";ctx.shadowBlur=12+38*freezeGlow;ctx.lineWidth=3+4*freezeGlow;ctx.beginPath();ctx.arc(a.x,a.y,a.size+6+freezeGlow*4,0,Math.PI*2);ctx.stroke();ctx.restore()}drawHealthBar(a.x,a.y-a.size-10,Math.max(35,a.size*2.2),6,a.health,a.maxHealth);
 });
   enemies.forEach(enemy=>{
     if(enemy.teleportHidden&&enemy.teleportMarker){ctx.save();ctx.globalAlpha=.8;ctx.shadowColor="#bf62ff";ctx.shadowBlur=25;ctx.strokeStyle="#d070ff";ctx.lineWidth=5;ctx.beginPath();ctx.arc(enemy.teleportMarker.x,enemy.teleportMarker.y,30,0,Math.PI*2);ctx.stroke();ctx.restore();return}
