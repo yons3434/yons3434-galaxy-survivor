@@ -510,6 +510,7 @@ resumeButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation()
 gameSettingsButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openGameSettings()});
 closeGameSettingsButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();closeGameSettings()});
 ["uiLuck","uiDodge","uiWeapon","uiAmmo","uiDistance","uiSpeedCombo","uiXP","uiLives","uiDrones","uiSwords"].forEach(id=>document.getElementById(id).addEventListener("change",applyUiSettings));
+ const meteoriteCracksToggle=document.getElementById("uiMeteoriteCracks");if(meteoriteCracksToggle){meteoriteCracksToggle.checked=localStorage.getItem("galaxyDefenderMeteoriteCracks")!=="off";meteoriteCracksToggle.addEventListener("change",()=>{meteoriteCracksEnabled=meteoriteCracksToggle.checked;localStorage.setItem("galaxyDefenderMeteoriteCracks",meteoriteCracksEnabled?"on":"off")})}
 document.getElementById("mobileControlsToggle").addEventListener("change",e=>{mobileControlsEnabled=e.target.checked;updateMobileControls()});
 controlModeSelect.addEventListener("change",e=>{mobileControlMode=e.target.value;updateMobileControlMode()});
 
