@@ -1650,62 +1650,41 @@ function processSpecialEntities(){
 }
 
 function drawMeteoriteCracks(a){
-  if(!meteoriteCracksEnabled||!a||!Number.isFinite(Number(a.health))||!Number.isFinite(Number(a.maxHealth))||a.maxHealth<=0)return;
-  const ratio=Math.max(0,Math.min(1,Number(a.health)/Number(a.maxHealth)));
+  if(!meteoriteCracksEnabled||!a||!Number.isFinite(Number(a.health))||!Number.isFinite(Number(a.maxHealth))||a.maxHealth<=0||a.size<5)return;
+  const ratio=Math.max(0,Math.min(1,a.health/a.maxHealth));
   if(ratio>=1)return;
-  if(ratio<=0)return; // the existing destruction effect handles a destroyed meteorite
-  const stage=ratio<=.09?10:ratio<=.19?9:ratio<=.29?8:ratio<=.39?7:ratio<=.49?6:ratio<=.59?5:ratio<=.69?4:ratio<=.79?3:ratio<=.89?2:1;
-  // A few connected, stepped fault lines. Each new stage extends the same cracks,
-  // so the asteroid looks fractured instead of covered by random scribbles.
-  const main=[
-    [[-.10,-.98],[-.10,-.68],[-.25,-.68],[-.25,-.43],[-.08,-.43],[-.08,-.18],[-.28,-.18],[-.28,.08],[-.08,.08],[-.08,.36],[-.24,.36],[-.24,.66],[-.08,.66],[-.08,.90]],
-    [[-.25,-.43],[-.48,-.43],[-.48,-.22],[-.76,-.22]],
-    [[-.28,.08],[-.49,.08],[-.49,.28],[-.70,.28],[-.70,.52]],
-    [[-.08,-.18],[.14,-.18],[.14,.06],[.34,.06],[.34,.30]],
-    [[.14,.06],[.14,.34],[.34,.34],[.34,.56],[.56,.56],[.56,.76]],
-    [[.34,.06],[.54,.06],[.54,-.14],[.78,-.14]],
-    [[-.10,-.68],[.10,-.68],[.10,-.84]],
-    [[-.24,.66],[-.44,.66],[-.44,.82]],
-    [[.34,.30],[.54,.30],[.54,.48],[.78,.48]],
-    [[-.48,-.43],[-.48,-.64],[-.30,-.64]],
-    [[.54,-.14],[.54,-.36],[.72,-.36]],
-    [[-.49,.28],[-.49,.48],[-.32,.48]],
-    [[.14,.34],[-.02,.34],[-.02,.52]],
-    [[.54,.48],[.70,.48],[.70,.30]]
-  ];
-  const extra=[
-    [[-.48,-.22],[-.32,-.22],[-.32,-.06]],
-    [[-.08,-.43],[.10,-.43],[.10,-.30]],
-    [[-.49,.08],[-.68,.08],[-.68,-.06]],
-    [[.14,-.18],[.14,-.36],[.30,-.36]],
-    [[.34,.34],[.16,.34],[.16,.50]],
-    [[-.24,.36],[-.42,.36],[-.42,.50]],
-    [[.54,.06],[.54,-.02],[.70,-.02]],
-    [[-.44,.66],[-.60,.66],[-.60,.80]],
-    [[.56,.56],[.40,.56],[.40,.72]],
-    [[-.10,-.68],[-.28,-.68],[-.28,-.82]]
-  ];
+  // Discrete pixelated, branching cracks; density increases as health falls.
+  const stage=Math.min(10,Math.max(1,Math.ceil((1-ratio)*10)));
+  const size=a.size, cell=Math.max(2,Math.round(size/18));
   ctx.save();
-  ctx.translate(a.x,a.y);
-  ctx.beginPath();ctx.arc(0,0,a.size,0,Math.PI*2);ctx.clip();
-  // Dark core plus a subtle stone-grey edge makes the stepped fractures readable.
-  const drawPath=(path,width,color)=>{
-    ctx.beginPath();
-    path.forEach((pt,i)=>{
-      const x=Math.round(pt[0]*a.size),y=Math.round(pt[1]*a.size);
-      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-    });
-    ctx.lineWidth=width;ctx.lineCap="square";ctx.lineJoin="miter";ctx.strokeStyle=color;ctx.stroke();
-  };
-  const visibleMain=Math.min(main.length,Math.max(1,Math.ceil(stage*1.4)));
-  main.slice(0,visibleMain).forEach(path=>drawPath(path,Math.max(2,Math.round(a.size*.055)),"#171717"));
-  if(stage>=4)extra.slice(0,Math.min(extra.length,(stage-3)*2)).forEach(path=>drawPath(path,Math.max(1,Math.round(a.size*.035)),"#202020"));
-  if(stage>=8){
-    // At very low health, widen a few junctions into square chips.
-    ctx.fillStyle="#171717";
-    [[-.08,-.18],[-.28,.08],[.34,.06],[.14,.34],[-.24,.66],[.54,.30]].forEach(([x,y],i)=>{
-      if(i<stage-6){const size=Math.max(2,Math.round(a.size*.09));ctx.fillRect(Math.round(x*a.size-size/2),Math.round(y*a.size-size/2),size,size);}
-    });
+  ctx.beginPath();ctx.arc(a.x,a.y,size-1,0,Math.PI*2);ctx.clip();
+  ctx.lineCap="square";ctx.lineJoin="miter";
+  const seed=Math.floor((Number(a.x)||0)*17+(Number(a.y)||0)*31+(Number(a.size)||0)*13);
+  let seedState=(seed>>>0)||1;
+  const rand=()=>{seedState=(seedState*1664525+1013904223)>>>0;return seedState/4294967296};
+  const branches=stage>=9?12:stage>=7?8:stage>=5?5:stage>=3?3:1;
+  ctx.strokeStyle="#171717";ctx.lineWidth=Math.max(1,cell*.75);
+  for(let b=0;b<branches;b++){
+    let x=a.x+(rand()-.5)*size*.65,y=a.y+(rand()-.5)*size*.65;
+    let angle=rand()*Math.PI*2;
+    const steps=Math.floor((size*(.65+rand()*.45))/cell);
+    ctx.beginPath();ctx.moveTo(Math.round(x/cell)*cell,Math.round(y/cell)*cell);
+    for(let i=0;i<steps;i++){
+      angle+=(rand()-.5)*1.45;
+      const hop=cell*(1+(rand()>.72?1:0));
+      x+=Math.round(Math.cos(angle))*hop;y+=Math.round(Math.sin(angle))*hop;
+      ctx.lineTo(Math.round(x/cell)*cell,Math.round(y/cell)*cell);
+      if(rand()<.23){const old=angle;angle+=(rand()>.5?1:-1)*1.35;x+=Math.round(Math.cos(angle))*cell;y+=Math.round(Math.sin(angle))*cell;ctx.lineTo(Math.round(x/cell)*cell,Math.round(y/cell)*cell);angle=old}
+    }
+    ctx.stroke();
+  }
+  if(stage>=6){
+    ctx.strokeStyle="#292929";ctx.lineWidth=Math.max(1,cell*.45);
+    for(let i=0;i<stage*2;i++){
+      const x=a.x+(rand()-.5)*size*1.5,y=a.y+(rand()-.5)*size*1.5;
+      ctx.beginPath();ctx.moveTo(Math.round(x/cell)*cell,Math.round(y/cell)*cell);
+      ctx.lineTo(Math.round((x+(rand()-.5)*size*.35)/cell)*cell,Math.round((y+(rand()-.5)*size*.35)/cell)*cell);ctx.stroke();
+    }
   }
   ctx.restore();
 }
