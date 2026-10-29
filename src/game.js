@@ -1696,8 +1696,9 @@ function drawMeteoriteCracks(a){
   ctx.save();
   ctx.translate(a.x,a.y);
   ctx.beginPath();ctx.arc(0,0,a.size,0,Math.PI*2);ctx.clip();
-  const pixel=Math.max(2,Math.round(a.size*.11));
-  ctx.strokeStyle="#000000";ctx.lineWidth=pixel;ctx.lineCap="butt";ctx.lineJoin="miter";
+  const pixel=1;
+  // Fine 1px orthogonal fractures, snapped to a pixel grid for a crisp Minecraft-like look.
+  ctx.strokeStyle="#000000";ctx.lineWidth=1;ctx.lineCap="butt";ctx.lineJoin="miter";
   const drawPath=path=>{
     ctx.beginPath();
     path.forEach((pt,i)=>{
@@ -1716,7 +1717,7 @@ function drawMeteoriteCracks(a){
   if(stage===10){
     ctx.fillStyle="#000";
     const chips=[[-.42,-.28],[-.22,-.52],[.02,-.02],[.40,-.02],[.22,.42],[-.52,.44],[.60,.38],[-.12,.82]];
-    chips.forEach(([x,y])=>ctx.fillRect(Math.round(x*a.size/pixel)*pixel,Math.round(y*a.size/pixel)*pixel,pixel,pixel));
+    chips.forEach(([x,y])=>{const px=Math.round(x*a.size/pixel)*pixel,py=Math.round(y*a.size/pixel)*pixel;ctx.fillRect(px,py,2,2)});
   }
   ctx.restore();
 }
