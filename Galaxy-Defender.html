@@ -172,6 +172,7 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 <canvas id="gameCanvas"></canvas><div id="message"></div><button type="button" id="gameSettingsButton" aria-label="הגדרות ממשק">⚙️</button>
 <button type="button" id="profileButton" aria-label="פרופיל" title="פרופיל">👤</button>
 <div id="gameSettingsOverlay" class="overlay"><div id="gameSettingsPanel"><h1>⚙️ הגדרות ממשק</h1><p>הצג או הסתר חלקים מה־HUD וכבה את כפתורי המגע בטלפון.</p><div class="settingsGrid">
+<div class="settingsRow" id="meteoriteCracksSetting" style="display:flex;visibility:visible;opacity:1" title="הצג או הסתר סדקים מפוקסלים במטאוריטים"><label for="uiMeteoriteCracks">☄️ סדקים במטאוריט</label><input id="uiMeteoriteCracks" type="checkbox" checked aria-label="הפעלת סדקים במטאוריט"></div>
 <div class="settingsRow"><label for="uiLuck">🍀 מזל</label><input id="uiLuck" type="checkbox" checked></div>
 <div class="settingsRow"><label for="uiDodge">🌀 סיכוי התחמקות: <span id="dodgeValue">0%</span></label><input id="uiDodge" type="checkbox" checked></div>
 <div class="settingsRow"><label for="uiWeapon">🔫 סוג רובה</label><input id="uiWeapon" type="checkbox" checked></div>
@@ -181,7 +182,7 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 <div class="settingsRow"><label for="uiLives">❤️ חיים</label><input id="uiLives" type="checkbox" checked></div>
 <div class="settingsRow"><label for="uiDrones">🛸 מיני־חלליות</label><input id="uiDrones" type="checkbox" checked></div>
 <div class="settingsRow"><label for="uiSwords">⚔️ חרבות</label><input id="uiSwords" type="checkbox" checked></div>
-<div class="settingsRow" id="meteoriteCracksSetting" style="display:flex;visibility:visible;opacity:1" title="הצג או הסתר סדקים מפוקסלים במטאוריטים"><label for="uiMeteoriteCracks">☄️ סדקים במטאוריט</label><input id="uiMeteoriteCracks" type="checkbox" checked aria-label="הפעלת סדקים במטאוריט"></div>
+
 <div class="settingsRow" id="mobileToggleRow"><label for="mobileControlsToggle">📱 כפתורי טאבלט/טלפון</label><input id="mobileControlsToggle" type="checkbox" checked></div>
 <div class="settingsRow" id="controlModeRow"><label for="controlModeSelect">🎮 צורת תנועה</label><select id="controlModeSelect" style="padding:7px;border-radius:8px;background:#080d20;color:#fff;border:1px solid #4cc9f0"><option value="joystick">⚪ עיגול גרירה</option><option value="arrows">⬆️ חצים</option></select></div>
 </div><button type="button" id="closeGameSettingsButton">✔️ סגור</button></div></div>
