@@ -1652,72 +1652,59 @@ function drawMeteoriteCracks(a){
   if(!meteoriteCracksEnabled||!a||!Number.isFinite(Number(a.health))||!Number.isFinite(Number(a.maxHealth))||a.maxHealth<=0)return;
   const ratio=Math.max(0,Math.min(1,Number(a.health)/Number(a.maxHealth)));
   if(ratio>=1)return;
+  if(ratio<=0)return; // the existing destruction effect handles a destroyed meteorite
   const stage=ratio<=.09?10:ratio<=.19?9:ratio<=.29?8:ratio<=.39?7:ratio<=.49?6:ratio<=.59?5:ratio<=.69?4:ratio<=.79?3:ratio<=.89?2:1;
-  // Hand-authored, orthogonal paths: chunky pixel-art cracks rather than scribbled diagonals.
-  const paths=[
-    [[-.12,-.94],[-.12,-.68],[-.28,-.68],[-.28,-.42],[-.12,-.42],[-.12,-.16],[-.30,-.16],[-.30,.06]],
-    [[-.28,-.42],[-.52,-.42],[-.52,-.22],[-.76,-.22]],
-    [[-.30,.06],[-.48,.06],[-.48,.30],[-.66,.30],[-.66,.52]],
-    [[-.12,-.16],[.12,-.16],[.12,.08],[.32,.08],[.32,.30]],
-    [[.12,.08],[.12,.34],[-.04,.34],[-.04,.62]],
-    [[.32,.08],[.52,.08],[.52,-.12],[.76,-.12]],
-    [[.32,.30],[.52,.30],[.52,.52],[.72,.52]],
-    [[-.04,.62],[-.24,.62],[-.24,.82]],
-    [[-.66,.30],[-.82,.30]],
-    [[-.52,-.42],[-.52,-.64],[-.34,-.64]],
-    [[.52,-.12],[.52,-.36],[.72,-.36]],
-    [[.52,.30],[.52,.68],[.36,.68]],
-    [[-.12,-.68],[.08,-.68],[.08,-.82]],
-    [[-.48,.06],[-.68,.06],[-.68,-.06]],
-    [[.12,.34],[.28,.34],[.28,.52]],
-    [[-.24,.62],[-.42,.62],[-.42,.78]],
-    [[-.76,-.22],[-.76,-.42]],
-    [[.72,.52],[.82,.52]],
-    [[.72,-.36],[.72,-.56]],
-    [[.36,.68],[.36,.82]]
+  // A few connected, stepped fault lines. Each new stage extends the same cracks,
+  // so the asteroid looks fractured instead of covered by random scribbles.
+  const main=[
+    [[-.10,-.98],[-.10,-.68],[-.25,-.68],[-.25,-.43],[-.08,-.43],[-.08,-.18],[-.28,-.18],[-.28,.08],[-.08,.08],[-.08,.36],[-.24,.36],[-.24,.66],[-.08,.66],[-.08,.90]],
+    [[-.25,-.43],[-.48,-.43],[-.48,-.22],[-.76,-.22]],
+    [[-.28,.08],[-.49,.08],[-.49,.28],[-.70,.28],[-.70,.52]],
+    [[-.08,-.18],[.14,-.18],[.14,.06],[.34,.06],[.34,.30]],
+    [[.14,.06],[.14,.34],[.34,.34],[.34,.56],[.56,.56],[.56,.76]],
+    [[.34,.06],[.54,.06],[.54,-.14],[.78,-.14]],
+    [[-.10,-.68],[.10,-.68],[.10,-.84]],
+    [[-.24,.66],[-.44,.66],[-.44,.82]],
+    [[.34,.30],[.54,.30],[.54,.48],[.78,.48]],
+    [[-.48,-.43],[-.48,-.64],[-.30,-.64]],
+    [[.54,-.14],[.54,-.36],[.72,-.36]],
+    [[-.49,.28],[-.49,.48],[-.32,.48]],
+    [[.14,.34],[-.02,.34],[-.02,.52]],
+    [[.54,.48],[.70,.48],[.70,.30]]
   ];
-  const branches=[
-    [[-.30,-.16],[-.46,-.16],[-.46,-.02]],
-    [[-.12,-.42],[.06,-.42],[.06,-.30]],
-    [[-.48,.30],[-.34,.30],[-.34,.46]],
-    [[.12,-.16],[.12,-.34],[.28,-.34]],
-    [[.32,.08],[.32,-.04]],
-    [[.52,.52],[.36,.52]],
-    [[-.04,.34],[.12,.34]],
-    [[-.52,-.22],[-.36,-.22]],
-    [[.52,-.12],[.36,-.12],[.36,-.24]],
-    [[-.24,.62],[-.08,.62],[-.08,.78]],
-    [[.28,.34],[.44,.34],[.44,.20]],
-    [[-.68,.06],[-.68,.18]],
-    [[.08,-.82],[.24,-.82]],
-    [[-.42,.78],[-.58,.78]],
-    [[.36,.68],[.20,.68]]
+  const extra=[
+    [[-.48,-.22],[-.32,-.22],[-.32,-.06]],
+    [[-.08,-.43],[.10,-.43],[.10,-.30]],
+    [[-.49,.08],[-.68,.08],[-.68,-.06]],
+    [[.14,-.18],[.14,-.36],[.30,-.36]],
+    [[.34,.34],[.16,.34],[.16,.50]],
+    [[-.24,.36],[-.42,.36],[-.42,.50]],
+    [[.54,.06],[.54,-.02],[.70,-.02]],
+    [[-.44,.66],[-.60,.66],[-.60,.80]],
+    [[.56,.56],[.40,.56],[.40,.72]],
+    [[-.10,-.68],[-.28,-.68],[-.28,-.82]]
   ];
   ctx.save();
   ctx.translate(a.x,a.y);
   ctx.beginPath();ctx.arc(0,0,a.size,0,Math.PI*2);ctx.clip();
-  const pixel=1;
-  // Fine 1px orthogonal fractures, snapped to a pixel grid for a crisp Minecraft-like look.
-  ctx.strokeStyle="#000000";ctx.lineWidth=1;ctx.lineCap="butt";ctx.lineJoin="miter";
-  const drawPath=path=>{
+  // Dark core plus a subtle stone-grey edge makes the stepped fractures readable.
+  const drawPath=(path,width,color)=>{
     ctx.beginPath();
     path.forEach((pt,i)=>{
-      const x=Math.round(pt[0]*a.size/pixel)*pixel;
-      const y=Math.round(pt[1]*a.size/pixel)*pixel;
+      const x=Math.round(pt[0]*a.size),y=Math.round(pt[1]*a.size);
       if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
     });
-    ctx.stroke();
+    ctx.lineWidth=width;ctx.lineCap="square";ctx.lineJoin="miter";ctx.strokeStyle=color;ctx.stroke();
   };
-  paths.slice(0,stage*2).forEach(drawPath);
-  if(stage>=5)branches.slice(0,Math.min(branches.length,(stage-4)*3)).forEach(drawPath);
+  const visibleMain=Math.min(main.length,Math.max(1,Math.ceil(stage*1.4)));
+  main.slice(0,visibleMain).forEach(path=>drawPath(path,Math.max(2,Math.round(a.size*.055)),"#171717"));
+  if(stage>=4)extra.slice(0,Math.min(extra.length,(stage-3)*2)).forEach(path=>drawPath(path,Math.max(1,Math.round(a.size*.035)),"#202020"));
   if(stage>=8){
-    // At critical health, add short blocky fractures across the remaining surface.
-    [[[ -.78,-.02],[-.58,-.02],[-.58,.12] ],[[ -.30,-.64],[-.12,-.64] ],[[ .08,-.30],[.26,-.30],[.26,-.18] ],[[ .72,.12],[.72,.30] ],[[ -.42,.42],[-.24,.42] ],[[ .08,.68],[.08,.82] ]].forEach(drawPath);
-  }
-  if(stage===10){
-    ctx.fillStyle="#000";
-    const chips=[[-.42,-.28],[-.22,-.52],[.02,-.02],[.40,-.02],[.22,.42],[-.52,.44],[.60,.38],[-.12,.82]];
-    chips.forEach(([x,y])=>{const px=Math.round(x*a.size/pixel)*pixel,py=Math.round(y*a.size/pixel)*pixel;ctx.fillRect(px,py,2,2)});
+    // At very low health, widen a few junctions into square chips.
+    ctx.fillStyle="#171717";
+    [[-.08,-.18],[-.28,.08],[.34,.06],[.14,.34],[-.24,.66],[.54,.30]].forEach(([x,y],i)=>{
+      if(i<stage-6){const size=Math.max(2,Math.round(a.size*.09));ctx.fillRect(Math.round(x*a.size-size/2),Math.round(y*a.size-size/2),size,size);}
+    });
   }
   ctx.restore();
 }
