@@ -1,30 +1,11 @@
 "use strict";
-(function (root) {
-  const CHANCES = [0, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00];
-  const DAMAGE_PER_TICK = [0, 0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.20, 0.225, 0.25, 0.275, 0.30];
-  const MAX_LEVEL = 11;
-
-  function levelIndex(level) {
-    return Math.max(0, Math.min(MAX_LEVEL, Math.floor(Number(level) || 0)));
-  }
-
-  const api = Object.freeze({
-    maxLevel: MAX_LEVEL,
-    durationMs: 4000,
-    tickIntervalMs: 500,
-    ticksPerApplication: 8,
-    getChance(level) {
-      return CHANCES[levelIndex(level)];
-    },
-    getDamageFraction(level) {
-      return DAMAGE_PER_TICK[levelIndex(level)];
-    },
-    getTickDamage(maxHealth, level, isBoss) {
-      const damage = Math.max(0, Number(maxHealth) || 0) * this.getDamageFraction(level);
-      return isBoss ? damage / 4 : damage;
-    }
-  });
-
-  if (typeof module !== "undefined" && module.exports) module.exports = api;
-  if (root) root.GalaxyBurn = api;
-})(typeof globalThis !== "undefined" ? globalThis : this);
+(function(root){
+const MAX_LEVEL=10,TICKS_PER_APPLICATION=8,DURATION_MS=4000;
+function levelIndex(level){return Math.max(0,Math.min(MAX_LEVEL,Math.floor(Number(level)||0)))}
+function getChance(level){const n=levelIndex(level);return n===0?0:Math.min(.65,.20+(n-1)*.05)}
+function getChanceDecay(level){const n=levelIndex(level);return n===0?0:Math.max(.05,.50-(n-1)*.05)}
+function getInitialDamageFraction(level){const n=levelIndex(level);return n===0?0:Math.min(.95,.50+(n-1)*.05)}
+function getDamageIncrease(level){const n=levelIndex(level);return n===0?0:Math.min(.475,.25+(n-1)*.025)}
+const api=Object.freeze({maxLevel:MAX_LEVEL,durationMs:DURATION_MS,tickIntervalMs:DURATION_MS/TICKS_PER_APPLICATION,ticksPerApplication:TICKS_PER_APPLICATION,getChance,getChanceDecay,getInitialDamageFraction,getDamageIncrease,getNextChance(previousChance,level){return Math.max(0,Math.min(1,Number(previousChance)||0)*(1-getChanceDecay(level)))},getNextDamageMultiplier(previousMultiplier,level){return Math.max(0,Number(previousMultiplier)||1)*(1+getDamageIncrease(level))},getNextDurationMs(previousDurationMs){return Math.max(0,Number(previousDurationMs)||DURATION_MS)*.75}});
+if(typeof module!=="undefined"&&module.exports)module.exports=api;if(root)root.GalaxyBurn=api;
+})(typeof globalThis!=="undefined"?globalThis:this);
