@@ -13,8 +13,9 @@ test("heating laser starts and peaks at the configured level multipliers", () =>
   assert.match(source, /const heatStats=getLaserHeatStats\(laserHeatLevel\),baseDps=getBaseLaserDps\(\),startDps=baseDps\*heatStats\.startingDamageMultiplier,maxDps=baseDps\*heatStats\.spatialDamageMultiplier/);
 });
 
-test("heating laser reaches full heat in 8 seconds at level I", () => {
-  assert.match(source, /const heatTime=Math\.max\(2\.5,8-1\.5\*\(laserHeatLevel-1\)\)/);
+test("heating laser uses the agreed per-level heat and cooldown times", () => {
+  assert.match(source, /heatTime:10-safeLevel,coolTime:10\\+safeLevel/);
+  assert.match(source, /laserHeat=Math\\.min\\(1,laserHeat\\+dt\\/heatStats\\.heatTime\\)/);
 });
 
 test("Ultra Laser scales from the regular or heated laser and beats both", () => {
