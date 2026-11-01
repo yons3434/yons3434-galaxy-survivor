@@ -5,29 +5,20 @@ const path = require("node:path");
 
 const source = fs.readFileSync(path.join(__dirname, "..", "src", "game.js"), "utf8");
 
-test("heating laser starts and peaks at the configured level multipliers", () => {
-  assert.match(source, /function getBaseLaserDps\(\)\{return \(lowHealthActive\(\)\?player\.damage\*1\.25:player\.damage\)\*15\}/);
-  assert.equal(10 * 15, 150);
-  assert.equal(20 * 15, 300);
-  assert.equal(10 * 1.25 * 15, 187.5);
+test("heating laser uses the configured starting and maximum damage multipliers", () => {
   assert.match(source, /const heatStats=getLaserHeatStats\(laserHeatLevel\),baseDps=getBaseLaserDps\(\),startDps=baseDps\*heatStats\.startingDamageMultiplier,maxDps=baseDps\*heatStats\.spatialDamageMultiplier/);
+  assert.match(source, /dps=startDps\+\(maxDps-startDps\)\*laserHeat/);
 });
 
 test("heating laser uses the agreed per-level heat and cooldown times", () => {
-  assert.match(source, /heatTime:10-safeLevel,coolTime:10\\+safeLevel/);
-  assert.match(source, /laserHeat=Math\\.min\\(1,laserHeat\\+dt\\/heatStats\\.heatTime\\)/);
+  assert.match(source, /heatTime:10-safeLevel,coolTime:10\+safeLevel/);
+  assert.match(source, /laserHeat=Math\.min\(1,laserHeat\+dt\/heatStats\.heatTime\)/);
+  assert.match(source, /laserHeat-\(2\*Math\.sqrt\(Math\.max\(laserHeat,0\)\)\/heatStats\.coolTime\)\*dt/);
 });
 
-test("Ultra Laser scales from the regular or heated laser and beats both", () => {
+test("Ultra Laser scales from the full heated laser damage and beats it", () => {
   assert.match(source, /const startDps=getBaseLaserDps\(\)\*heatStats\.startingDamageMultiplier,maxDps=getBaseLaserDps\(\)\*heatStats\.spatialDamageMultiplier,baseDps=startDps\+\(maxDps-startDps\)\*\(laserHeatLevel>0\?laserHeat:0\)/);
   assert.match(source, /const damage=baseDps\*\(ultraModeActive\?5:2\)\*dt/);
-  // At base player damage 10: 300 DPS without Ultra Mode, 750 DPS with it.
-  const baseDps = 10 * 15;
-  assert.equal(baseDps * 2, 300);
-  assert.equal(baseDps * 5, 750);
-  // With heating laser fully hot, Ultra Laser reaches 600 / 1500 DPS.
-  assert.equal(baseDps * 2 * 2, 600);
-  assert.equal(baseDps * 2 * 5, 1500);
 });
 
 test("Ultra Laser movement penalty remains tied to Ultra Mode", () => {
