@@ -6,7 +6,7 @@ const path = require("node:path");
 const source = fs.readFileSync(path.join(__dirname, "..", "src", "game.js"), "utf8");
 
 function loadLaserHeatStats() {
-  const match = source.match(/function getLaserHeatStats\(level\)\{([^\\n]+)\}/);
+  const match = source.match(/function getLaserHeatStats\(level\)\{([^\n]+)\}/);
   assert.ok(match, "laser heat stats helper exists");
   return new Function("level", match[1]);
 }
