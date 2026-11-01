@@ -1,37 +1,9 @@
-const test = require("node:test");
-const assert = require("node:assert/strict");
-const burn = require("../src/burn.js");
-
-test("burn chance follows the agreed levels I-XI", () => {
-  assert.deepEqual(
-    Array.from({ length: 11 }, (_, i) => burn.getChance(i + 1)),
-    [0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00]
-  );
-});
-
-test("burn damage per tick scales from 5% to 30% of max health", () => {
-  assert.equal(burn.getDamageFraction(1), 0.05);
-  assert.equal(burn.getDamageFraction(2), 0.075);
-  assert.equal(burn.getDamageFraction(6), 0.175);
-  assert.equal(burn.getDamageFraction(11), 0.30);
-  assert.equal(burn.getDamageFraction(99), 0.30);
-});
-
-test("bosses take one quarter of normal burn damage", () => {
-  assert.equal(burn.getTickDamage(1000, 1, false), 50);
-  assert.equal(burn.getTickDamage(1000, 1, true), 12.5);
-  assert.equal(burn.getTickDamage(1000, 11, true), 75);
-});
-
-test("burn timing is four seconds with eight half-second ticks", () => {
-  assert.equal(burn.durationMs, 4000);
-  assert.equal(burn.tickIntervalMs, 500);
-  assert.equal(burn.ticksPerApplication, 8);
-});
-
-test("invalid and out-of-range levels are safely clamped", () => {
-  assert.equal(burn.getChance(0), 0);
-  assert.equal(burn.getChance(-4), 0);
-  assert.equal(burn.getChance(100), 1);
-  assert.equal(burn.getDamageFraction("not a level"), 0);
-});
+const test=require("node:test"),assert=require("node:assert/strict"),burn=require("../src/burn.js");
+test("burn is capped at level X",()=>{assert.equal(burn.maxLevel,10);assert.equal(burn.getChance(99),.65);assert.equal(burn.getChance(0),0)});
+test("initial ignition chance rises from 20% to 65%",()=>{assert.deepEqual(Array.from({length:10},(_,i)=>burn.getChance(i+1)),[.20,.25,.30,.35,.40,.45,.50,.55,.60,.65])});
+test("repeat-hit chance decay is relative and falls from 50% to 5%",()=>{assert.deepEqual(Array.from({length:10},(_,i)=>burn.getChanceDecay(i+1)),[.50,.45,.40,.35,.30,.25,.20,.15,.10,.05]);assert.equal(burn.getNextChance(.20,1),.10);assert.equal(burn.getNextChance(.10,1),.05);assert.equal(burn.getNextChance(.65,10),.6175)});
+test("initial burn damage rises from 50% to 95% of hit damage",()=>{assert.equal(burn.getInitialDamageFraction(1),.50);assert.equal(burn.getInitialDamageFraction(5),.70);assert.equal(burn.getInitialDamageFraction(10),.95);assert.equal(burn.getInitialDamageFraction(99),.95)});
+test("successful repeat hits compound damage by the level-based increase",()=>{assert.equal(burn.getDamageIncrease(1),.25);assert.equal(burn.getDamageIncrease(10),.475);assert.equal(burn.getNextDamageMultiplier(1,1),1.25);assert.equal(burn.getNextDamageMultiplier(1.25,1),1.5625);assert.equal(burn.getNextDamageMultiplier(1,10),1.475)});
+test("each successful repeat hit shortens duration by 25%",()=>{assert.equal(burn.durationMs,4000);assert.equal(burn.getNextDurationMs(4000),3000);assert.equal(burn.getNextDurationMs(3000),2250);assert.equal(burn.getNextDurationMs(2250),1687.5);assert.equal(burn.ticksPerApplication,8)});
+test("eight ticks fit the shortened duration",()=>{assert.equal(burn.durationMs/burn.ticksPerApplication,500);assert.equal(burn.getNextDurationMs(4000)/burn.ticksPerApplication,375)});
+test("invalid levels are safely clamped",()=>{assert.equal(burn.getChance(-4),0);assert.equal(burn.getChance("not a level"),0);assert.equal(burn.getChance(100),.65)});
