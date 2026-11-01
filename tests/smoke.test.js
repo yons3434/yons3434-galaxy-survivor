@@ -68,10 +68,10 @@ test("burn upgrade is legendary, stackable, and has an animated effect", () => {
   assert.match(js, /id:"burn",rarity:"אגדי",rarityClass:"legendary",icon:"🔥",title:"צריבה"/);
   assert.match(js, /case"burn":return burnLevel/);
   assert.match(js, /case"burn":burnLevel=Math\.min\(GalaxyBurn\.maxLevel,burnLevel\+1\)/);
-  assert.match(js, /function applyBurn\(target,continuous=false\)/);
+  assert.match(js, /function applyBurn\(target,continuous=false,hitDamage=effectiveDamage\(\)\)/);
   assert.match(js, /function updateBurn\(\)/);
   assert.match(js, /function drawBurnEffect\(target,size,isSquare\)/);
-  assert.match(js, /applyBurn\(enemy\)/);
+  assert.match(js, /applyBurn\(enemy,false,hitDamage\)/);
   assert.match(js, /burnLevel>=GalaxyBurn\.maxLevel/);
 });
 
@@ -194,7 +194,7 @@ test("stun upgrade is epic, stackable, stuns bosses, and does not apply from swo
   assert.match(js, /case"stun":stunLevel\+\+/);
   assert.match(js, /"poison","burn","freeze","stun","confusion"/);
   assert.match(js, /if\(updateStunnedEnemy\(enemy\)\)return;/);
-  assert.match(js, /const hitDamage=getContinuousFireDamage\(enemy,b\.damage\*5\*piercingHit\.multiplier,b,performance\.now\(\)\);enemy\.health-=hitDamage;showDamageNumber\(enemy,hitDamage\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\);applyBurn\(enemy\);/);
+  assert.match(js, /const hitDamage=getContinuousFireDamage\(enemy,b\.damage\*5\*piercingHit\.multiplier,b,performance\.now\(\)\);enemy\.health-=hitDamage;showDamageNumber\(enemy,hitDamage\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\);applyBurn\(enemy,false,hitDamage\);/);
   assert.doesNotMatch(js, /enemy\.health-=swordDamage\([^;]+\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\)/);
   assert.match(js, /if\(enemy\.boss\)\{\s*if\(updateStunnedEnemy\(enemy\)\)return;/);
 });
@@ -202,7 +202,7 @@ test("stun upgrade is epic, stackable, stuns bosses, and does not apply from swo
 
 test("poison, freeze, and stun also affect meteors while confusion remains enemy-only", () => {
   assert.match(js, /asteroids\.forEach\(a=>tickTarget\(a,destroyAsteroid\)/);
-  assert.match(js, /const hitDamage=getContinuousFireDamage\(a,b\.damage\*5\*piercingHit\.multiplier,b,performance\.now\(\)\);a\.health-=hitDamage;showDamageNumber\(a,hitDamage\);applyPoison\(a\);applyFreeze\(a\);applyStun\(a\);applyBurn\(a\);/);
+  assert.match(js, /const hitDamage=getContinuousFireDamage\(a,b\.damage\*5\*piercingHit\.multiplier,b,performance\.now\(\)\);a\.health-=hitDamage;showDamageNumber\(a,hitDamage\);applyPoison\(a\);applyFreeze\(a\);applyStun\(a\);applyBurn\(a,false,hitDamage\);/);
   assert.match(js, /asteroids\.forEach\(a=>\{\n    if\(a\.health<=0\)return;\n    if\(updateStunnedEnemy\(a\)\)return;/);
   assert.match(js, /const freezeFactor=getEnemyFreezeFactor\(a\)/);
   assert.match(js, /applyPoison\(a\);applyFreeze\(a\)/);
