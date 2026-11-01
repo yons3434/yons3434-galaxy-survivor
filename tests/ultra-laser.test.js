@@ -40,7 +40,7 @@ test("Ultra Laser cannot start without 5,000 points and stops dealing damage at 
 });
 
 test("Ultra Laser effects scale with Ultra Mode and bosses are not pushed", () => {
-  assert.match(game, /baseDps=getBaseLaserDps\(\)\*\(laserHeatLevel>0\?1\+laserHeat:1\)/);
+  assert.match(game, /const heatStats=laserHeatLevel>0\?getLaserHeatStats\(laserHeatLevel\):\{startingDamageMultiplier:1,spatialDamageMultiplier:1\}/);
   assert.match(game, /ultraModeActive\?5:2/);
   assert.match(game, /const thickness=\(12\+laserHeat\*3\)\*\(ultraModeActive\?3:1\)/);
   assert.match(game, /ultraLaserActive&&ultraModeActive\)v\*=\.5/);
