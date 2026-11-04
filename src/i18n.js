@@ -83,6 +83,8 @@ function translate(value){
   const records=catalog[namespace]||{};
   for(const record of Object.values(records)){
    if(!record||typeof record!=="object")continue;
+   if(record.sourceTitle===s&&Array.isArray(record.title)){const translatedTitle=record.title[supported.indexOf(current)-1];if(translatedTitle)return value.replace(s,translatedTitle);}
+   if(record.sourceDescription===s&&Array.isArray(record.description)){const translatedDescription=record.description[supported.indexOf(current)-1];if(translatedDescription)return value.replace(s,translatedDescription);}
    for(const field of ["title","description","desc","section"]){
     const valueRow=record[field];
     if(Array.isArray(valueRow)&&valueRow.length===6&&valueRow[0]===s)return value.replace(s,valueRow[supported.indexOf(current)-1]||s);
