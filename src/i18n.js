@@ -19,6 +19,17 @@ if(!supported.includes(current)){current=detectFirstLanguage();try{localStorage.
 function translate(value){
  const s=value.trim(); if(current==="he"||!s)return value;
  const row=translations[s]; if(row)return value.replace(s,row[supported.indexOf(current)-1]||s);
+ const catalog=window.GAME_TRANSLATIONS||{};
+ for(const namespace of ["cards","achievements","dailyMissions","collection"]){
+  const records=catalog[namespace]||{};
+  for(const record of Object.values(records)){
+   if(!record||typeof record!=="object")continue;
+   for(const field of ["title","description","desc","section"]){
+    const valueRow=record[field];
+    if(Array.isArray(valueRow)&&valueRow.length===6&&valueRow[0]===s)return value.replace(s,valueRow[supported.indexOf(current)-1]||s);
+   }
+  }
+ }
  const m=s.match(/^רמה (\d+) \| (.+) XP$/);
  if(m){const forms={en:"Level",es:"Nivel",fr:"Niveau",de:"Level",ru:"Уровень",ar:"المستوى"};return value.replace(s,forms[current]+" "+m[1]+" | "+m[2]+" XP");}
  return value;
