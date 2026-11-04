@@ -843,7 +843,7 @@ function updatePoison(){
     let ticks=0;
     while(now>=target.poisonNextTickAt&&target.health>1&&ticks<20){
       const isBoss=!!(target.boss&&enemies.includes(target));
-      const strength=Math.min(1,Math.max(0,Number(target.poisonStrength)||0))*(isBoss?.25:1);
+      const strength=Math.min(1,Math.max(0,Number(target.poisonStrength)||0))*(isBoss ? 0.25 : 1);
       const poisonDamage=Math.min(Math.max(0,target.health-1),target.health*strength);
       if(poisonDamage>0){
         target.health-=poisonDamage;
