@@ -127,6 +127,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Режим Ультра",
       "وضع ألترا"
     ]
+    "sourceTitle": "מצב אולטרה",
+    "sourceDescription": "פותח את מערכת נקודות האולטרה. להפעלה נדרשות לפחות 1,000 נקודות. מעניק פי 2 נזק, קצב ירי והתקדמות במרחק, מהירות תנועה ×1.2 וחסינות לנזק. צורך 1,000 נקודות לשנייה. כל 5,000 נקודות שהוצאו מעניקות מגן, עד למספר החיים המרבי. לאחר כיבוי או התרוקנות יש להמתין 15 שניות."
   },
   "ultraLaser": {
     "title": [
@@ -137,6 +139,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Ультра-лазер",
       "ليزر ألترا"
     ]
+    "sourceTitle": "אולטרה לייזר",
+    "sourceDescription": "פותח כפתור יכולת נפרד. עולה 5,000 נקודות אולטרה למשך 10 שניות ומכוון עם העכבר. כשהמצב הרגיל של אולטרה כבוי: נזק פי 2 מהלייזר הרגיל ועובי רגיל. כשהמצב פעיל: נזק פי 5, עובי פי 3, מהירות השחקן בחצי ודחיפת קליעים, חלליות ומטאוריטים; בוסים אינם נדחפים. טעינה מחדש: 20 שניות."
   },
   "chainExplosion": {
     "title": [
@@ -147,6 +151,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Цепной взрыв",
       "انفجار متسلسل"
     ]
+    "sourceTitle": "פיצוץ שרשרת",
+    "sourceDescription": "כאשר אויב מת, הוא יוצר הבזק אנרגיה, כדור פיצוץ ופיקסלים מתפזרים. הנזק הוא 20%–100% מהחיים המרביים של האויב שהתפוצץ; גודל הפיצוץ גדל מ־100% עד 500%. ברמות V–VII הקלף אגדי וברמות VIII–IX מדהים. פיצוץ בוס גדול במיוחד ואינו ממשיך שרשרת."
   },
   "damage": {
     "title": [
@@ -165,6 +171,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Увеличивает урон выстрелов и усиливает мечи.",
       "يزيد ضرر الطلقات ويعزز السيوف أيضًا."
     ]
+    "sourceTitle": "עוד נזק",
+    "sourceDescription": "מגדיל את הנזק של היריות וגם מחזק את החרבות."
   },
   "fireRate": {
     "title": [
@@ -183,6 +191,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Увеличивает скорострельность и скорость вращения мечей.",
       "يزيد سرعة إطلاق النار وسرعة دوران السيوف."
     ]
+    "sourceTitle": "מהירות יריות",
+    "sourceDescription": "מגדיל את מהירות הירי וגם את מהירות הסיבוב של החרבות."
   },
   "maxLives": {
     "title": [
@@ -201,6 +211,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Добавляет одно сердце к максимальному здоровью.",
       "يضيف قلبًا واحدًا إلى الحد الأقصى للصحة."
     ]
+    "sourceTitle": "הרחבת חיים מקסימליים",
+    "sourceDescription": "מוסיף לב אחד לחיים המקסימליים."
   },
   "healOne": {
     "title": [
@@ -219,6 +231,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Восстанавливает одно сердце. Одноразовое.",
       "يعيد قلبًا واحدًا. يستخدم مرة واحدة."
     ]
+    "sourceTitle": "ריפוי לב אחד",
+    "sourceDescription": "מרפא לב אחד. חד־פעמי."
   },
   "speed": {
     "title": [
@@ -237,6 +251,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Увеличивает скорость движения корабля.",
       "يزيد سرعة حركة المركبة الفضائية."
     ]
+    "sourceTitle": "מהירות תנועה",
+    "sourceDescription": "מגדיל את מהירות תנועת החללית."
   },
   "extraFire": {
     "title": [
@@ -255,6 +271,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Добавляет дополнительные пули к каждому выстрелу.",
       "يضيف طلقات إضافية إلى كل طلقة."
     ]
+    "sourceTitle": "עוד ירי",
+    "sourceDescription": "מוסיף יריות נוספות לכל ירייה."
   },
   "xpBoost": {
     "title": [
@@ -273,6 +291,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Увеличивает количество получаемого XP.",
       "يزيد مقدار XP الذي تحصل عليه."
     ]
+    "sourceTitle": "עוד XP",
+    "sourceDescription": "מגדיל את כמות ה־XP שמקבלים."
   },
   "luck": {
     "title": [
@@ -291,6 +311,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Увеличивает шанс получить более редкие улучшения.",
       "يزيد فرصة الحصول على ترقيات أكثر ندرة."
     ]
+    "sourceTitle": "עוד מזל",
+    "sourceDescription": "מגדיל את הסיכוי לקבל שדרוגים נדירים יותר."
   },
   "dodge": {
     "title": [
@@ -309,6 +331,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Даёт шанс не потерять сердце при попадании.",
       "يمنحك فرصة لعدم فقدان قلب عند التعرض لضربة."
     ]
+    "sourceTitle": "התחמקות",
+    "sourceDescription": "נותן סיכוי לא לאבד לב כאשר נפגעים."
   },
   "fullHeal": {
     "title": [
@@ -327,6 +351,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Восстанавливает всё здоровье. Одноразовое.",
       "يعيد الصحة بالكامل. يستخدم مرة واحدة."
     ]
+    "sourceTitle": "ריפוי כל החיים",
+    "sourceDescription": "מרפא את כל החיים. חד־פעמי."
   },
   "drone": {
     "title": [
@@ -345,6 +371,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Добавляет обычный мини-корабль, который стреляет автоматически.",
       "يضيف مركبة صغيرة عادية تطلق النار تلقائيًا."
     ]
+    "sourceTitle": "מיני־חללית",
+    "sourceDescription": "מוסיף מיני־חללית רגילה שיורה אוטומטית."
   },
   "extraDrone": {
     "title": [
@@ -355,6 +383,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Дополнительный мини-корабль",
       "مركبة صغيرة إضافية"
     ]
+    "sourceTitle": "עוד מיני־חללית",
+    "sourceDescription": "מגדיל את מקסימום המיני־חלליות ב־1 עד מקסימום 5."
   },
   "rpg": {
     "title": [
@@ -373,6 +403,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Открывает оружие РПГ и добавляет 10 боеприпасов.",
       "يفتح سلاح RPG ويضيف 10 ذخائر."
     ]
+    "sourceTitle": "יריות RPG",
+    "sourceDescription": "פותח את נשק ה־RPG ומוסיף 10 תחמושת."
   },
   "piercing": {
     "title": [
@@ -383,6 +415,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Пробивающие выстрелы",
       "طلقات خارقة"
     ]
+    "sourceTitle": "יריות חודרות",
+    "sourceDescription": "הקליע פוגע בכל מטרה מספר פעמים בזמן החדירה. הפגיעה הראשונה גורמת לנזק מלא, והפגיעות הבאות גורמות לנזק לפי הרמה. הקליע ממשיך במהירות רגילה; בכל מטרה חדשה הנזק מתאפס לנזק מלא."
   },
   "sword": {
     "title": [
@@ -401,6 +435,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Добавляет энергетический меч, вращающийся вокруг корабля.",
       "يضيف سيف طاقة يدور حول المركبة الفضائية."
     ]
+    "sourceTitle": "עוד חרב",
+    "sourceDescription": "מוסיף חרב אנרגיה מסתובבת סביב החללית."
   },
   "revive": {
     "title": [
@@ -419,6 +455,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Когда здоровье достигает нуля, ты возрождаешься с полным здоровьем.",
       "عندما تصل الصحة إلى الصفر، تعود بكامل صحتك."
     ]
+    "sourceTitle": "החייאה",
+    "sourceDescription": "כאשר החיים מגיעים לאפס, חוזרים לחיים עם כל החיים המלאים."
   },
   "fillShields": {
     "title": [
@@ -429,6 +467,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Пополнить щиты",
       "إعادة ملء الدروع"
     ]
+    "sourceTitle": "מילוי מגנים",
+    "sourceDescription": "ממלא מיד את כל המגנים החסרים עד למקסימום. חד־פעמי; אינו משחזר חיים."
   },
   "levelHeal": {
     "title": [
@@ -439,6 +479,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Лечение при повышении уровня",
       "الشفاء عند رفع المستوى"
     ]
+    "sourceTitle": "ריפוי בעליית רמה",
+    "sourceDescription": "בכל פעם שעולים רמה, השחקן מתרפא בלב אחד."
   },
   "shotgun": {
     "title": [
@@ -457,6 +499,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Открывает дробовик.",
       "يفتح بندقية الخرطوش."
     ]
+    "sourceTitle": "שוטגאן",
+    "sourceDescription": "פותח את השוטגאן."
   },
   "droneUpgrade": {
     "title": [
@@ -467,6 +511,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Улучшенный мини-корабль",
       "مركبة صغيرة مطورة"
     ]
+    "sourceTitle": "מיני־חללית משודרגת",
+    "sourceDescription": "כל המיני־חלליות הקיימות משתדרגות ויורות 3 קליעים."
   },
   "chainLightning": {
     "title": [
@@ -477,6 +523,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Цепная молния",
       "برق متسلسل"
     ]
+    "sourceTitle": "שרשרת ברקים",
+    "sourceDescription": "פגיעה באויב יכולה להעביר ברק לאויבים קרובים נוספים."
   },
   "rpgMiniShip": {
     "title": [
@@ -487,6 +535,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Мини-корабль с РПГ",
       "مركبة RPG صغيرة"
     ]
+    "sourceTitle": "מיני־חללית RPG",
+    "sourceDescription": "מוסיף מיני־חללית מיוחדת שיורה טילי RPG אוטומטיים."
   },
   "blackHole": {
     "title": [
@@ -497,6 +547,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Пушка чёрной дыры",
       "بندقية الثقب الأسود"
     ]
+    "sourceTitle": "רובה חור שחור",
+    "sourceDescription": "נשק חדש שמתחיל עם 4 יריות. כל ירייה יוצרת חור שחור שמושך אויבים ומטאוריטים ומתפוצץ. התחמושת חוזרת רק כאשר בוחרים שוב בקלף."
   },
   "laser": {
     "title": [
@@ -515,6 +567,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Открывает мощный лазер, который следует за мышью и наносит урон.",
       "يفتح ليزرًا قويًا يتبع مؤشر الفأرة ويسبب الضرر."
     ]
+    "sourceTitle": "מצב לייזר",
+    "sourceDescription": "פותח לייזר חזק שעוקב אחרי העכבר וגורם נזק."
   },
   "laserHeat": {
     "title": [
@@ -525,6 +579,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Перегревающийся лазер",
       "ليزر مرتفع الحرارة"
     ]
+    "sourceTitle": "לייזר מתחמם",
+    "sourceDescription": "שדרוג ללייזר שכבר פתחת. רמה I: נזק התחלתי 100% ונזק מרחבי מרבי 200% מהלייזר הרגיל, התחממות תוך 9 שניות וקירור תוך 11 שניות. בכל רמה: הנזק ההתחלתי עולה ב־25%, הנזק המרחבי ב־50%, זמן ההתחממות מתקצר בשנייה וזמן הקירור מתארך בשנייה. עד רמה V."
   },
   "flamethrower": {
     "title": [
@@ -543,6 +599,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Открывает огнемёт, который следует за мышью.",
       "يفتح قاذف لهب يتبع مؤشر الفأرة."
     ]
+    "sourceTitle": "להביור",
+    "sourceDescription": "פותח להביור שעוקב אחרי העכבר."
   },
   "splitBullet": {
     "title": [
@@ -553,6 +611,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Разделяющаяся пуля",
       "طلقة منقسمة"
     ]
+    "sourceTitle": "קליע מפוצל",
+    "sourceDescription": "כל פגיעה של קליע רגיל מתפצלת. רמה I יוצרת 2 קליעים. כל רמה מגדילה את סך נזק הפיצול לפי ×1, ×2, ×3 וכן הלאה, את כמות הקליעים, הזווית, המהירות, הטווח והגודל. פיצול שני ושלישי מקבלים סיכוי לפי הרמה. מקסימום 3 דורות פיצול; שקיפות: 100%, 75%, 50%, 25%."
   },
   "droneMega": {
     "title": [
@@ -563,6 +623,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Большой мини-корабль",
       "مركبة صغيرة كبيرة"
     ]
+    "sourceTitle": "מיני־חללית גדולה",
+    "sourceDescription": "משדרג את המיני־חללית הגדולה ויורה 7 קליעים."
   },
   "lowHealthRage": {
     "title": [
@@ -573,6 +635,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Последний рывок",
       "الغضب الأخير"
     ]
+    "sourceTitle": "זעם אחרון",
+    "sourceDescription": "כאשר החיים של החללית נמוכים מ־50%, מהירות התנועה גדלה ב־50%, מהירות הטעינה גדלה ב־50%, הנזק גדל ב־25% והחללית זוהרת בכתום."
   },
   "poison": {
     "title": [
@@ -583,6 +647,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Яд",
       "سم"
     ]
+    "sourceTitle": "רעל",
+    "sourceDescription": "כל פגיעה מרעילה את המטרה ללא הגבלת זמן. הנזק בכל פעימה הוא אחוז מהחיים הנוכחיים, אך הרעל לעולם אינו מוריד מתחת ל־1 חיים. אויבים ומטאוריטים מקבלים עוצמה מלאה; בוסים 25%. כל פגיעה נוספת מגבירה את עוצמת הרעל ומאיצה את הפעימות. רמה IX היא המקסימום."
   },
   "burn": {
     "title": [
@@ -593,6 +659,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Ожог",
       "حرق"
     ]
+    "sourceTitle": "צריבה",
+    "sourceDescription": "פגיעה יכולה להצית אויב או מטאוריט. הנזק הכולל מתחיל ב־50% מנזק הפגיעה ועולה עד 95% ברמה X. כל פגיעה מוצלחת נוספת מגדילה את הנזק המצטבר ומקצרת את משך הצריבה ב־25%. סיכוי ההצתה מתחיל ב־20% ועולה עד 65%; סיכויי ההמשך יורדים לפי הרמה. אם פגיעה חוזרת נכשלת או שלא פוגעים בזמן, הצריבה נעלמת. בוסים סופגים רבע מהנזק."
   },
   "freeze": {
     "title": [
@@ -603,6 +671,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Заморозка",
       "تجميد"
     ]
+    "sourceTitle": "הקפאה",
+    "sourceDescription": "כל פגיעה יכולה להקפיא את האויב. רמה I מתחילה ב־10% סיכוי, 25% האטה ו־4 שניות. בכל בחירה הסיכוי והעוצמה ×1.5 והזמן ×1.33 (עד 90% האטה)."
   },
   "stun": {
     "title": [
@@ -613,6 +683,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Оглушение",
       "شلل"
     ]
+    "sourceTitle": "שיתוק",
+    "sourceDescription": "כל פגיעה יכולה לשתק אויב שאינו בוס. רמה I: 5% סיכוי ו־1 שנייה. בכל בחירה הסיכוי ומשך השיתוק ×1.5. בזמן השיתוק האויב לא מתקדם ולא יורה ומסתובב ברדיוס של 15% מגודלו."
   },
   "continuousFire": {
     "title": [
@@ -623,6 +695,8 @@ window.GAME_TRANSLATIONS=Object.freeze({
       "Непрерывный огонь",
       "إطلاق نار مستمر"
     ]
+    "sourceTitle": "ירי רציף",
+    "sourceDescription": "כל פגיעה רצופה באותו אויב מגדילה את נזק הפגיעה הבאה ב־20% מהנזק הקודם. כל שדרוג מוסיף עוד 20 נקודות אחוז לצמיחת הנזק. הפסקה של יותר מ־1.5 שניות מאפסת את הרצף."
   },
   "expandedChoice": {
     "title": [
@@ -636,7 +710,140 @@ window.GAME_TRANSLATIONS=Object.freeze({
   }
 }),
   achievements:Object.freeze({}),
-  dailyMissions:Object.freeze({}),
+  dailyMissions:Object.freeze({
+  "distance250": {
+    "sourceTitle": "שרוד 250 מטר",
+    "title": [
+      "Survive 250 meters",
+      "Sobrevive 250 metros",
+      "Survis 250 mètres",
+      "Überlebe 250 Meter",
+      "Выживи на дистанции 250 метров",
+      "ابقَ على قيد الحياة لمسافة 250 مترًا"
+    ]
+  },
+  "meteor10": {
+    "sourceTitle": "הרוס 10 מטאוריטים",
+    "title": [
+      "Destroy 10 meteorites",
+      "Destruye 10 meteoritos",
+      "Détruis 10 météorites",
+      "Zerstöre 10 Meteoriten",
+      "Уничтожь 10 метеоритов",
+      "دمر 10 نيازك"
+    ]
+  },
+  "enemy5": {
+    "sourceTitle": "הרוס 5 חלליות אויב",
+    "title": [
+      "Destroy 5 enemy spaceships",
+      "Destruye 5 naves enemigas",
+      "Détruis 5 vaisseaux ennemis",
+      "Zerstöre 5 feindliche Raumschiffe",
+      "Уничтожь 5 кораблей врагов",
+      "دمر 5 سفن أعداء"
+    ]
+  },
+  "xp500": {
+    "sourceTitle": "צבור 500 XP לשחקן",
+    "title": [
+      "Earn 500 Player XP",
+      "Consigue 500 XP de jugador",
+      "Gagne 500 XP de joueur",
+      "Sammle 500 Spieler-XP",
+      "Получи 500 XP игрока",
+      "اجمع 500 نقطة خبرة للاعب"
+    ]
+  },
+  "level3": {
+    "sourceTitle": "עלה 3 רמות",
+    "title": [
+      "Gain 3 levels",
+      "Sube 3 niveles",
+      "Gagne 3 niveaux",
+      "Steige 3 Level auf",
+      "Получи 3 уровня",
+      "ارفع مستواك 3 مستويات"
+    ]
+  },
+  "distance750": {
+    "sourceTitle": "שרוד 750 מטר",
+    "title": [
+      "Survive 750 meters",
+      "Sobrevive 750 metros",
+      "Survis 750 mètres",
+      "Überlebe 750 Meter",
+      "Выживи на дистанции 750 метров",
+      "ابقَ على قيد الحياة لمسافة 750 مترًا"
+    ]
+  },
+  "meteor25": {
+    "sourceTitle": "הרוס 25 מטאוריטים",
+    "title": [
+      "Destroy 25 meteorites",
+      "Destruye 25 meteoritos",
+      "Détruis 25 météorites",
+      "Zerstöre 25 Meteoriten",
+      "Уничтожь 25 метеоритов",
+      "دمر 25 نيزكًا"
+    ]
+  },
+  "enemy15": {
+    "sourceTitle": "הרוס 15 חלליות אויב",
+    "title": [
+      "Destroy 15 enemy spaceships",
+      "Destruye 15 naves enemigas",
+      "Détruis 15 vaisseaux ennemis",
+      "Zerstöre 15 feindliche Raumschiffe",
+      "Уничтожь 15 кораблей врагов",
+      "دمر 15 سفينة عدو"
+    ]
+  },
+  "boss1": {
+    "sourceTitle": "הרוג בוס",
+    "title": [
+      "Defeat a boss",
+      "Derrota a un jefe",
+      "Bats un boss",
+      "Besiege einen Boss",
+      "Победи босса",
+      "اهزم زعيمًا"
+    ]
+  },
+  "distance1500": {
+    "sourceTitle": "שרוד 1500 מטר",
+    "title": [
+      "Survive 1,500 meters",
+      "Sobrevive 1.500 metros",
+      "Survis 1 500 mètres",
+      "Überlebe 1.500 Meter",
+      "Выживи на дистанции 1 500 метров",
+      "ابقَ على قيد الحياة لمسافة 1500 متر"
+    ]
+  },
+  "meteor50": {
+    "sourceTitle": "הרוס 50 מטאוריטים",
+    "title": [
+      "Destroy 50 meteorites",
+      "Destruye 50 meteoritos",
+      "Détruis 50 météorites",
+      "Zerstöre 50 Meteoriten",
+      "Уничтожь 50 метеоритов",
+      "دمر 50 نيزكًا"
+    ]
+  },
+  "enemy30": {
+    "sourceTitle": "הרוס 30 חלליות אויב",
+    "title": [
+      "Destroy 30 enemy spaceships",
+      "Destruye 30 naves enemigas",
+      "Détruis 30 vaisseaux ennemis",
+      "Zerstöre 30 feindliche Raumschiffe",
+      "Уничтожь 30 кораблей врагов",
+      "دمر 30 سفينة عدو"
+    ]
+  }
+}),
   collection:Object.freeze({})
 });
 })();
