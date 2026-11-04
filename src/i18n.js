@@ -129,17 +129,17 @@ function translateAchievementDescription(source,lang){
  x=source.match(/^הגע ל־?([\d,]+) מטר במשחק בבלתי אפשרי\.?$/);
  if(x)return ["Reach "+x[1]+" meters in an Impossible game.","Alcanza "+x[1]+" metros en una partida Imposible.","Atteins "+x[1]+" mètres en mode Impossible.","Erreiche "+x[1]+" Meter in einem Unmöglich-Spiel.","Достигни "+x[1]+" метров в режиме «Невозможно».","تصل إلى "+x[1]+" مترًا في وضع المستحيل."][i];
 
- let card=source.match(/^פתח(?:ו)?(?: (\d+))? קלפים? (רגילים|נדירים|אדירים|אגדיים|מדהימים)(?: בסך הכול)?\\.?$/);
+ let card=source.match(/^פתח(?:ו)?(?: (\d+))? קלפים? (רגילים|נדירים|אדירים|אגדיים|מדהימים)(?: בסך הכול)?\.?$/);
  if(card){const n=card[1]||"1",tier=card[2].includes("רגיל")?["common cards","cartas comunes","cartes communes","gewöhnliche Karten","обычных карт","بطاقات عادية"]:card[2].includes("נדיר")?["rare cards","cartas raras","cartes rares","seltene Karten","редких карт","بطاقات نادرة"]:card[2].includes("אדיר")?["epic cards","cartas épicas","cartes épiques","epische Karten","эпических карт","بطاقات ملحمية"]:card[2].includes("אגדי")?["legendary cards","cartas legendarias","cartes légendaires","legendäre Karten","легендарных карт","بطاقات أسطورية"]:["Amazing cards","cartas asombrosas","cartes incroyables","fantastische Karten","удивительные карты","بطاقات مذهلة"];return ["Unlock "+n+" "+tier[i]+".","Desbloquea "+n+" "+tier[i]+".","Débloque "+n+" "+tier[i]+".","Schalte "+n+" "+tier[i]+" frei.","Открой "+n+" "+tier[i]+".","افتح "+n+" "+tier[i]+"."][i];}
- let c=source.match(/^(?:הרוס|השמד|הבס|הרוג) ([\d,]+) (מטאוריתים?|מטאוריטים|מטעוריתים?|מטעוריטים|חלליות אויב|חלליות|בוסים|בוסים מיוחדים) בסך הכול\\.?$/);
+ let c=source.match(/^(?:הרוס|השמד|הבס|הרוג) ([\d,]+) (מטאוריתים?|מטאוריטים|מטעוריתים?|מטעוריטים|חלליות אויב|חלליות|בוסים|בוסים מיוחדים) בסך הכול\.?$/);
  if(c){const noun=c[2].includes("מטאור")?["meteorites","meteoritos","météorites","Meteoriten","метеоритов","نيازك"]:c[2].includes("חללית")?["enemy spaceships","naves enemigas","vaisseaux ennemis","feindliche Raumschiffe","кораблей врагов","سفن الأعداء"]:c[2].includes("מיוחדים")?["special bosses","jefes especiales","boss spéciaux","Spezialbosse","особых боссов","زعماء خاصين"]:["bosses","jefes","boss","Bosse","боссов","زعماء"];return ["Defeat "+c[1]+" "+noun[i]+" in total.","Derrota "+c[1]+" "+noun[i]+" en total.","Bats "+c[1]+" "+noun[i]+" au total.","Besiege insgesamt "+c[1]+" "+noun[i]+".","Победи всего "+c[1]+" "+noun[i]+".","اهزم "+c[1]+" "+noun[i]+" إجمالًا."][i];}
- c=source.match(/^השמד ([\d,]+) חלליות אויב בסך הכול\\.?$/);
+ c=source.match(/^השמד ([\d,]+) חלליות אויב בסך הכול\.?$/);
  if(c)return ["Destroy "+c[1]+" enemy spaceships in total.","Destruye "+c[1]+" naves enemigas en total.","Détruis "+c[1]+" vaisseaux ennemis au total.","Zerstöre insgesamt "+c[1]+" feindliche Raumschiffe.","Уничтожь всего "+c[1]+" вражеских кораблей.","دمر "+c[1]+" سفن أعداء إجمالًا."][i];
- c=source.match(/^הבס ([\d,]+) בוסים בסך הכול\\.?$/);
+ c=source.match(/^הבס ([\d,]+) בוסים בסך הכול\.?$/);
  if(c)return ["Defeat "+c[1]+" bosses in total.","Derrota a "+c[1]+" jefes en total.","Bats "+c[1]+" boss au total.","Besiege insgesamt "+c[1]+" Bosse.","Победи всего "+c[1]+" боссов.","اهزم "+c[1]+" زعماء إجمالًا."][i];
- c=source.match(/^צבור ([\d,]+) נקודות אולטרה במהלך משחק אחד\\.?$/);
+ c=source.match(/^צבור ([\d,]+) נקודות אולטרה במהלך משחק אחד\.?$/);
  if(c)return ["Earn "+c[1]+" Ultra points in one game.","Consigue "+c[1]+" puntos Ultra en una partida.","Gagne "+c[1]+" points Ultra en une partie.","Sammle "+c[1]+" Ultra-Punkte in einem Spiel.","Набери "+c[1]+" очков Ультра за одну игру.","اجمع "+c[1]+" نقطة ألترا في مباراة واحدة."][i];
- c=source.match(/^שרוד ([\d,]+) מטר במצב בלתי אפשרי\\.?$/);
+ c=source.match(/^שרוד ([\d,]+) מטר במצב בלתי אפשרי\.?$/);
  if(c)return ["Survive "+c[1]+" meters in Impossible mode.","Sobrevive "+c[1]+" metros en modo Imposible.","Survis "+c[1]+" mètres en mode Impossible.","Überlebe "+c[1]+" Meter im Unmöglich-Modus.","Выживи на дистанции "+c[1]+" метров в режиме «Невозможно».","ابقَ على قيد الحياة لمسافة "+c[1]+" مترًا في وضع المستحيل."][i];
 
  return source;
@@ -180,16 +180,16 @@ const collectionDescriptionTranslations={
 
 function translateRemainingAchievementText(source,lang){
  const i=supported.indexOf(lang)-1;if(i<0)return source;
- let title=source.match(/^שרוד ([\\d,]+) מטר בבלתי אפשרי$/);
+ let title=source.match(/^שרוד ([\d,]+) מטר בבלתי אפשרי$/);
  if(title)return ["Survive "+title[1]+" meters in Impossible mode","Sobrevive "+title[1]+" metros en modo Imposible","Survis "+title[1]+" mètres en mode Impossible","Überlebe "+title[1]+" Meter im Unmöglich-Modus","Выживи на дистанции "+title[1]+" метров в режиме «Невозможно»","ابقَ على قيد الحياة لمسافة "+title[1]+" مترًا في وضع المستحيل"][i];
- const singleCard=source.match(/^פתח קלף (רגיל|נדיר|אדיר|אגדי|מדהים)\\.?$/);
+ const singleCard=source.match(/^פתח קלף (רגיל|נדיר|אדיר|אגדי|מדהים)\.?$/);
  if(singleCard){const tier=singleCard[1]==="רגיל"?["Common","Común","commun","gewöhnliche","обычную","عادية"]:singleCard[1]==="נדיר"?["Rare","Rara","rare","seltene","редкую","نادرة"]:singleCard[1]==="אדיר"?["Epic","Épica","épique","epische","эпическую","ملحمية"]:singleCard[1]==="אגדי"?["Legendary","Legendaria","légendaire","legendäre","легендарную","أسطورية"]:["Amazing","Asombrosa","incroyable","fantastische","удивительную","مذهلة"];return ["Unlock a "+tier[i]+" card.","Desbloquea una carta "+tier[i]+".","Débloque une carte "+tier[i]+".","Schalte eine "+tier[i]+" Karte frei.","Открой "+tier[i]+" карту.","افتح بطاقة "+tier[i]+"."][i];}
  if(source==="נשא את כל רמות הקושי")return ["Try Every Difficulty","Prueba todas las dificultades","Essaie toutes les difficultés","Spiele auf allen Schwierigkeitsgraden","Попробуй все уровни сложности","جرّب جميع مستويات الصعوبة"][i];
  if(source==="הרוס בוס מתפצל")return ["Defeat a Splitting Boss","Derrota a un jefe que se divide","Bats un boss qui se divise","Besiege einen sich teilenden Boss","Победи разделяющегося босса","اهزم زعيمًا منقسمًا"][i];
  if(source==="הרוס בוס בבלתי אפשרי")return ["Defeat a Boss in Impossible Mode","Derrota a un jefe en modo Imposible","Bats un boss en mode Impossible","Besiege einen Boss im Unmöglich-Modus","Победи босса в режиме «Невозможно»","اهزم زعيمًا في وضع المستحيل"][i];
- title=source.match(/^הרוס (\\d+) בוסים מתפצלים$/);
+ title=source.match(/^הרוס (\d+) בוסים מתפצלים$/);
  if(title)return ["Defeat "+title[1]+" Splitting Bosses","Derrota a "+title[1]+" jefes que se dividen","Bats "+title[1]+" boss qui se divisent","Besiege "+title[1]+" sich teilende Bosse","Победи "+title[1]+" разделяющихся боссов","اهزم "+title[1]+" زعماء منقسمين"][i];
- title=source.match(/^הרוס (\\d+) בוסים מיוחדים$/);
+ title=source.match(/^הרוס (\d+) בוסים מיוחדים$/);
  if(title)return ["Defeat "+title[1]+" Special Bosses","Derrota a "+title[1]+" jefes especiales","Bats "+title[1]+" boss spéciaux","Besiege "+title[1]+" Spezialbosse","Победи "+title[1]+" особых боссов","اهزم "+title[1]+" زعماء خاصين"][i];
  const m=source.match(/^הגע ל־?([\d,]+) מטר בבלתי אפשרי\.?$/);
  if(m)return ["Reach "+m[1]+" meters in Impossible mode.","Alcanza "+m[1]+" metros en modo Imposible.","Atteins "+m[1]+" mètres en mode Impossible.","Erreiche "+m[1]+" Meter im Unmöglich-Modus.","Достигни "+m[1]+" метров в режиме «Невозможно».","صل إلى "+m[1]+" مترًا في وضع المستحيل."][i];
