@@ -228,6 +228,21 @@ function translate(value){
    }
   }
  }
+ // Translate known Hebrew fragments inside dynamic notifications and generated UI strings.
+ let fragmentResult=value;
+ const fragmentRows=[];
+ for(const [he,row] of Object.entries(translations))if(he.length>=3&&Array.isArray(row))fragmentRows.push([he,row[supported.indexOf(current)-1]]);
+ const catalogFragments=window.GAME_TRANSLATIONS||{};
+ for(const namespace of ["cards","achievements","dailyMissions","collection"]){
+  for(const record of Object.values(catalogFragments[namespace]||{})){
+   if(!record||typeof record!=="object")continue;
+   if(record.sourceTitle&&Array.isArray(record.title))fragmentRows.push([record.sourceTitle,record.title[supported.indexOf(current)-1]]);
+   if(record.sourceDescription&&Array.isArray(record.description))fragmentRows.push([record.sourceDescription,record.description[supported.indexOf(current)-1]]);
+  }
+ }
+ fragmentRows.sort((a,b)=>b[0].length-a[0].length);
+ for(const [he,translated] of fragmentRows)if(translated&&fragmentResult.includes(he))fragmentResult=fragmentResult.split(he).join(translated);
+ if(fragmentResult!==value)return fragmentResult;
  const m=s.match(/^רמה (\d+) \| (.+) XP$/);
  if(m){const forms={en:"Level",es:"Nivel",fr:"Niveau",de:"Level",ru:"Уровень",ar:"المستوى"};return value.replace(s,forms[current]+" "+m[1]+" | "+m[2]+" XP");}
  return value;
