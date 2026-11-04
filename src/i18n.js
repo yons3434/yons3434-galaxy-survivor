@@ -16,9 +16,59 @@ function detectFirstLanguage(){
 let current;
 try { current=localStorage.getItem(KEY); } catch(e) {}
 if(!supported.includes(current)){current=detectFirstLanguage();try{localStorage.setItem(KEY,current)}catch(e){}}
+const achievementWords={
+  "קלפים רגילים":["common cards","cartas comunes","cartes communes","gewöhnliche Karten","обычных карт","بطاقات عادية"],
+  "קלפים נדירים":["rare cards","cartas raras","cartes rares","seltene Karten","редких карт","بطاقات نادرة"],
+  "קלפים אדירים":["epic cards","cartas épicas","cartes épiques","epische Karten","эпических карт","بطاقات ملحمية"],
+  "קלפים אגדיים":["legendary cards","cartas legendarias","cartes légendaires","legendäre Karten","легендарных карт","بطاقات أسطورية"],
+  "קלפים מדהימים":["amazing cards","cartas asombrosas","cartes incroyables","fantastische Karten","удивительных карт","بطاقات مذهلة"],
+  "מטאוריטים":["meteorites","meteoritos","météorites","Meteoriten","метеоритов","نيازك"],
+  "מטאורית":["meteorite","meteorito","météorite","Meteorit","метеорит","نيزك"],
+  "חלליות אויב":["enemy spaceships","naves enemigas","vaisseaux ennemis","feindliche Raumschiffe","кораблей врагов","سفن الأعداء"],
+  "בוסים":["bosses","jefes","boss","Bosse","боссов","زعماء"],
+  "בוס":["boss","jefe","boss","Boss","босс","زعيم"],
+  "רמות":["levels","niveles","niveaux","Level","уровней","مستويات"]
+};
+const uniqueAchievementText={
+ "המשחק הראשון":["First Game","Primera partida","Première partie","Erstes Spiel","Первая игра","اللعبة الأولى"],
+ "שחק במשחק הראשון שלך.":["Play your first game.","Juega tu primera partida.","Joue ta première partie.","Spiele dein erstes Spiel.","Сыграй свою первую игру.","العب مباراتك الأولى."],
+ "קלף אולטרה ראשון":["First Ultra Card","Primera carta Ultra","Première carte Ultra","Erste Ultra-Karte","Первая карта Ультра","أول بطاقة ألترا"],
+ "השג קלף אולטרה בפעם הראשונה.":["Obtain an Ultra card for the first time.","Consigue una carta Ultra por primera vez.","Obtiens une carte Ultra pour la première fois.","Erhalte zum ersten Mal eine Ultra-Karte.","Получи карту Ультра впервые.","احصل على بطاقة ألترا لأول مرة."],
+ "שורד קוסמי":["Cosmic Survivor","Superviviente cósmico","Survivant cosmique","Kosmischer Überlebender","Космический выживший","الناجي الكوني"],
+ "קוטל הבוסים":["Boss Slayer","Cazajefes","Tueur de boss","Bossbezwinger","Убийца боссов","قاتل الزعماء"],
+ "כוח הרסני":["Destructive Force","Fuerza destructiva","Force destructrice","Zerstörerische Kraft","Разрушительная сила","قوة مدمرة"],
+ "שובר מטאוריטים":["Meteorite Breaker","Destructor de meteoritos","Briseur de météorites","Meteoritenbrecher","Разрушитель метеоритов","محطم النيازك"],
+ "אוסף אולטרה":["Ultra Collector","Coleccionista Ultra","Collectionneur Ultra","Ultra-Sammler","Коллекционер Ультра","جامع ألترا"],
+ "אגדה קוסמית":["Cosmic Legend","Leyenda cósmica","Légende cosmique","Kosmische Legende","Космическая легенда","أسطورة كونية"],
+ "צובר כוח קוסמי":["Cosmic Power Collector","Acumulador de poder cósmico","Accumulation de puissance cosmique","Sammler kosmischer Kraft","Накопитель космической силы","جامع القوة الكونية"],
+ "צייד הבוסים האולטימטיבי":["Ultimate Boss Hunter","Cazajefes definitivo","Chasseur de boss ultime","Ultimativer Bossjäger","Величайший охотник на боссов","صائد الزعماء المطلق"],
+ "אוסף מושלם":["Perfect Collection","Colección perfecta","Collection parfaite","Perfekte Sammlung","Идеальная коллекция","مجموعة مثالية"],
+ "מגן בלתי שביר":["Unbreakable Shield","Escudo indestructible","Bouclier incassable","Unzerbrechlicher Schild","Несокрушимый щит","درع لا ينكسر"],
+ "כוח הלייזר האולטימטיבי":["Ultimate Laser Power","Poder láser definitivo","Puissance laser ultime","Ultimative Laserleistung","Абсолютная мощь лазера","قوة الليزر القصوى"],
+ "מעבר לגלקסיה":["Beyond the Galaxy","Más allá de la galaxia","Au-delà de la galaxie","Jenseits der Galaxie","За пределами галактики","ما وراء المجرة"],
+ "בלתי ניתן לעצירה":["Unstoppable","Imparable","Inarrêtable","Unaufhaltsam","Неудержимый","لا يمكن إيقافه"]
+};
+function translateAchievementPattern(source,lang){
+ const index=supported.indexOf(lang)-1;
+ if(index<0)return source;
+ if(uniqueAchievementText[source])return uniqueAchievementText[source][index];
+ let m=source.match(/^הגע ל־([\d,]+) מטר במשחק אחד\.?$/);
+ if(m)return ["Reach "+m[1]+" meters in one game.","Alcanza "+m[1]+" metros en una partida.","Atteins "+m[1]+" mètres en une partie.","Erreiche "+m[1]+" Meter in einem Spiel.","Достигни "+m[1]+" метров за одну игру.","Достигни "+m[1]+" метров за одну игру."][index];
+ m=source.match(/^הגע ל־([\d,]+) מטר במשחק בבלתי אפשרי\.?$/);
+ if(m)return ["Reach "+m[1]+" meters in an Impossible game.","Alcanza "+m[1]+" metros en una partida Imposible.","Atteins "+m[1]+" mètres en mode Impossible.","Erreiche "+m[1]+" Meter in einem Unmöglich-Spiel.","Достигни "+m[1]+" метров в режиме «Невозможно».","تصل إلى "+m[1]+" مترًا في وضع المستحيل."][index];
+ m=source.match(/^(?:הרוס|הרג) (\d+) (מטאוריטים|מטאוריתים|חלליות אויב|בוסים) בסך הכול\.?$/);
+ if(m){const word=m[2].startsWith("מטאור")?"meteorites":m[2]==="חלליות אויב"?"enemy spaceships":"bosses";const forms={ "meteorites":["Destroy "+m[1]+" meteorites in total.","Destruye "+m[1]+" meteoritos en total.","Détruis "+m[1]+" météorites au total.","Zerstöre insgesamt "+m[1]+" Meteoriten.","Уничтожь всего "+m[1]+" метеоритов.","دمر "+m[1]+" نيزكًا إجمالًا."],"enemy spaceships":["Destroy "+m[1]+" enemy spaceships in total.","Destruye "+m[1]+" naves enemigas en total.","Détruis "+m[1]+" vaisseaux ennemis au total.","Zerstöre insgesamt "+m[1]+" feindliche Raumschiffe.","Уничтожь всего "+m[1]+" кораблей врагов.","دمر "+m[1]+" من سفن الأعداء إجمالًا."],"bosses":["Defeat "+m[1]+" bosses in total.","Derrota "+m[1]+" jefes en total.","Bats "+m[1]+" boss au total.","Besiege insgesamt "+m[1]+" Bosse.","Победи всего "+m[1]+" боссов.","اهزم "+m[1]+" زعماء إجمالًا."]};return forms[word][index];}
+ m=source.match(/^הגע לרמה (\d+)(?: במשחק אחד)?\.?$/);
+ if(m)return ["Reach level "+m[1]+(source.includes("במשחק אחד")?" in one game.":"."),
+ "Alcanza el nivel "+m[1]+(source.includes("במשחק אחד")?" en una partida.":"."),"Atteins le niveau "+m[1]+(source.includes("במשחק אחד")?" en une partie.":"."),"Erreiche Level "+m[1]+(source.includes("במשחק אחד")?" in einem Spiel.":"."),"Достигни уровня "+m[1]+(source.includes("במשחק אחד")?" за одну игру.":"."),"صل إلى المستوى "+m[1]+(source.includes("במשחק אחד")?" في مباراة واحدة.":".")][index];
+ m=source.match(/^עלה (\d+) רמות בסך הכול.*\.?$/);
+ if(m)return ["Gain "+m[1]+" levels in total.","Sube "+m[1]+" niveles en total.","Gagne "+m[1]+" niveaux au total.","Steige insgesamt "+m[1]+" Level auf.","Получи "+m[1]+" уровней в общей сложности.","ارفع مستواك "+m[1]+" مرة إجمالًا."][index];
+ return source;
+}
 function translate(value){
  const s=value.trim(); if(current==="he"||!s)return value;
  const row=translations[s]; if(row)return value.replace(s,row[supported.indexOf(current)-1]||s);
+ const achievementTranslation=translateAchievementPattern(s,current);if(achievementTranslation!==s)return value.replace(s,achievementTranslation);
  const catalog=window.GAME_TRANSLATIONS||{};
  for(const namespace of ["cards","achievements","dailyMissions","collection"]){
   const records=catalog[namespace]||{};
