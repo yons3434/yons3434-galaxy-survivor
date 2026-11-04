@@ -255,7 +255,7 @@ test("laser and flamethrower show their actual continuous damage", () => {
 });
 
 test("poison and burn damage-over-time ticks display their actual damage", () => {
-  assert.match(js, /const poisonDamage=target\.maxHealth\*\.05\*target\.poisonStrength;target\.health-=poisonDamage;showDamageNumber\(target,poisonDamage\)/);
+  assert.match(js, /const poisonDamage=Math\.min\(Math\.max\(0,target\.health-1\),target\.health\*strength\)/);\n  assert.match(js, /const strength=Math\.min\(1,Math\.max\(0,Number\(target\.poisonStrength\)\|\|0\)\)\*\(isBoss \? 0\.25 : 1\)/);\n  assert.match(js, /showDamageNumber\(target,poisonDamage\)/);
   assert.match(js, /target.burnBaseDamage=baseHitDamage\*GalaxyBurn.getInitialDamageFraction\(burnLevel\)/);
   assert.match(js, /target.burnDamageTotal=target.burnBaseDamage\*target.burnDamageMultiplier/);
   assert.match(js, /const rawBurnDamage=target.burnDamagePerTick/);
