@@ -234,10 +234,10 @@
     button.classList.toggle("active", ultraMiniModeActive);
     button.classList.toggle("disabled", unavailable);
     button.disabled = unavailable;
-    button.innerHTML = "🛸 מיני חללית אולטרה<br><small>" +
-      (ultraMiniModeActive ? ultraMiniConnections + " / 20 קרניים" :
-        remaining ? "⏳ " + remaining + " שניות" :
-          Math.floor(ultraPoints).toLocaleString("en-US") + " / 3,000 נקודות") + "</small>";
+    button.innerHTML = GalaxyI18n.translate("🛸 מיני חללית אולטרה") + "<br><small>" +
+      (ultraMiniModeActive ? ultraMiniConnections + " / 20 " + GalaxyI18n.translate("קרניים") :
+        remaining ? "⏳ " + remaining + " " + GalaxyI18n.translate("שניות") :
+          Math.floor(ultraPoints).toLocaleString("en-US") + " / 3,000 " + GalaxyI18n.translate("נקודות")) + "</small>";
   }
 
   const originalGetUpgradeCardTitle = getUpgradeCardTitle;
