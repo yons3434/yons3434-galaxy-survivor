@@ -177,10 +177,33 @@ const collectionDescriptionTranslations={
 "בוס מיוחד שנכנס למצבי זעם בשלבי החיים הנמוכים.":["A special boss that enters rage phases at low health.","Un jefe especial que entra en fases de furia cuando tiene poca vida.","Un boss spécial qui entre en phase de rage lorsque sa santé est faible.","Ein Spezialboss, der bei wenig Lebensenergie in Wutphasen eintritt.","Особый босс, который впадает в ярость при низком уровне здоровья.","زعيم خاص يدخل في حالات غضب عندما تنخفض صحته."]
 };
 
+
+function translateRemainingAchievementText(source,lang){
+ const i=supported.indexOf(lang)-1;if(i<0)return source;
+ const m=source.match(/^הגע ל־?([\d,]+) מטר בבלתי אפשרי\.?$/);
+ if(m)return ["Reach "+m[1]+" meters in Impossible mode.","Alcanza "+m[1]+" metros en modo Imposible.","Atteins "+m[1]+" mètres en mode Impossible.","Erreiche "+m[1]+" Meter im Unmöglich-Modus.","Достигни "+m[1]+" метров в режиме «Невозможно».","صل إلى "+m[1]+" مترًا في وضع المستحيل."][i];
+ let x=source.match(/^הרוס בוס אחד במהלך משחק בבלתי אפשרי\.?$/);
+ if(x)return ["Defeat one boss in an Impossible game.","Derrota a un jefe en una partida Imposible.","Bats un boss dans une partie en mode Impossible.","Besiege einen Boss in einem Unmöglich-Spiel.","Победи босса в режиме «Невозможно».","اهزم زعيمًا واحدًا في مباراة بوضع المستحيل."][i];
+ x=source.match(/^הבס (\d+) אויבים בעזרת האולטרה לייזר\.?$/);
+ if(x)return ["Defeat "+x[1]+" enemies with the Ultra Laser.","Derrota a "+x[1]+" enemigos con el láser Ultra.","Bats "+x[1]+" ennemis avec l’Ultra-Laser.","Besiege "+x[1]+" Gegner mit dem Ultra-Laser.","Победи "+x[1]+" врагов с помощью Ультра-лазера.","اهزم "+x[1]+" أعداء باستخدام ليزر ألترا."][i];
+ x=source.match(/^השמד (\d+) אויבים בלי לאבד חיים\.?$/);
+ if(x)return ["Destroy "+x[1]+" enemies without losing a life.","Destruye "+x[1]+" enemigos sin perder vidas.","Détruis "+x[1]+" ennemis sans perdre de vie.","Zerstöre "+x[1]+" Gegner, ohne Leben zu verlieren.","Уничтожь "+x[1]+" врагов, не потеряв ни одной жизни.","دمر "+x[1]+" أعداء دون فقدان أي حياة."][i];
+ x=source.match(/^שרוד (\d+) מטר(?: במצב בלתי אפשרי| בבלתי אפשרי)\.?$/);
+ if(x)return ["Survive "+x[1]+" meters in Impossible mode.","Sobrevive "+x[1]+" metros en modo Imposible.","Survis "+x[1]+" mètres en mode Impossible.","Überlebe "+x[1]+" Meter im Unmöglich-Modus.","Выживи на дистанции "+x[1]+" метров в режиме «Невозможно».","ابقَ على قيد الحياة لمسافة "+x[1]+" مترًا في وضع المستحيل."][i];
+ x=source.match(/^צבור (\d+) XP לשחקן\.?$/);
+ if(x)return ["Earn "+x[1]+" Player XP.","Consigue "+x[1]+" XP de jugador.","Gagne "+x[1]+" XP de joueur.","Sammle "+x[1]+" Spieler-EP.","Получи "+x[1]+" XP игрока.","اجمع "+x[1]+" من نقاط خبرة اللاعب."][i];
+ x=source.match(/^שרוד (\d+) מטר\.?$/);
+ if(x)return ["Survive "+x[1]+" meters.","Sobrevive "+x[1]+" metros.","Survis "+x[1]+" mètres.","Überlebe "+x[1]+" Meter.","Выживи на дистанции "+x[1]+" метров.","ابقَ على قيد الحياة لمسافة "+x[1]+" مترًا."][i];
+ x=source.match(/^צבור (\d+) נקודות אולטרה במהלך משחק אחד\.?$/);
+ if(x)return ["Earn "+x[1]+" Ultra points in one game.","Consigue "+x[1]+" puntos Ultra en una partida.","Gagne "+x[1]+" points Ultra en une partie.","Sammle "+x[1]+" Ultra-Punkte in einem Spiel.","Набери "+x[1]+" очков Ультра за одну игру.","اجمع "+x[1]+" نقطة ألترا في مباراة واحدة."][i];
+ return source;
+}
+
 function translate(value){
  const s=value.trim(); if(current==="he"||!s)return value;
  const collectionDescription=collectionDescriptionTranslations[s];if(collectionDescription)return value.replace(s,collectionDescription[supported.indexOf(current)-1]||s);
  const row=translations[s]; if(row)return value.replace(s,row[supported.indexOf(current)-1]||s);
+ const remainingAchievementTranslation=translateRemainingAchievementText(s,current);if(remainingAchievementTranslation!==s)return value.replace(s,remainingAchievementTranslation);
  const achievementTranslation=translateAchievementPattern(s,current);if(achievementTranslation!==s)return value.replace(s,achievementTranslation);
  const achievementDescriptionTranslation=translateAchievementDescription(s,current);if(achievementDescriptionTranslation!==s)return value.replace(s,achievementDescriptionTranslation);
  const catalog=window.GAME_TRANSLATIONS||{};
