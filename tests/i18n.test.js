@@ -49,6 +49,22 @@ test("central translation catalog is loaded before the language engine", () => {
   assert.doesNotThrow(() => new vm.Script(catalog, { filename: "src/translations.js" }));
   assert.match(html, /src="src\/translations\.js"><\/script>\s*<script src="src\/i18n\.js"><\/script>/);
   assert.match(catalog, /ui:Object\.freeze\(ui\)/);
-  assert.match(catalog, /cards:Object\.freeze\(\{\}\)/);
+  assert.match(catalog, /cards:Object\.freeze\(/);
   assert.match(catalog, /achievements:Object\.freeze\(\{\}\)/);
+});
+
+test("upgrade card translations cover the core card catalog in all six target languages", () => {
+  const source = fs.readFileSync("src/translations.js", "utf8");
+  const sandbox = { window: {} };
+  vm.runInNewContext(source, sandbox);
+  const cards = sandbox.window.GAME_TRANSLATIONS.cards;
+  assert.ok(Object.keys(cards).length >= 30);
+  for (const [id, record] of Object.entries(cards)) {
+    assert.ok(record.title && record.title.length === 6, id + " title translations");
+    assert.ok(record.title.every(value => typeof value === "string" && value.length), id + " title values");
+    if (record.description) {
+      assert.equal(record.description.length, 6, id + " description translations");
+      assert.ok(record.description.every(value => typeof value === "string" && value.length), id + " description values");
+    }
+  }
 });
