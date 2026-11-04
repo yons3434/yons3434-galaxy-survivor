@@ -130,7 +130,7 @@ test("all achievement, daily mission, and collection source text has a translati
   for (const language of ["en", "es", "fr", "de", "ru", "ar"]) {
     sandbox.window.GalaxyI18n.setLanguage(language);
     for (const source of sources) {
-      assert.doesNotMatch(sandbox.window.GalaxyI18n.translate(source), /[\\u0590-\\u05FF]/, language + " missing: " + source);
+      assert.doesNotMatch(sandbox.window.GalaxyI18n.translate(source), /[\u0590-\u05FF]/, language + " missing: " + source);
     }
   }
 });
