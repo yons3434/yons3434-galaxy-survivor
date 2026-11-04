@@ -259,14 +259,14 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 #hitFlashOverlay[data-active="1"]{visibility:visible;animation:hitFlashFade .24s ease-out both}
 @keyframes hitFlashFade{0%,18%{opacity:1}100%{opacity:0;visibility:hidden}}
 
-/* Language direction must not mirror the game's layout. The game uses a fixed RTL
-   spatial arrangement; only text alignment/bidi changes with the selected locale. */
-html[dir="ltr"] body { direction: rtl !important; }
-body[data-language-direction="ltr"] :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achievementToast,.upgradeCard,.selectedCard,.helpSection,.helpCard,.collectionSection,.collectionCard,.dailyMissionRow,.profileStat,.profileAchievementTier,.profileAchievementTitle,.profileAchievementPercent,#message,#levelText,#speedComboText,#zoneIndicator,#bossContainer,#gameSettingsPanel,#profilePanel,#achievementsPanel,#leaderboardPanel,#collectionPanel,#helpPanel) {
-  text-align: left;
-  unicode-bidi: plaintext;
+/* Keep the game's spatial layout fixed in every language.
+   The document language may be LTR/RTL for accessibility and text shaping,
+   but it must never change alignment or the direction of flex/grid layouts. */
+html[dir="ltr"] body,
+html[dir="rtl"] body {
+  direction: rtl !important;
 }
-body[data-language-direction="rtl"] :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achievementToast,.upgradeCard,.selectedCard,.helpSection,.helpCard,.collectionSection,.collectionCard,.dailyMissionRow,.profileStat,.profileAchievementTier,.profileAchievementTitle,.profileAchievementPercent,#message,#levelText,#speedComboText,#zoneIndicator,#bossContainer,#gameSettingsPanel,#profilePanel,#achievementsPanel,#leaderboardPanel,#collectionPanel,#helpPanel) {
-  text-align: right;
+/* Resolve mixed-language text per paragraph without changing container layout. */
+body :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achievementToast,.upgradeCard,.selectedCard,.helpSection,.helpCard,.collectionSection,.collectionCard,.dailyMissionRow,.profileStat,.profileAchievementTier,.profileAchievementTitle,.profileAchievementPercent,#message,#levelText,#speedComboText,#zoneIndicator,#bossContainer) {
   unicode-bidi: plaintext;
 }
