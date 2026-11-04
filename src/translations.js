@@ -292,7 +292,8 @@ Object.assign(ui,{
 "🟣 ערפילית":["🟣 Nebula","🟣 Nebulosa","🟣 Nébuleuse","🟣 Nebel","🟣 Туманность","🟣 سديم"],
 "☠️ אזור קטלני":["☠️ Deadly Zone","☠️ Zona mortal","☠️ Zone mortelle","☠️ Tödliche Zone","☠️ Смертельная зона","☠️ منطقة قاتلة"],
 "🌑 החלל האפל":["🌑 Dark Space","🌑 Espacio oscuro","🌑 Espace sombre","🌑 Dunkler Weltraum","🌑 Тёмный космос","🌑 الفضاء المظلم"],
-"👥 שחקנים ששיחקו אי פעם: 0":["👥 Players who have ever played: 0","👥 Jugadores que han jugado alguna vez: 0","👥 Joueurs ayant déjà joué : 0","👥 Spieler insgesamt: 0","👥 Всего игроков: 0","👥 اللاعبون الذين لعبوا من قبل: 0"]
+"👥 שחקנים ששיחקו אי פעם: 0":["👥 Players who have ever played: 0","👥 Jugadores que han jugado alguna vez: 0","👥 Joueurs ayant déjà joué : 0","👥 Spieler insgesamt: 0","👥 Всего игроков: 0","👥 اللاعبون الذين لعبوا من قبل: 0"],
+"חלליות שמסתובבות סביב השחקן ויורות קרני לייזר לעבר אויבים. כל רמה מוסיפה חללית נוספת.":["Ships that orbit the player and fire laser beams at enemies. Each level adds another ship.","Naves que orbitan alrededor del jugador y disparan rayos láser a los enemigos. Cada nivel añade otra nave.","Des vaisseaux qui tournent autour du joueur et tirent des rayons laser sur les ennemis. Chaque niveau ajoute un vaisseau.","Raumschiffe, die den Spieler umkreisen und Laserstrahlen auf Gegner abfeuern. Jede Stufe fügt ein weiteres Schiff hinzu.","Корабли, вращающиеся вокруг игрока и стреляющие лазерными лучами по врагам. Каждый уровень добавляет ещё один корабль.","سفن تدور حول اللاعب وتطلق أشعة ليزر على الأعداء. يضيف كل مستوى سفينة أخرى."]
 });
 window.GAME_TRANSLATIONS=Object.freeze({
   supported:Object.freeze(["he","en","es","fr","de","ru","ar"]),
