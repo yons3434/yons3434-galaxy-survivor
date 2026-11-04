@@ -280,7 +280,19 @@ Object.assign(ui,{
 "Q — RPG | R — שוטגאן | F — להביור":["Q — RPG | R — Shotgun | F — Flamethrower","Q — RPG | R — Escopeta | F — Lanzallamas","Q — RPG | R — Fusil à pompe | F — Lance-flammes","Q — RPG | R — Schrotflinte | F — Flammenwerfer","Q — RPG | R — Дробовик | F — Огнемёт","Q — RPG | R — بندقية | F — قاذف اللهب"],
 "E — נשק רגיל | L — לייזר":["E — Regular Weapon | L — Laser","E — Arma normal | L — Láser","E — Arme normal | L — Laser","E — Normale Waffe | L — Laser","E — Обычное оружие | L — Лазер","E — السلاح العادي | L — ليزر"],
 "P — עצירה / המשך":["P — Pause / Resume","P — Pausar / Continuar","P — Pause / Reprendre","P — Pause / Fortsetzen","P — Пауза / Продолжить","P — إيقاف مؤقت / متابعة"],
-"Esc — סגירת חלון פתוח או המשך משחק":["Esc — Close an open window or resume the game","Esc — Cerrar una ventana o reanudar el juego","Échap — Fermer une fenêtre ou reprendre la partie","Esc — Fenster schließen oder Spiel fortsetzen","Esc — Закрыть окно или продолжить игру","Esc — إغلاق نافذة مفتوحة أو متابعة اللعبة"]
+"Esc — סגירת חלון פתוח או המשך משחק":["Esc — Close an open window or resume the game","Esc — Cerrar una ventana o reanudar el juego","Échap — Fermer une fenêtre ou reprendre la partie","Esc — Fenster schließen oder Spiel fortsetzen","Esc — Закрыть окно или продолжить игру","Esc — إغلاق نافذة مفتوحة أو متابعة اللعبة"],
+"📖 נפתח באוסף:":["📖 Added to the collection:","📖 Añadido a la colección:","📖 Ajouté à la collection :","📖 Zur Sammlung hinzugefügt:","📖 Добавлено в коллекцию:","📖 أُضيف إلى المجموعة:"],
+"🛸 מקסימום מיני חלליות:":["🛸 Maximum mini ships:","🛸 Máximo de mini naves:","🛸 Nombre maximal de mini-vaisseaux :","🛸 Maximale Mini-Raumschiffe:","🛸 Максимум мини-кораблей:","🛸 الحد الأقصى للسفن الصغيرة:"],
+"🛡️ מגן נוסף ממצב אולטרה!":["🛡️ Extra shield from Ultra Mode!","🛡️ ¡Escudo adicional del modo Ultra!","🛡️ Bouclier supplémentaire du mode Ultra !","🛡️ Zusätzlicher Schild durch den Ultra-Modus!","🛡️ Дополнительный щит от режима Ультра!","🛡️ درع إضافي من وضع ألترا!"],
+"💥 נפגעת! ❤️":["💥 Hit! ❤️","💥 ¡Te han golpeado! ❤️","💥 Touché ! ❤️","💥 Getroffen! ❤️","💥 Получен урон! ❤️","💥 تعرضت لضربة! ❤️"],
+"💥 פגיעה חזקה! ❤️":["💥 Heavy hit! ❤️","💥 ¡Golpe fuerte! ❤️","💥 Coup puissant ! ❤️","💥 Schwerer Treffer! ❤️","💥 Сильный удар! ❤️","💥 ضربة قوية! ❤️"],
+"🛸 מיני חלליות":["🛸 Mini ships","🛸 Mini naves","🛸 Mini-vaisseaux","🛸 Mini-Raumschiffe","🛸 Мини-корабли","🛸 سفن صغيرة"],
+"שחקן":["Player","Jugador","Joueur","Spieler","Игрок","لاعب"],
+"⚠️ אזור מסוכן":["⚠️ Danger Zone","⚠️ Zona peligrosa","⚠️ Zone dangereuse","⚠️ Gefahrenzone","⚠️ Опасная зона","⚠️ منطقة خطرة"],
+"🟣 ערפילית":["🟣 Nebula","🟣 Nebulosa","🟣 Nébuleuse","🟣 Nebel","🟣 Туманность","🟣 سديم"],
+"☠️ אזור קטלני":["☠️ Deadly Zone","☠️ Zona mortal","☠️ Zone mortelle","☠️ Tödliche Zone","☠️ Смертельная зона","☠️ منطقة قاتلة"],
+"🌑 החלל האפל":["🌑 Dark Space","🌑 Espacio oscuro","🌑 Espace sombre","🌑 Dunkler Weltraum","🌑 Тёмный космос","🌑 الفضاء المظلم"],
+"👥 שחקנים ששיחקו אי פעם: 0":["👥 Players who have ever played: 0","👥 Jugadores que han jugado alguna vez: 0","👥 Joueurs ayant déjà joué : 0","👥 Spieler insgesamt: 0","👥 Всего игроков: 0","👥 اللاعبون الذين لعبوا من قبل: 0"]
 });
 window.GAME_TRANSLATIONS=Object.freeze({
   supported:Object.freeze(["he","en","es","fr","de","ru","ar"]),
