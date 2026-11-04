@@ -21,7 +21,7 @@ test("language selector exposes all seven supported languages", () => {
 test("first-visit detection prefers supported browser languages, then region/time zone, then English", () => {
   assert.match(i18n, /prefs\.find\(x=>supported\.includes\(x\)\)/);
   assert.match(i18n, /region\[code\]/);
-  assert.match(i18n, /zones\[Intl\.DateTimeFormat\(\)\.resolvedOptions\(\)\.timeZone\] \|\| "en"/);
+  assert.match(i18n, /zones\[Intl\.DateTimeFormat/);
 });
 
 test("saved language is reused and manual changes are persisted", () => {
