@@ -168,6 +168,17 @@ Object.assign(ui,{
 "אויב מיוחד שהופך למסוכן ומהיר יותר ככל שהוא מאבד חיים.":["A special enemy that becomes more dangerous and faster as it loses health.","Un enemigo especial que se vuelve más peligroso y rápido a medida que pierde salud.","Un ennemi spécial qui devient plus dangereux et rapide à mesure qu’il perd de la vie.","Ein Spezialgegner, der mit sinkender Gesundheit gefährlicher und schneller wird.","Особый враг, который становится опаснее и быстрее по мере потери здоровья.","عدو خاص يصبح أكثر خطورة وسرعة كلما فقد صحته."],
 "בוס מיוחד שנכנס למצבי זעם בשלבי החיים הנמוכים.":["A special boss that enters rage phases at low health.","Un jefe especial que entra en fases de furia cuando tiene poca salud.","Un boss spécial qui entre en phase de rage lorsque sa santé est faible.","Ein Spezialboss, der bei wenig Gesundheit in Wutphasen eintritt.","Особый босс, впадающий в ярость при низком уровне здоровья.","زعيم خاص يدخل في مراحل غضب عندما تنخفض صحته."]
 });
+Object.assign(ui,{
+"⚔️ דרגות קושי":["⚔️ Difficulty Levels","⚔️ Niveles de dificultad","⚔️ Niveaux de difficulté","⚔️ Schwierigkeitsgrade","⚔️ Уровни сложности","⚔️ مستويات الصعوبة"],
+"1 — אקדח | 2 — RPG | 3 — שוטגאן":["1 — Pistol | 2 — RPG | 3 — Shotgun","1 — Pistola | 2 — RPG | 3 — Escopeta","1 — Pistolet | 2 — RPG | 3 — Fusil à pompe","1 — Pistole | 2 — RPG | 3 — Schrotflinte","1 — Пистолет | 2 — РПГ | 3 — Дробовик","1 — مسدس | 2 — RPG | 3 — بندقية خرطوش"],
+"4 — להביור | 5 — לייזר | 6 — רובה חור שחור":["4 — Flamethrower | 5 — Laser | 6 — Black Hole Gun","4 — Lanzallamas | 5 — Láser | 6 — Arma de agujero negro","4 — Lance-flammes | 5 — Laser | 6 — Arme à trou noir","4 — Flammenwerfer | 5 — Laser | 6 — Schwarzes-Loch-Gewehr","4 — Огнемёт | 5 — Лазер | 6 — Пушка чёрной дыры","4 — قاذف اللهب | 5 — ليزر | 6 — بندقية الثقب الأسود"],
+"Q — RPG | R — שוטגאן | F — להביור":["Q — RPG | R — Shotgun | F — Flamethrower","Q — RPG | R — Escopeta | F — Lanzallamas","Q — RPG | R — Fusil à pompe | F — Lance-flammes","Q — RPG | R — Schrotflinte | F — Flammenwerfer","Q — РПГ | R — Дробовик | F — Огнемёт","Q — RPG | R — بندقية خرطوش | F — قاذف اللهب"],
+"E — נשק רגיל | L — לייזר":["E — Regular weapon | L — Laser","E — Arma normal | L — Láser","E — Arme normal | L — Laser","E — Normale Waffe | L — Laser","E — Обычное оружие | L — Лазер","E — سلاح عادي | L — ليزر"],
+"P — עצירה / המשך":["P — Pause / Resume","P — Pausar / Continuar","P — Pause / Reprendre","P — Pause / Fortsetzen","P — Пауза / Продолжить","P — إيقاف مؤقت / متابعة"],
+"Esc — סגירת חלון פתוח או עצירת המשחק":["Esc — Close an open window or pause the game","Esc — Cerrar una ventana abierta o pausar el juego","Esc — Fermer une fenêtre ouverte ou mettre le jeu en pause","Esc — Ein geöffnetes Fenster schließen oder das Spiel pausieren","Esc — Закрыть открытое окно или поставить игру на паузу","Esc — إغلاق نافذة مفتوحة أو إيقاف اللعبة مؤقتًا"],
+"אויבים ומטאוריטים מכל האזורים":["Enemies and meteorites from all zones","Enemigos y meteoritos de todas las zonas","Ennemis et météorites de toutes les zones","Gegner und Meteoriten aus allen Zonen","Враги и метеориты из всех зон","أعداء ونيازك من جميع المناطق"],
+"השם שלך":["Your name","Tu nombre","Ton nom","Dein Name","Твоё имя","اسمك"]
+});
 window.GAME_TRANSLATIONS=Object.freeze({
   supported:Object.freeze(["he","en","es","fr","de","ru","ar"]),
   ui:Object.freeze(ui),
