@@ -75,14 +75,13 @@ test("burn upgrade is legendary, stackable, and has an animated effect", () => {
   assert.match(js, /burnLevel>=GalaxyBurn\.maxLevel/);
 });
 
-test("poison upgrade keeps its requested scaling", () => {
+test("poison upgrade keeps its agreed permanent stacking mechanics", () => {
   assert.match(js, /id:"poison",rarity:"אדיר",rarityClass:"epic"/);
-  assert.match(js, /enemy\.poisonUntil=now\+4000/);
-  assert.match(js, /enemy\.poisonNextTickAt=now\+1000/);
-  assert.match(js, /target\.maxHealth\*\.05\*target\.poisonStrength/);
-  assert.match(js, /case"poison":poisonLevel\+\+/);
+  assert.match(js, /target\.poisonStrength\+=\(\(1-target\.poisonStrength\)\*\.1\)/);
+  assert.match(js, /target\.poisonIntervalMs=Math\.max/);
+  assert.match(js, /target\.poisonNextTickAt=now\+initialInterval/);
+  assert.match(js, /case"poison":poisonLevel=Math\.min\(9,poisonLevel\+1\)/);
 });
-
 test("stackable upgrade cards show Roman numeral levels while unlock-only cards do not", () => {
   assert.match(js, /const numberedUpgradeIds=new Set\(\["damage"/);
   assert.match(js, /function getUpgradeLevel\(id\)/);
@@ -255,13 +254,14 @@ test("laser and flamethrower show their actual continuous damage", () => {
 });
 
 test("poison and burn damage-over-time ticks display their actual damage", () => {
-  assert.match(js, /const poisonDamage=Math\.min\(Math\.max\(0,target\.health-1\),target\.health\*strength\)/);\n  assert.match(js, /const strength=Math\.min\(1,Math\.max\(0,Number\(target\.poisonStrength\)\|\|0\)\)\*\(isBoss \? 0\.25 : 1\)/);\n  assert.match(js, /showDamageNumber\(target,poisonDamage\)/);
-  assert.match(js, /target.burnBaseDamage=baseHitDamage\*GalaxyBurn.getInitialDamageFraction\(burnLevel\)/);
-  assert.match(js, /target.burnDamageTotal=target.burnBaseDamage\*target.burnDamageMultiplier/);
-  assert.match(js, /const rawBurnDamage=target.burnDamagePerTick/);
+  assert.match(js, /const poisonDamage=Math\.min\(Math\.max\(0,target\.health-1\),target\.health\*strength\)/);
+  assert.match(js, /const strength=Math\.min\(1,Math\.max\(0,Number\(target\.poisonStrength\)\|\|0\)\)\*\(isBoss \? 0\.25 : 1\)/);
+  assert.match(js, /showDamageNumber\(target,poisonDamage\)/);
+  assert.match(js, /target\.burnBaseDamage=baseHitDamage\*GalaxyBurn.getInitialDamageFraction\(burnLevel\)/);
+  assert.match(js, /target\.burnDamageTotal=target\.burnBaseDamage\*target\.burnDamageMultiplier/);
+  assert.match(js, /const rawBurnDamage=target\.burnDamagePerTick/);
   assert.match(js, /const burnDamage=isBoss\?rawBurnDamage\/4:rawBurnDamage/);
 });
-
 test("sword hits show their actual damage against enemies and meteorites", () => {
   assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\)\*\(ultraModeActive\?2:1\);enemy\.health-=swordHitDamage;showDamageNumber\(enemy,swordHitDamage\)/);
   assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\)\*\(ultraModeActive\?2:1\);a\.health-=swordHitDamage;showDamageNumber\(a,swordHitDamage\)/);
