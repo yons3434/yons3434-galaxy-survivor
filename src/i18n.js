@@ -180,6 +180,15 @@ const collectionDescriptionTranslations={
 
 function translateRemainingAchievementText(source,lang){
  const i=supported.indexOf(lang)-1;if(i<0)return source;
+ let title=source.match(/^שרוד ([\\d,]+) מטר בבלתי אפשרי$/);
+ if(title)return ["Survive "+title[1]+" meters in Impossible mode","Sobrevive "+title[1]+" metros en modo Imposible","Survis "+title[1]+" mètres en mode Impossible","Überlebe "+title[1]+" Meter im Unmöglich-Modus","Выживи на дистанции "+title[1]+" метров в режиме «Невозможно»","ابقَ على قيد الحياة لمسافة "+title[1]+" مترًا في وضع المستحيل"][i];
+ if(source==="נשא את כל רמות הקושי")return ["Try Every Difficulty","Prueba todas las dificultades","Essaie toutes les difficultés","Spiele auf allen Schwierigkeitsgraden","Попробуй все уровни сложности","جرّب جميع مستويات الصعوبة"][i];
+ if(source==="הרוס בוס מתפצל")return ["Defeat a Splitting Boss","Derrota a un jefe que se divide","Bats un boss qui se divise","Besiege einen sich teilenden Boss","Победи разделяющегося босса","اهزم زعيمًا منقسمًا"][i];
+ if(source==="הרוס בוס בבלתי אפשרי")return ["Defeat a Boss in Impossible Mode","Derrota a un jefe en modo Imposible","Bats un boss en mode Impossible","Besiege einen Boss im Unmöglich-Modus","Победи босса в режиме «Невозможно»","اهزم زعيمًا في وضع المستحيل"][i];
+ title=source.match(/^הרוס (\\d+) בוסים מתפצלים$/);
+ if(title)return ["Defeat "+title[1]+" Splitting Bosses","Derrota a "+title[1]+" jefes que se dividen","Bats "+title[1]+" boss qui se divisent","Besiege "+title[1]+" sich teilende Bosse","Победи "+title[1]+" разделяющихся боссов","اهزم "+title[1]+" زعماء منقسمين"][i];
+ title=source.match(/^הרוס (\\d+) בוסים מיוחדים$/);
+ if(title)return ["Defeat "+title[1]+" Special Bosses","Derrota a "+title[1]+" jefes especiales","Bats "+title[1]+" boss spéciaux","Besiege "+title[1]+" Spezialbosse","Победи "+title[1]+" особых боссов","اهزم "+title[1]+" زعماء خاصين"][i];
  const m=source.match(/^הגע ל־?([\d,]+) מטר בבלתי אפשרי\.?$/);
  if(m)return ["Reach "+m[1]+" meters in Impossible mode.","Alcanza "+m[1]+" metros en modo Imposible.","Atteins "+m[1]+" mètres en mode Impossible.","Erreiche "+m[1]+" Meter im Unmöglich-Modus.","Достигни "+m[1]+" метров в режиме «Невозможно».","صل إلى "+m[1]+" مترًا في وضع المستحيل."][i];
  let x=source.match(/^הרוס בוס אחד במהלך משחק בבלתי אפשרי\.?$/);
