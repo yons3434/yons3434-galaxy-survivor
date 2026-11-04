@@ -84,7 +84,8 @@ test("runtime translations cover achievements, daily missions, cards, collection
       getElementById: () => null,
       dispatchEvent: () => {}
     },
-    CustomEvent: function CustomEvent() {}
+    CustomEvent: function CustomEvent() {},
+    Node: { TEXT_NODE: 3, ELEMENT_NODE: 1 }
   };
   vm.runInNewContext(fs.readFileSync("src/translations.js", "utf8"), sandbox);
   vm.runInNewContext(i18n, sandbox);
