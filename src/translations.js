@@ -194,6 +194,9 @@ Object.assign(ui,{
 "נדרשות 3,000 נקודות אולטרה":["3,000 Ultra points required","Se necesitan 3.000 puntos Ultra","3 000 points Ultra requis","3.000 Ultra-Punkte erforderlich","Требуется 3 000 очков Ультра","يلزم 3000 نقطة ألترا"],
 "🛸 אולטרה מיני חללית הופעלה!":["🛸 Ultra Mini Ship activated!","🛸 ¡Mini nave Ultra activada!","🛸 Mini-vaisseau Ultra activé !","🛸 Ultra-Mini-Raumschiff aktiviert!","🛸 Ультра-мини-корабль активирован!","🛸 تم تفعيل السفينة الصغيرة ألترا!"]
 });
+Object.assign(ui,{
+"אפשר לשנות את השם דרך 👤 פרופיל":["You can change your name in 👤 Profile","Puedes cambiar tu nombre en 👤 Perfil","Tu peux changer ton nom dans 👤 Profil","Du kannst deinen Namen unter 👤 Profil ändern","Имя можно изменить в разделе 👤 Профиль","يمكنك تغيير اسمك من 👤 الملف الشخصي"]
+});
 window.GAME_TRANSLATIONS=Object.freeze({
   supported:Object.freeze(["he","en","es","fr","de","ru","ar"]),
   ui:Object.freeze(ui),
