@@ -91,10 +91,51 @@ function translateAchievementPattern(source,lang){
  if(m)return ["Gain "+m[1]+" levels in total.","Sube "+m[1]+" niveles en total.","Gagne "+m[1]+" niveaux au total.","Steige insgesamt "+m[1]+" Level auf.","Получи "+m[1]+" уровней в общей сложности.","ارفع مستواك "+m[1]+" مرة إجمالًا."][index];
  return source;
 }
+
+function translateAchievementDescription(source,lang){
+ const i=supported.indexOf(lang)-1;if(i<0)return source;
+ const m=source.match(/^הגע ל־([\\d,]+) מטר במשחק אחד\\.?$/);
+ if(m)return ["Reach "+m[1]+" meters in one game.","Alcanza "+m[1]+" metros en una partida.","Atteins "+m[1]+" mètres en une partie.","Erreiche "+m[1]+" Meter in einem Spiel.","Достигни "+m[1]+" метров за одну игру.","Достигни "+m[1]+" метров за одну игру."][i];
+ const patterns=[
+  [/^שחק במשחק הראשון שלך\\.?$/,["Play your first game.","Juega tu primera partida.","Joue ta première partie.","Spiele dein erstes Spiel.","Сыграй свою первую игру.","العب مباراتك الأولى."]],
+  [/^עלה רמה בפעם הראשונה\\.?$/,["Level up for the first time.","Sube de nivel por primera vez.","Passe un niveau pour la première fois.","Steige zum ersten Mal auf.","Впервые повысь уровень.","ارفع المستوى لأول مرة."]],
+  [/^הרוס מטאורית אחת\\.?$/,["Destroy one meteorite.","Destruye un meteorito.","Détruis une météorite.","Zerstöre einen Meteoriten.","Уничтожь один метеорит.","دمر نيزكًا واحدًا."]],
+  [/^הרוס חללית אויב אחת\\.?$/,["Destroy one enemy spaceship.","Destruye una nave enemiga.","Détruis un vaisseau ennemi.","Zerstöre ein feindliches Raumschiff.","Уничтожь один вражеский корабль.","دمر سفينة عدو واحدة."]],
+  [/^שחק בכל 5 דרגות הקושי\\.?$/,["Play on all 5 difficulty levels.","Juega en los 5 niveles de dificultad.","Joue aux 5 niveaux de difficulté.","Spiele auf allen 5 Schwierigkeitsgraden.","Сыграй на всех 5 уровнях сложности.","العب في مستويات الصعوبة الخمسة."]],
+  [/^הרוג בוס אחד\\.?$/,["Defeat one boss.","Derrota a un jefe.","Bats un boss.","Besiege einen Boss.","Победи одного босса.","اهزم زعيمًا واحدًا."]],
+  [/^הרוג בוס מתפצל\\.?$/,["Defeat a splitting boss.","Derrota a un jefe que se divide.","Bats un boss qui se divise.","Besiege einen sich teilenden Boss.","Победи разделяющегося босса.","اهزم زعيمًا منقسمًا."]],
+  [/^פתח את קלף המדהים הראשון שלך\\.?$/,["Unlock your first Amazing card.","Desbloquea tu primera carta Asombrosa.","Débloque ta première carte Incroyable.","Schalte deine erste Fantastische Karte frei.","Открой свою первую удивительную карту.","افتح أول بطاقة مذهلة لك."]],
+  [/^השג קלף אולטרה בפעם הראשונה\\.?$/,["Obtain an Ultra card for the first time.","Consigue una carta Ultra por primera vez.","Obtiens une carte Ultra pour la première fois.","Erhalte zum ersten Mal eine Ultra-Karte.","Получи карту Ультра впервые.","احصل على بطاقة ألترا لأول مرة."]],
+  [/^השג את כל קלפי האולטרה במשחק אחד\\.?$/,["Obtain all Ultra cards in one game.","Consigue todas las cartas Ultra en una partida.","Obtiens toutes les cartes Ultra en une partie.","Erhalte alle Ultra-Karten in einem Spiel.","Получи все карты Ультра за одну игру.","احصل على جميع بطاقات ألترا في مباراة واحدة."]],
+  [/^השג את כל קלפי האולטרה ואת כל קלפי המדהים במשחק אחד\\.?$/,["Obtain all Ultra and Amazing cards in one game.","Consigue todas las cartas Ultra y Asombrosas en una partida.","Obtiens toutes les cartes Ultra et Incroyables en une partie.","Erhalte alle Ultra- und Fantastischen Karten in einem Spiel.","Получи все карты Ультра и удивительные карты за одну игру.","احصل على جميع بطاقات ألترا والمذهلة في مباراة واحدة."]],
+  [/^צבור 120 שניות במצב אולטרה במשחק אחד\\.?$/,["Accumulate 120 seconds in Ultra mode in one game.","Acumula 120 segundos en modo Ultra en una partida.","Accumule 120 secondes en mode Ultra en une partie.","Sammle 120 Sekunden im Ultra-Modus in einem Spiel.","Набери 120 секунд в режиме Ультра за одну игру.","اجمع 120 ثانية في وضع ألترا خلال مباراة واحدة."]],
+  [/^הבס 10 בוסים במצב בלתי אפשרי\\.?$/,["Defeat 10 bosses in Impossible mode.","Derrota a 10 jefes en modo Imposible.","Bats 10 boss en mode Impossible.","Besiege 10 Bosse im Unmöglich-Modus.","Победи 10 боссов в режиме «Невозможно».","اهزم 10 زعماء في وضع المستحيل."]]
+ ];
+ for(const [re,forms] of patterns){if(re.test(source))return forms[i];}
+ let x=source.match(/^הרוס (\\d+) (מטאוריתים?|מטאוריטים|מטעוריתים?|מטעוריטים) בסך הכול\\.?$/);
+ if(x)return ["Destroy "+x[1]+" meteorites in total.","Destruye "+x[1]+" meteoritos en total.","Détruis "+x[1]+" météorites au total.","Zerstöre insgesamt "+x[1]+" Meteoriten.","Уничтожь всего "+x[1]+" метеоритов.","دمر "+x[1]+" نيزكًا إجمالًا."][i];
+ x=source.match(/^הרוס (\\d+) חלליות אויב בסך הכול\\.?$/);
+ if(x)return ["Destroy "+x[1]+" enemy spaceships in total.","Destruye "+x[1]+" naves enemigas en total.","Détruis "+x[1]+" vaisseaux ennemis au total.","Zerstöre insgesamt "+x[1]+" feindliche Raumschiffe.","Уничтожь всего "+x[1]+" вражеских кораблей.","دمر "+x[1]+" سفن أعداء إجمالًا."][i];
+ x=source.match(/^(?:הרוג|הרוס|הבס) (\\d+) בוסים מתפצלים?\\.?$/);
+ if(x)return ["Defeat "+x[1]+" splitting bosses.","Derrota a "+x[1]+" jefes que se dividen.","Bats "+x[1]+" boss qui se divisent.","Besiege "+x[1]+" sich teilende Bosse.","Победи "+x[1]+" разделяющихся боссов.","اهزم "+x[1]+" زعماء منقسمين."][i];
+ x=source.match(/^הרוס (\\d+) בוסים מיוחדים בסך הכול\\.?$/);
+ if(x)return ["Defeat "+x[1]+" special bosses in total.","Derrota a "+x[1]+" jefes especiales en total.","Bats "+x[1]+" boss spéciaux au total.","Besiege insgesamt "+x[1]+" Spezialbosse.","Победи всего "+x[1]+" особых боссов.","اهزم "+x[1]+" زعماء خاصين إجمالًا."][i];
+ x=source.match(/^הגע לרמה (\\d+) במשחק אחד\\.?$/);
+ if(x)return ["Reach level "+x[1]+" in one game.","Alcanza el nivel "+x[1]+" en una partida.","Atteins le niveau "+x[1]+" en une partie.","Erreiche Level "+x[1]+" in einem Spiel.","Достигни уровня "+x[1]+" за одну игру.","صل إلى المستوى "+x[1]+" في مباراة واحدة."][i];
+ x=source.match(/^עלה (\\d+) רמות בסך הכול(?:, לא חייב ברצף)?\\.?$/);
+ if(x)return ["Gain "+x[1]+" levels in total.","Sube "+x[1]+" niveles en total.","Gagne "+x[1]+" niveaux au total.","Steige insgesamt "+x[1]+" Level auf.","Получи "+x[1]+" уровней в общей сложности.","ارفع "+x[1]+" مستويات إجمالًا."][i];
+ x=source.match(/^שחק לפחות משחק אחד ב(.+)\\.?$/);
+ if(x){const d=x[1].includes("בלתי")?["Impossible","Imposible","Impossible","Unmöglich","Невозможном","المستحيل"]:x[1].includes("סופר")?["Super Hard","Muy difícil","Très difficile","Sehr schwer","Очень сложном","الصعب جدًا"]:x[1].includes("קשה")?["Hard","Difícil","Difficile","Schwer","Сложном","الصعب"]:x[1].includes("בינוני")?["Normal","Normal","Normal","Normal","Среднем","المتوسط"]:["Easy","Fácil","Facile","Einfach","Лёгком","السهل"];return ["Play at least one game on "+d[i]+".","Juega al menos una partida en "+d[i]+".","Joue au moins une partie en mode "+d[i]+".","Spiele mindestens ein Spiel auf "+d[i]+".","Сыграй хотя бы одну игру на уровне "+d[i]+".","العب مباراة واحدة على الأقل في مستوى "+d[i]+"."][i];}
+ x=source.match(/^הגע ל־?([\\d,]+) מטר במשחק בבלתי אפשרי\\.?$/);
+ if(x)return ["Reach "+x[1]+" meters in an Impossible game.","Alcanza "+x[1]+" metros en una partida Imposible.","Atteins "+x[1]+" mètres en mode Impossible.","Erreiche "+x[1]+" Meter in einem Unmöglich-Spiel.","Достигни "+x[1]+" метров в режиме «Невозможно».","تصل إلى "+x[1]+" مترًا في وضع المستحيل."][i];
+ return source;
+}
+
 function translate(value){
  const s=value.trim(); if(current==="he"||!s)return value;
  const row=translations[s]; if(row)return value.replace(s,row[supported.indexOf(current)-1]||s);
  const achievementTranslation=translateAchievementPattern(s,current);if(achievementTranslation!==s)return value.replace(s,achievementTranslation);
+ const achievementDescriptionTranslation=translateAchievementDescription(s,current);if(achievementDescriptionTranslation!==s)return value.replace(s,achievementDescriptionTranslation);
  const catalog=window.GAME_TRANSLATIONS||{};
  for(const namespace of ["cards","achievements","dailyMissions","collection"]){
   const records=catalog[namespace]||{};
