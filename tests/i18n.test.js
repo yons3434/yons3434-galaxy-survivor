@@ -98,3 +98,39 @@ test("runtime translations cover achievements, daily missions, cards, collection
   assert.equal(translate("מטאוריט רגיל שמופיע בחלל."), "A regular meteorite that appears in space.");
   assert.equal(translate("🏆 שיא חדש! 2500m"), "🏆 New Record! 2500m");
 });
+
+test("all achievement, daily mission, and collection source text has a translation in every supported non-Hebrew language", () => {
+  const sandbox = {
+    window: {},
+    navigator: { languages: ["en-US"], language: "en-US" },
+    Intl,
+    localStorage: { getItem: () => null, setItem: () => {} },
+    document: {
+      readyState: "loading",
+      addEventListener: () => {},
+      documentElement: {},
+      body: { dataset: {}, style: {}, classList: { toggle: () => {} } },
+      querySelectorAll: () => [],
+      getElementById: () => null,
+      dispatchEvent: () => {}
+    },
+    CustomEvent: function CustomEvent() {},
+    Node: { TEXT_NODE: 3, ELEMENT_NODE: 1 }
+  };
+  vm.runInNewContext(fs.readFileSync("src/translations.js", "utf8"), sandbox);
+  vm.runInNewContext(i18n, sandbox);
+  const game = fs.readFileSync("src/game.js", "utf8");
+  const achievementBlock = game.slice(game.indexOf("const achievementDefinitions=["), game.indexOf("const DAILY_MISSIONS_KEY"));
+  const achievements = [...achievementBlock.matchAll(/title:"([^"]+)",desc:"([^"]+)"/g)].flatMap(m => [m[1], m[2]]);
+  const missionBlock = game.slice(game.indexOf("DAILY_POOL=["), game.indexOf("function dailyDateKey"));
+  const missions = [...missionBlock.matchAll(/title:"([^"]+)"/g)].map(m => m[1]);
+  const collectionBlock = game.slice(game.indexOf("const COLLECTION_DATA=["), game.indexOf("COLLECTION_DATA.forEach"));
+  const collection = [...collectionBlock.matchAll(/desc:"([^"]+)"/g)].map(m => m[1]);
+  const sources = [...new Set([...achievements, ...missions, ...collection])];
+  for (const language of ["en", "es", "fr", "de", "ru", "ar"]) {
+    sandbox.window.GalaxyI18n.setLanguage(language);
+    for (const source of sources) {
+      assert.doesNotMatch(sandbox.window.GalaxyI18n.translate(source), /[\\u0590-\\u05FF]/, language + " missing: " + source);
+    }
+  }
+});
