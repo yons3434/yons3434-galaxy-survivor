@@ -46,20 +46,27 @@ const uniqueAchievementText={
  "מגן בלתי שביר":["Unbreakable Shield","Escudo indestructible","Bouclier incassable","Unzerbrechlicher Schild","Несокрушимый щит","درع لا ينكسر"],
  "כוח הלייזר האולטימטיבי":["Ultimate Laser Power","Poder láser definitivo","Puissance laser ultime","Ultimative Laserleistung","Абсолютная мощь лазера","قوة الليزر القصوى"],
  "מעבר לגלקסיה":["Beyond the Galaxy","Más allá de la galaxia","Au-delà de la galaxie","Jenseits der Galaxie","За пределами галактики","ما وراء المجرة"],
- "בלתי ניתן לעצירה":["Unstoppable","Imparable","Inarrêtable","Unaufhaltsam","Неудержимый","لا يمكن إيقافه"]
+ "בלתי ניתן לעצירה":["Unstoppable","Imparable","Inarrêtable","Unaufhaltsam","Неудержимый","لا يمكن إيقافه"],
+ "עלה רמה פעם 1":["Level Up for the First Time","Sube de nivel por primera vez","Passe un niveau pour la première fois","Steige zum ersten Mal auf","Впервые повысь уровень","ارفع المستوى لأول مرة"],
+ "הרוס מתאורית":["Destroy a Meteorite","Destruye un meteorito","Détruis une météorite","Zerstöre einen Meteoriten","Уничтожь метеорит","دمر نيزكًا"],
+ "הרוס חללית אויב":["Destroy an Enemy Spaceship","Destruye una nave enemiga","Détruis un vaisseau ennemi","Zerstöre ein feindliches Raumschiff","Уничтожь вражеский корабль","دمر سفينة عدو"],
+ "נשא את כל רמות הקושי":["Try Every Difficulty","Prueba todas las dificultades","Essaie toutes les difficultés","Spiele auf allen Schwierigkeitsgraden","Попробуй все уровни сложности","جرّب جميع مستويات الصعوبة"],
+ "הרוג בוס":["Defeat a Boss","Derrota a un jefe","Bats un boss","Besiege einen Boss","Победи босса","اهزم زعيمًا"],
+ "הרוס בוס מתפצל":["Defeat the Splitting Boss","Derrota al jefe divisor","Bats le boss diviseur","Besiege den Spaltboss","Победи разделяющегося босса","اهزم الزعيم المنقسم"],
+ "קלף מדהים ראשון":["First Amazing Card","Primera carta asombrosa","Première carte incroyable","Erste erstaunliche Karte","Первая удивительная карта","أول بطاقة مذهلة"]
 };
 function translateAchievementPattern(source,lang){
  const index=supported.indexOf(lang)-1;
  if(index<0)return source;
  if(uniqueAchievementText[source])return uniqueAchievementText[source][index];
- let titleMatch=source.match(/^(\\d+) מטר$/);
+ let titleMatch=source.match(/^(\d+) מטר$/);
  if(titleMatch)return [titleMatch[1]+" meters",titleMatch[1]+" metros",titleMatch[1]+" mètres",titleMatch[1]+" Meter",titleMatch[1]+" метров",titleMatch[1]+" متر"][index];
- titleMatch=source.match(/^הרוס (\\d+) (.+)$/);
- if(titleMatch){const n=titleMatch[1],term=titleMatch[2];const noun=term.includes("מטאור")?["meteorites","meteoritos","météorites","Meteoriten","метеоритов","نيازك"]:term.includes("חללית")?["enemy spaceships","naves enemigas","vaisseaux ennemis","feindliche Raumschiffe","кораблей врагов","سفن الأعداء"]:term.includes("בוס")?["bosses","jefes","boss","Bosse","боссов","زعماء"]:null;if(noun)return ["Destroy "+n+" "+noun[index],"Destruye "+n+" "+noun[index],"Détruis "+n+" "+noun[index],"Zerstöre "+n+" "+noun[index],"Уничтожь "+n+" "+noun[index],"دمر "+n+" "+noun[index]][index];}
- titleMatch=source.match(/^פתח (\\d+)? ?(קלפים?.*)$/);
+ titleMatch=source.match(/^הרוס (\d+) (.+)$/);
+ if(titleMatch){const n=titleMatch[1],term=titleMatch[2];const noun=(term.includes("מטאור")||term.includes("תאור")||term.includes("טעור"))?["meteorites","meteoritos","météorites","Meteoriten","метеоритов","نيازك"]:term.includes("חללית")?["enemy spaceships","naves enemigas","vaisseaux ennemis","feindliche Raumschiffe","кораблей врагов","سفن الأعداء"]:term.includes("בוס")?["bosses","jefes","boss","Bosse","боссов","زعماء"]:null;if(noun)return ["Destroy "+n+" "+noun[index],"Destruye "+n+" "+noun[index],"Détruis "+n+" "+noun[index],"Zerstöre "+n+" "+noun[index],"Уничтожь "+n+" "+noun[index],"دمر "+n+" "+noun[index]][index];}
+ titleMatch=source.match(/^פתח (\d+)? ?(קלפים?.*)$/);
  if(titleMatch){const n=titleMatch[1]?titleMatch[1]+" ":"";const tier=titleMatch[2].includes("רגילים")?["common cards","cartas comunes","cartes communes","gewöhnliche Karten","обычных карт","بطاقات عادية"]:titleMatch[2].includes("נדירים")?["rare cards","cartas raras","cartes rares","seltene Karten","редких карт","بطاقات نادرة"]:titleMatch[2].includes("אדירים")?["epic cards","cartas épicas","cartes épiques","epische Karten","эпических карт","بطاقات ملحمية"]:titleMatch[2].includes("אגדיים")?["legendary cards","cartas legendarias","cartes légendaires","legendäre Karten","легендарных карт","بطاقات أسطورية"]:["cards","cartas","cartes","Karten","карт","بطاقات"];return ["Unlock "+n+tier[index],"Desbloquea "+n+tier[index],"Débloque "+n+tier[index],"Schalte "+n+tier[index]+" frei","Открой "+n+tier[index],"افتح "+n+tier[index]][index];}
  titleMatch=source.match(/^שחק ב(.+)$/);
- if(titleMatch){const mode=titleMatch[1].includes("קל")?["Easy","Fácil","Facile","Einfach","Лёгком","السهل"]:titleMatch[1].includes("בינוני")?["Normal","Normal","Normal","Normal","Среднем","المتوسط"]:titleMatch[1].includes("קשה")?["Hard","Difícil","Difficile","Schwer","Сложном","الصعب"]:titleMatch[1].includes("בלתי")?["Impossible","Imposible","Impossible","Unmöglich","Невозможном","المستحيل"]:["Super Hard","Muy difícil","Très difficile","Sehr schwer","Очень сложном","الصعب جدًا"];return ["Play on "+mode[index],"Juega en "+mode[index],"Joue en mode "+mode[index],"Spiele auf "+mode[index],"Сыграй на уровне "+mode[index],"العب في مستوى "+mode[index]][index];}
+ if(titleMatch){const mode=titleMatch[1].includes("בלתי")?["Impossible","Imposible","Impossible","Unmöglich","Невозможном","المستحيل"]:titleMatch[1].includes("סופר")?["Super Hard","Muy difícil","Très difficile","Sehr schwer","Очень сложном","الصعب جدًا"]:titleMatch[1].includes("קשה")?["Hard","Difícil","Difficile","Schwer","Сложном","الصعب"]:titleMatch[1].includes("בינוני")?["Normal","Normal","Normal","Normal","Среднем","المتوسط"]:["Easy","Fácil","Facile","Einfach","Лёгком","السهل"];return ["Play on "+mode[index],"Juega en "+mode[index],"Joue en mode "+mode[index],"Spiele auf "+mode[index],"Сыграй на уровне "+mode[index],"العب في مستوى "+mode[index]][index];}
 
  let m=source.match(/^הגע ל־([\d,]+) מטר במשחק אחד\.?$/);
  if(m)return ["Reach "+m[1]+" meters in one game.","Alcanza "+m[1]+" metros en una partida.","Atteins "+m[1]+" mètres en une partie.","Erreiche "+m[1]+" Meter in einem Spiel.","Достигни "+m[1]+" метров за одну игру.","Достигни "+m[1]+" метров за одну игру."][index];
