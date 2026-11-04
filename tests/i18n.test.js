@@ -92,7 +92,7 @@ test("runtime translations cover achievements, daily missions, cards, collection
   sandbox.window.GalaxyI18n.setLanguage("en");
   const translate = value => sandbox.window.GalaxyI18n.translate(value);
   assert.equal(translate("הרוס 10 מטאוריתים בסך הכול."), "Destroy 10 meteorites in total.");
-  assert.equal(translate("שרוד 300 מטר בבלתי אפשרי"), "Survive 300 meters in Impossible mode");
+  assert.equal(translate("שרוד 300 מטר בבלתי אפשרי"), "Survive 300 meters in Impossible mode.");
   assert.equal(translate("שרוד 250 מטר"), "Survive 250 meters.");
   assert.equal(translate("מוסיף אפשרות אחת לבחירת הקלפים בכל עליית רמה. ניתן לבחור עד 3 פעמים בכל משחק."), "Adds one extra card choice each time you level up. Can be selected up to 3 times per game.");
   assert.equal(translate("מטאוריט רגיל שמופיע בחלל."), "A regular meteorite that appears in space.");
