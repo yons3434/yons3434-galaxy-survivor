@@ -11,7 +11,7 @@ const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 test("split project has the expected entry files", () => {
   assert.match(index, /src\/style\.css/);
   assert.match(index, /src\/game\.js/);
-  assert.equal((index.match(/<script/g) || []).length, 6);
+  assert.equal((index.match(/<script/g) || []).length, 7);
   assert.match(index, /src\/luck\.js/);
   assert.ok(index.indexOf("src/luck.js") < index.indexOf("src/game.js"));
   assert.match(index, /src\/chain-explosion\.js/);
