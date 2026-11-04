@@ -89,7 +89,524 @@ const ui={
 window.GAME_TRANSLATIONS=Object.freeze({
   supported:Object.freeze(["he","en","es","fr","de","ru","ar"]),
   ui:Object.freeze(ui),
-  cards:Object.freeze({}),
+  cards:Object.freeze({
+  "ultraMode": {
+    "title": [
+      "Ultra Mode",
+      "Modo Ultra",
+      "Mode Ultra",
+      "Ultra-Modus",
+      "Режим Ультра",
+      "وضع ألترا"
+    ]
+  },
+  "ultraLaser": {
+    "title": [
+      "Ultra Laser",
+      "Láser Ultra",
+      "Laser Ultra",
+      "Ultra-Laser",
+      "Ультра-лазер",
+      "ليزر ألترا"
+    ]
+  },
+  "chainExplosion": {
+    "title": [
+      "Chain Explosion",
+      "Explosión en cadena",
+      "Explosion en chaîne",
+      "Kettenexplosion",
+      "Цепной взрыв",
+      "انفجار متسلسل"
+    ]
+  },
+  "damage": {
+    "title": [
+      "More Damage",
+      "Más daño",
+      "Plus de dégâts",
+      "Mehr Schaden",
+      "Больше урона",
+      "ضرر إضافي"
+    ],
+    "description": [
+      "Increases bullet damage and also strengthens the swords.",
+      "Aumenta el daño de los disparos y también fortalece las espadas.",
+      "Augmente les dégâts des tirs et renforce aussi les épées.",
+      "Erhöht den Schussschaden und verstärkt auch die Schwerter.",
+      "Увеличивает урон выстрелов и усиливает мечи.",
+      "يزيد ضرر الطلقات ويعزز السيوف أيضًا."
+    ]
+  },
+  "fireRate": {
+    "title": [
+      "Fire Rate",
+      "Cadencia de disparo",
+      "Cadence de tir",
+      "Feuerrate",
+      "Скорострельность",
+      "معدل إطلاق النار"
+    ],
+    "description": [
+      "Increases firing speed and the rotation speed of the swords.",
+      "Aumenta la velocidad de disparo y la velocidad de giro de las espadas.",
+      "Augmente la cadence de tir et la vitesse de rotation des épées.",
+      "Erhöht die Schussgeschwindigkeit und die Drehgeschwindigkeit der Schwerter.",
+      "Увеличивает скорострельность и скорость вращения мечей.",
+      "يزيد سرعة إطلاق النار وسرعة دوران السيوف."
+    ]
+  },
+  "maxLives": {
+    "title": [
+      "Maximum Lives",
+      "Vida máxima",
+      "Vies maximales",
+      "Maximale Leben",
+      "Максимум жизней",
+      "الحد الأقصى للحياة"
+    ],
+    "description": [
+      "Adds one heart to maximum health.",
+      "Añade un corazón a la salud máxima.",
+      "Ajoute un cœur à la santé maximale.",
+      "Fügt der maximalen Lebensanzahl ein Herz hinzu.",
+      "Добавляет одно сердце к максимальному здоровью.",
+      "يضيف قلبًا واحدًا إلى الحد الأقصى للصحة."
+    ]
+  },
+  "healOne": {
+    "title": [
+      "Heal One Heart",
+      "Curar un corazón",
+      "Soigner un cœur",
+      "Ein Herz heilen",
+      "Восстановить одно сердце",
+      "علاج قلب واحد"
+    ],
+    "description": [
+      "Restores one heart. One-time use.",
+      "Restaura un corazón. Uso único.",
+      "Restaure un cœur. À usage unique.",
+      "Stellt ein Herz wieder her. Einmalig.",
+      "Восстанавливает одно сердце. Одноразовое.",
+      "يعيد قلبًا واحدًا. يستخدم مرة واحدة."
+    ]
+  },
+  "speed": {
+    "title": [
+      "Movement Speed",
+      "Velocidad de movimiento",
+      "Vitesse de déplacement",
+      "Bewegungsgeschwindigkeit",
+      "Скорость движения",
+      "سرعة الحركة"
+    ],
+    "description": [
+      "Increases the spaceship's movement speed.",
+      "Aumenta la velocidad de movimiento de la nave.",
+      "Augmente la vitesse de déplacement du vaisseau.",
+      "Erhöht die Bewegungsgeschwindigkeit des Raumschiffs.",
+      "Увеличивает скорость движения корабля.",
+      "يزيد سرعة حركة المركبة الفضائية."
+    ]
+  },
+  "extraFire": {
+    "title": [
+      "Extra Shots",
+      "Disparos adicionales",
+      "Tirs supplémentaires",
+      "Zusätzliche Schüsse",
+      "Дополнительные выстрелы",
+      "طلقات إضافية"
+    ],
+    "description": [
+      "Adds extra bullets to every shot.",
+      "Añade disparos adicionales a cada tiro.",
+      "Ajoute des projectiles supplémentaires à chaque tir.",
+      "Fügt jedem Schuss zusätzliche Projektile hinzu.",
+      "Добавляет дополнительные пули к каждому выстрелу.",
+      "يضيف طلقات إضافية إلى كل طلقة."
+    ]
+  },
+  "xpBoost": {
+    "title": [
+      "More XP",
+      "Más XP",
+      "Plus d’XP",
+      "Mehr XP",
+      "Больше XP",
+      "XP إضافية"
+    ],
+    "description": [
+      "Increases the amount of XP you earn.",
+      "Aumenta la cantidad de XP que recibes.",
+      "Augmente la quantité d’XP gagnée.",
+      "Erhöht die Menge an verdienter XP.",
+      "Увеличивает количество получаемого XP.",
+      "يزيد مقدار XP الذي تحصل عليه."
+    ]
+  },
+  "luck": {
+    "title": [
+      "More Luck",
+      "Más suerte",
+      "Plus de chance",
+      "Mehr Glück",
+      "Больше удачи",
+      "حظ إضافي"
+    ],
+    "description": [
+      "Increases the chance of receiving rarer upgrades.",
+      "Aumenta la probabilidad de obtener mejoras más raras.",
+      "Augmente les chances d’obtenir des améliorations plus rares.",
+      "Erhöht die Chance auf seltenere Verbesserungen.",
+      "Увеличивает шанс получить более редкие улучшения.",
+      "يزيد فرصة الحصول على ترقيات أكثر ندرة."
+    ]
+  },
+  "dodge": {
+    "title": [
+      "Dodge",
+      "Esquivar",
+      "Esquive",
+      "Ausweichen",
+      "Уклонение",
+      "تفادي"
+    ],
+    "description": [
+      "Gives you a chance not to lose a heart when hit.",
+      "Te da la posibilidad de no perder un corazón al recibir un golpe.",
+      "Donne une chance de ne pas perdre de cœur lorsque tu es touché.",
+      "Gibt dir eine Chance, bei einem Treffer kein Herz zu verlieren.",
+      "Даёт шанс не потерять сердце при попадании.",
+      "يمنحك فرصة لعدم فقدان قلب عند التعرض لضربة."
+    ]
+  },
+  "fullHeal": {
+    "title": [
+      "Full Heal",
+      "Curación completa",
+      "Soin complet",
+      "Vollheilung",
+      "Полное лечение",
+      "شفاء كامل"
+    ],
+    "description": [
+      "Restores all health. One-time use.",
+      "Restaura toda la salud. Uso único.",
+      "Restaure toute la santé. À usage unique.",
+      "Stellt alle Lebenspunkte wieder her. Einmalig.",
+      "Восстанавливает всё здоровье. Одноразовое.",
+      "يعيد الصحة بالكامل. يستخدم مرة واحدة."
+    ]
+  },
+  "drone": {
+    "title": [
+      "Mini Spaceship",
+      "Mini nave",
+      "Mini-vaisseau",
+      "Mini-Raumschiff",
+      "Мини-корабль",
+      "مركبة صغيرة"
+    ],
+    "description": [
+      "Adds a regular mini spaceship that fires automatically.",
+      "Añade una mini nave normal que dispara automáticamente.",
+      "Ajoute un mini-vaisseau standard qui tire automatiquement.",
+      "Fügt ein normales Mini-Raumschiff hinzu, das automatisch schießt.",
+      "Добавляет обычный мини-корабль, который стреляет автоматически.",
+      "يضيف مركبة صغيرة عادية تطلق النار تلقائيًا."
+    ]
+  },
+  "extraDrone": {
+    "title": [
+      "Extra Mini Spaceship",
+      "Mini nave adicional",
+      "Mini-vaisseau supplémentaire",
+      "Zusätzliches Mini-Raumschiff",
+      "Дополнительный мини-корабль",
+      "مركبة صغيرة إضافية"
+    ]
+  },
+  "rpg": {
+    "title": [
+      "RPG Shots",
+      "Disparos de RPG",
+      "Tirs de RPG",
+      "RPG-Schüsse",
+      "Выстрелы из РПГ",
+      "طلقات RPG"
+    ],
+    "description": [
+      "Unlocks the RPG weapon and adds 10 ammo.",
+      "Desbloquea el arma RPG y añade 10 municiones.",
+      "Débloque l’arme RPG et ajoute 10 munitions.",
+      "Schaltet die RPG-Waffe frei und fügt 10 Munition hinzu.",
+      "Открывает оружие РПГ и добавляет 10 боеприпасов.",
+      "يفتح سلاح RPG ويضيف 10 ذخائر."
+    ]
+  },
+  "piercing": {
+    "title": [
+      "Piercing Shots",
+      "Disparos perforantes",
+      "Tirs perforants",
+      "Durchschlagende Schüsse",
+      "Пробивающие выстрелы",
+      "طلقات خارقة"
+    ]
+  },
+  "sword": {
+    "title": [
+      "Extra Sword",
+      "Espada adicional",
+      "Épée supplémentaire",
+      "Zusätzliches Schwert",
+      "Дополнительный меч",
+      "سيف إضافي"
+    ],
+    "description": [
+      "Adds a rotating energy sword around the spaceship.",
+      "Añade una espada de energía que gira alrededor de la nave.",
+      "Ajoute une épée énergétique qui tourne autour du vaisseau.",
+      "Fügt ein rotierendes Energieschwert um das Raumschiff hinzu.",
+      "Добавляет энергетический меч, вращающийся вокруг корабля.",
+      "يضيف سيف طاقة يدور حول المركبة الفضائية."
+    ]
+  },
+  "revive": {
+    "title": [
+      "Revive",
+      "Revivir",
+      "Résurrection",
+      "Wiederbelebung",
+      "Возрождение",
+      "إحياء"
+    ],
+    "description": [
+      "When health reaches zero, you return with full health.",
+      "Cuando la salud llega a cero, vuelves con toda la salud.",
+      "Lorsque la santé atteint zéro, tu reviens avec toute ta santé.",
+      "Wenn die Lebenspunkte null erreichen, kehrst du mit voller Gesundheit zurück.",
+      "Когда здоровье достигает нуля, ты возрождаешься с полным здоровьем.",
+      "عندما تصل الصحة إلى الصفر، تعود بكامل صحتك."
+    ]
+  },
+  "fillShields": {
+    "title": [
+      "Refill Shields",
+      "Rellenar escudos",
+      "Recharger les boucliers",
+      "Schilde auffüllen",
+      "Пополнить щиты",
+      "إعادة ملء الدروع"
+    ]
+  },
+  "levelHeal": {
+    "title": [
+      "Heal on Level Up",
+      "Curación al subir de nivel",
+      "Soin à chaque niveau",
+      "Heilung beim Levelaufstieg",
+      "Лечение при повышении уровня",
+      "الشفاء عند رفع المستوى"
+    ]
+  },
+  "shotgun": {
+    "title": [
+      "Shotgun",
+      "Escopeta",
+      "Fusil à pompe",
+      "Schrotflinte",
+      "Дробовик",
+      "بندقية خرطوش"
+    ],
+    "description": [
+      "Unlocks the shotgun.",
+      "Desbloquea la escopeta.",
+      "Débloque le fusil à pompe.",
+      "Schaltet die Schrotflinte frei.",
+      "Открывает дробовик.",
+      "يفتح بندقية الخرطوش."
+    ]
+  },
+  "droneUpgrade": {
+    "title": [
+      "Upgraded Mini Spaceship",
+      "Mini nave mejorada",
+      "Mini-vaisseau amélioré",
+      "Verbessertes Mini-Raumschiff",
+      "Улучшенный мини-корабль",
+      "مركبة صغيرة مطورة"
+    ]
+  },
+  "chainLightning": {
+    "title": [
+      "Chain Lightning",
+      "Relámpago en cadena",
+      "Éclair en chaîne",
+      "Kettenblitz",
+      "Цепная молния",
+      "برق متسلسل"
+    ]
+  },
+  "rpgMiniShip": {
+    "title": [
+      "RPG Mini Spaceship",
+      "Mini nave RPG",
+      "Mini-vaisseau RPG",
+      "RPG-Mini-Raumschiff",
+      "Мини-корабль с РПГ",
+      "مركبة RPG صغيرة"
+    ]
+  },
+  "blackHole": {
+    "title": [
+      "Black Hole Gun",
+      "Arma de agujero negro",
+      "Arme à trou noir",
+      "Schwarzes-Loch-Gewehr",
+      "Пушка чёрной дыры",
+      "بندقية الثقب الأسود"
+    ]
+  },
+  "laser": {
+    "title": [
+      "Laser Mode",
+      "Modo láser",
+      "Mode laser",
+      "Lasermodus",
+      "Режим лазера",
+      "وضع الليزر"
+    ],
+    "description": [
+      "Unlocks a powerful laser that follows the mouse and deals damage.",
+      "Desbloquea un potente láser que sigue al ratón e inflige daño.",
+      "Débloque un puissant laser qui suit la souris et inflige des dégâts.",
+      "Schaltet einen starken Laser frei, der der Maus folgt und Schaden verursacht.",
+      "Открывает мощный лазер, который следует за мышью и наносит урон.",
+      "يفتح ليزرًا قويًا يتبع مؤشر الفأرة ويسبب الضرر."
+    ]
+  },
+  "laserHeat": {
+    "title": [
+      "Overheating Laser",
+      "Láser sobrecalentado",
+      "Laser surchauffant",
+      "Überhitzender Laser",
+      "Перегревающийся лазер",
+      "ليزر مرتفع الحرارة"
+    ]
+  },
+  "flamethrower": {
+    "title": [
+      "Flamethrower",
+      "Lanzallamas",
+      "Lance-flammes",
+      "Flammenwerfer",
+      "Огнемёт",
+      "قاذف اللهب"
+    ],
+    "description": [
+      "Unlocks a flamethrower that follows the mouse.",
+      "Desbloquea un lanzallamas que sigue al ratón.",
+      "Débloque un lance-flammes qui suit la souris.",
+      "Schaltet einen Flammenwerfer frei, der der Maus folgt.",
+      "Открывает огнемёт, который следует за мышью.",
+      "يفتح قاذف لهب يتبع مؤشر الفأرة."
+    ]
+  },
+  "splitBullet": {
+    "title": [
+      "Split Bullet",
+      "Bala dividida",
+      "Balle divisée",
+      "Geteiltes Projektil",
+      "Разделяющаяся пуля",
+      "طلقة منقسمة"
+    ]
+  },
+  "droneMega": {
+    "title": [
+      "Large Mini Spaceship",
+      "Mini nave grande",
+      "Grand mini-vaisseau",
+      "Großes Mini-Raumschiff",
+      "Большой мини-корабль",
+      "مركبة صغيرة كبيرة"
+    ]
+  },
+  "lowHealthRage": {
+    "title": [
+      "Last Stand",
+      "Último recurso",
+      "Dernier recours",
+      "Letztes Gefecht",
+      "Последний рывок",
+      "الغضب الأخير"
+    ]
+  },
+  "poison": {
+    "title": [
+      "Poison",
+      "Veneno",
+      "Poison",
+      "Gift",
+      "Яд",
+      "سم"
+    ]
+  },
+  "burn": {
+    "title": [
+      "Burn",
+      "Quemadura",
+      "Brûlure",
+      "Verbrennung",
+      "Ожог",
+      "حرق"
+    ]
+  },
+  "freeze": {
+    "title": [
+      "Freeze",
+      "Congelación",
+      "Gel",
+      "Einfrieren",
+      "Заморозка",
+      "تجميد"
+    ]
+  },
+  "stun": {
+    "title": [
+      "Stun",
+      "Aturdimiento",
+      "Étourdissement",
+      "Betäubung",
+      "Оглушение",
+      "شلل"
+    ]
+  },
+  "continuousFire": {
+    "title": [
+      "Sustained Fire",
+      "Fuego continuo",
+      "Tir continu",
+      "Dauerfeuer",
+      "Непрерывный огонь",
+      "إطلاق نار مستمر"
+    ]
+  },
+  "expandedChoice": {
+    "title": [
+      "Expanded Choice",
+      "Elección ampliada",
+      "Choix élargi",
+      "Erweiterte Auswahl",
+      "Расширенный выбор",
+      "اختيار موسع"
+    ]
+  }
+}),
   achievements:Object.freeze({}),
   dailyMissions:Object.freeze({}),
   collection:Object.freeze({})
