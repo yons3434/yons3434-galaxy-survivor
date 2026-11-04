@@ -182,6 +182,8 @@ function translateRemainingAchievementText(source,lang){
  const i=supported.indexOf(lang)-1;if(i<0)return source;
  let title=source.match(/^שרוד ([\d,]+) מטר בבלתי אפשרי$/);
  if(title)return ["Survive "+title[1]+" meters in Impossible mode","Sobrevive "+title[1]+" metros en modo Imposible","Survis "+title[1]+" mètres en mode Impossible","Überlebe "+title[1]+" Meter im Unmöglich-Modus","Выживи на дистанции "+title[1]+" метров в режиме «Невозможно»","ابقَ على قيد الحياة لمسافة "+title[1]+" مترًا في وضع المستحيل"][i];
+ const levelTitle=source.match(/^הגעה לרמה (\\d+)(?: במשחק אחד)?$/);
+ if(levelTitle)return ["Reach level "+levelTitle[1],"Alcanza el nivel "+levelTitle[1],"Atteins le niveau "+levelTitle[1],"Erreiche Level "+levelTitle[1],"Достигни уровня "+levelTitle[1],"صل إلى المستوى "+levelTitle[1]][i];
  const singleCard=source.match(/^פתח קלף (רגיל|נדיר|אדיר|אגדי|מדהים)\.?$/);
  if(singleCard){const tier=singleCard[1]==="רגיל"?["Common","Común","commun","gewöhnliche","обычную","عادية"]:singleCard[1]==="נדיר"?["Rare","Rara","rare","seltene","редкую","نادرة"]:singleCard[1]==="אדיר"?["Epic","Épica","épique","epische","эпическую","ملحمية"]:singleCard[1]==="אגדי"?["Legendary","Legendaria","légendaire","legendäre","легендарную","أسطورية"]:["Amazing","Asombrosa","incroyable","fantastische","удивительную","مذهلة"];return ["Unlock a "+tier[i]+" card.","Desbloquea una carta "+tier[i]+".","Débloque une carte "+tier[i]+".","Schalte eine "+tier[i]+" Karte frei.","Открой "+tier[i]+" карту.","افتح بطاقة "+tier[i]+"."][i];}
  if(source==="נשא את כל רמות הקושי")return ["Try Every Difficulty","Prueba todas las dificultades","Essaie toutes les difficultés","Spiele auf allen Schwierigkeitsgraden","Попробуй все уровни сложности","جرّب جميع مستويات الصعوبة"][i];
