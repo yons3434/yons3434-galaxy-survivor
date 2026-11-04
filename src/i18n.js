@@ -213,8 +213,8 @@ function translate(value){
  const collectionDescription=collectionDescriptionTranslations[s];if(collectionDescription)return value.replace(s,collectionDescription[supported.indexOf(current)-1]||s);
  const row=translations[s]; if(row)return value.replace(s,row[supported.indexOf(current)-1]||s);
  const remainingAchievementTranslation=translateRemainingAchievementText(s,current);if(remainingAchievementTranslation!==s)return value.replace(s,remainingAchievementTranslation);
- const achievementTranslation=translateAchievementPattern(s,current);if(achievementTranslation!==s)return value.replace(s,achievementTranslation);
  const achievementDescriptionTranslation=translateAchievementDescription(s,current);if(achievementDescriptionTranslation!==s)return value.replace(s,achievementDescriptionTranslation);
+ const achievementTranslation=translateAchievementPattern(s,current);if(achievementTranslation!==s)return value.replace(s,achievementTranslation);
  const catalog=window.GAME_TRANSLATIONS||{};
  for(const namespace of ["cards","achievements","dailyMissions","collection"]){
   const records=catalog[namespace]||{};
