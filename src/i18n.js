@@ -52,6 +52,15 @@ function translateAchievementPattern(source,lang){
  const index=supported.indexOf(lang)-1;
  if(index<0)return source;
  if(uniqueAchievementText[source])return uniqueAchievementText[source][index];
+ let titleMatch=source.match(/^(\\d+) מטר$/);
+ if(titleMatch)return [titleMatch[1]+" meters",titleMatch[1]+" metros",titleMatch[1]+" mètres",titleMatch[1]+" Meter",titleMatch[1]+" метров",titleMatch[1]+" متر"][index];
+ titleMatch=source.match(/^הרוס (\\d+) (.+)$/);
+ if(titleMatch){const n=titleMatch[1],term=titleMatch[2];const noun=term.includes("מטאור")?["meteorites","meteoritos","météorites","Meteoriten","метеоритов","نيازك"]:term.includes("חללית")?["enemy spaceships","naves enemigas","vaisseaux ennemis","feindliche Raumschiffe","кораблей врагов","سفن الأعداء"]:term.includes("בוס")?["bosses","jefes","boss","Bosse","боссов","زعماء"]:null;if(noun)return ["Destroy "+n+" "+noun[index],"Destruye "+n+" "+noun[index],"Détruis "+n+" "+noun[index],"Zerstöre "+n+" "+noun[index],"Уничтожь "+n+" "+noun[index],"دمر "+n+" "+noun[index]][index];}
+ titleMatch=source.match(/^פתח (\\d+)? ?(קלפים?.*)$/);
+ if(titleMatch){const n=titleMatch[1]?titleMatch[1]+" ":"";const tier=titleMatch[2].includes("רגילים")?["common cards","cartas comunes","cartes communes","gewöhnliche Karten","обычных карт","بطاقات عادية"]:titleMatch[2].includes("נדירים")?["rare cards","cartas raras","cartes rares","seltene Karten","редких карт","بطاقات نادرة"]:titleMatch[2].includes("אדירים")?["epic cards","cartas épicas","cartes épiques","epische Karten","эпических карт","بطاقات ملحمية"]:titleMatch[2].includes("אגדיים")?["legendary cards","cartas legendarias","cartes légendaires","legendäre Karten","легендарных карт","بطاقات أسطورية"]:["cards","cartas","cartes","Karten","карт","بطاقات"];return ["Unlock "+n+tier[index],"Desbloquea "+n+tier[index],"Débloque "+n+tier[index],"Schalte "+n+tier[index]+" frei","Открой "+n+tier[index],"افتح "+n+tier[index]][index];}
+ titleMatch=source.match(/^שחק ב(.+)$/);
+ if(titleMatch){const mode=titleMatch[1].includes("קל")?["Easy","Fácil","Facile","Einfach","Лёгком","السهل"]:titleMatch[1].includes("בינוני")?["Normal","Normal","Normal","Normal","Среднем","المتوسط"]:titleMatch[1].includes("קשה")?["Hard","Difícil","Difficile","Schwer","Сложном","الصعب"]:titleMatch[1].includes("בלתי")?["Impossible","Imposible","Impossible","Unmöglich","Невозможном","المستحيل"]:["Super Hard","Muy difícil","Très difficile","Sehr schwer","Очень сложном","الصعب جدًا"];return ["Play on "+mode[index],"Juega en "+mode[index],"Joue en mode "+mode[index],"Spiele auf "+mode[index],"Сыграй на уровне "+mode[index],"العب في مستوى "+mode[index]][index];}
+
  let m=source.match(/^הגע ל־([\d,]+) מטר במשחק אחד\.?$/);
  if(m)return ["Reach "+m[1]+" meters in one game.","Alcanza "+m[1]+" metros en una partida.","Atteins "+m[1]+" mètres en une partie.","Erreiche "+m[1]+" Meter in einem Spiel.","Достигни "+m[1]+" метров за одну игру.","Достигни "+m[1]+" метров за одну игру."][index];
  m=source.match(/^הגע ל־([\d,]+) מטר במשחק בבלתי אפשרי\.?$/);
