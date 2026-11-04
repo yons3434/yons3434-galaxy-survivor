@@ -129,7 +129,7 @@ test("all achievement, daily mission, and collection source text has a translati
   const cardDescriptions = [...game.matchAll(/description:"([^"]+)"/g)].map(m => m[1]);
   const ultraMini = fs.readFileSync("src/ultra-mini-ships.js", "utf8");
   const ultraMiniDescriptions = [...ultraMini.matchAll(/description: "([^"]+)"/g)].map(m => m[1]);
-  const htmlTextNodes = [...html.matchAll(/>([^<>]+)</g)].map(m => m[1].trim()).filter(value => /[\\u0590-\\u05FF]/.test(value) && value !== "🇮🇱 עברית");
+  const htmlTextNodes = [...html.matchAll(/>([^<>]+)</g)].map(m => m[1].trim()).filter(value => /[\u0590-\u05FF]/.test(value) && value !== "🇮🇱 עברית");
   const sources = [...new Set([...achievements, ...missions, ...collection, ...cardDescriptions, ...ultraMiniDescriptions, ...htmlTextNodes])];
   for (const language of ["en", "es", "fr", "de", "ru", "ar"]) {
     sandbox.window.GalaxyI18n.setLanguage(language);
