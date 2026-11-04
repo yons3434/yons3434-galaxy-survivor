@@ -98,8 +98,10 @@ function visit(node){
 function setLanguage(code,manual){
  if(!supported.includes(code))code="en";current=code;
  try{localStorage.setItem(KEY,code);if(manual)localStorage.setItem(KEY+"_manual","1");}catch(e){}
- document.documentElement.lang=code;document.documentElement.dir=(code==="he"||code==="ar")?"rtl":"ltr";
- document.body.classList.toggle("language-rtl",code==="he"||code==="ar");
+ const rtl=code==="he"||code==="ar";document.documentElement.lang=code;document.documentElement.dir=rtl?"rtl":"ltr";
+ document.body.dataset.language=code;document.body.dataset.languageDirection=rtl?"rtl":"ltr";
+ /* Keep the game layout anchored in its original RTL geometry. Text direction is handled separately. */
+ document.body.style.direction="rtl";document.body.classList.toggle("language-rtl",rtl);
  document.querySelectorAll("#languageSelect option").forEach(o=>o.textContent=names[o.value]);
  const select=document.getElementById("languageSelect");if(select)select.value=code;
  visit(document.body);document.dispatchEvent(new CustomEvent("galaxy-language-change",{detail:{language:code}}));
