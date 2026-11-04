@@ -11,7 +11,7 @@ const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 test("split project has the expected entry files", () => {
   assert.match(index, /src\/style\.css/);
   assert.match(index, /src\/game\.js/);
-  assert.equal((index.match(/<script/g) || []).length, 7);
+  assert.equal((index.match(/<script/g) || []).length, 8);
   assert.match(index, /src\/luck\.js/);
   assert.ok(index.indexOf("src/luck.js") < index.indexOf("src/game.js"));
   assert.match(index, /src\/chain-explosion\.js/);
@@ -374,4 +374,16 @@ test("low-health heartbeat renders visible red edges and scales with the selecte
   assert.match(css, /#lowHealthHeartbeatOverlay\{position:fixed;inset:0;z-index:9999/);
   assert.match(css, /linear-gradient\(to right,rgba\(255,0,15,var\(--heartbeat-red\)\)/);
   assert.match(css, /@keyframes lowHealthHeartbeatPulse/);
+});
+
+test("dynamic game content passes through the active locale translator", () => {
+  const i18n = fs.readFileSync(path.join(root, "src", "i18n.js"), "utf8");
+  const catalog = fs.readFileSync(path.join(root, "src", "translations.js"), "utf8");
+  assert.match(index, /src\/translations\.js"><\/script>\s*<script src="src\/i18n\.js"/);
+  assert.match(js, /GalaxyI18n\.translate\(a\.title\)/);
+  assert.match(js, /GalaxyI18n\.translate\(upgrade\.description\)/);
+  assert.match(js, /GalaxyI18n\.translate\(item\.desc\)/);
+  assert.match(js, /GalaxyI18n\.translate\(m\.title\)/);
+  assert.match(i18n, /for\(const namespace of \["cards","achievements","dailyMissions","collection"\]\)/);
+  assert.match(catalog, /"🎁 כל 5 המשימות הושלמו! \+100 XP"/);
 });
