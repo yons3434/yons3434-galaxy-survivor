@@ -76,9 +76,23 @@ function translate(value){
  return value;
 }
 function visit(node){
- if(node.nodeType===Node.TEXT_NODE){const v=translate(node.nodeValue);if(v!==node.nodeValue)node.nodeValue=v;return;}
+ if(node.nodeType===Node.TEXT_NODE){
+  if(node.__gdTranslated!==undefined&&node.nodeValue!==node.__gdTranslated)node.__gdOriginal=node.nodeValue;
+  if(node.__gdOriginal===undefined)node.__gdOriginal=node.nodeValue;
+  const v=translate(node.__gdOriginal);node.__gdTranslated=v;
+  if(v!==node.nodeValue)node.nodeValue=v;
+  return;
+ }
  if(node.nodeType!==Node.ELEMENT_NODE||["SCRIPT","STYLE"].includes(node.tagName))return;
- ["title","aria-label","placeholder"].forEach(a=>{if(node.hasAttribute(a)){const key="data-gd-"+a;if(!node.hasAttribute(key))node.setAttribute(key,node.getAttribute(a));const v=translate(node.getAttribute(key));if(v!==node.getAttribute(a))node.setAttribute(a,v);}});
+ ["title","aria-label","placeholder"].forEach(a=>{
+  if(!node.hasAttribute(a))return;
+  const originalKey="data-gd-original-"+a,translatedKey="data-gd-translated-"+a;
+  const current=node.getAttribute(a);
+  if(node.hasAttribute(translatedKey)&&current!==node.getAttribute(translatedKey))node.setAttribute(originalKey,current);
+  if(!node.hasAttribute(originalKey))node.setAttribute(originalKey,current);
+  const v=translate(node.getAttribute(originalKey));node.setAttribute(translatedKey,v);
+  if(v!==current)node.setAttribute(a,v);
+ });
  Array.from(node.childNodes).forEach(visit);
 }
 function setLanguage(code,manual){
