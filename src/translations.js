@@ -179,6 +179,21 @@ Object.assign(ui,{
 "אויבים ומטאוריטים מכל האזורים":["Enemies and meteorites from all zones","Enemigos y meteoritos de todas las zonas","Ennemis et météorites de toutes les zones","Gegner und Meteoriten aus allen Zonen","Враги и метеориты из всех зон","أعداء ونيازك من جميع المناطق"],
 "השם שלך":["Your name","Tu nombre","Ton nom","Dein Name","Твоё имя","اسمك"]
 });
+Object.assign(ui,{
+"רמת שחקן":["Player Level","Nivel del jugador","Niveau du joueur","Spielerstufe","Уровень игрока","مستوى اللاعب"],
+"XP כולל":["total XP","XP total","XP total","XP insgesamt","всего XP","إجمالي XP"],
+"XP לרמה הבאה":["XP to next level","XP para el siguiente nivel","XP avant le niveau suivant","XP bis zum nächsten Level","XP до следующего уровня","XP للمستوى التالي"],
+"זמן משחק":["Play Time","Tiempo de juego","Temps de jeu","Spielzeit","Время игры","وقت اللعب"],
+"משחקים":["Games","Partidas","Parties","Spiele","Игры","الألعاب"],
+"🛸 מיני חללית אולטרה":["🛸 Ultra Mini Ship","🛸 Mini nave Ultra","🛸 Mini-vaisseau Ultra","🛸 Ultra-Mini-Raumschiff","🛸 Ультра-мини-корабль","🛸 سفينة صغيرة ألترا"],
+"קרניים":["beams","rayos","faisceaux","Strahlen","лучей","أشعة"],
+"שניות":["seconds","segundos","secondes","Sekunden","секунд","ثوانٍ"],
+"נקודות":["points","puntos","points","Punkte","очков","نقاط"],
+"🛸 הקרן ה־20 התחברה — מצב האולטרה הסתיים!":["🛸 Beam 20 connected — Ultra mode ended!","🛸 ¡Se conectó el rayo 20: terminó el modo Ultra!","🛸 Le 20e rayon est connecté — mode Ultra terminé !","🛸 Strahl 20 verbunden — Ultra-Modus beendet!","🛸 Подключён 20-й луч — режим Ультра завершён!","🛸 تم توصيل الشعاع 20 — انتهى وضع ألترا!"],
+"🛸 מצב אולטרה מיני חללית כובה":["🛸 Ultra Mini Ship mode disabled","🛸 Modo Mini nave Ultra desactivado","🛸 Mode Mini-vaisseau Ultra désactivé","🛸 Ultra-Mini-Raumschiff-Modus deaktiviert","🛸 Режим Ультра-мини-корабля выключен","🛸 تم إيقاف وضع السفينة الصغيرة ألترا"],
+"נדרשות 3,000 נקודות אולטרה":["3,000 Ultra points required","Se necesitan 3.000 puntos Ultra","3 000 points Ultra requis","3.000 Ultra-Punkte erforderlich","Требуется 3 000 очков Ультра","يلزم 3000 نقطة ألترا"],
+"🛸 אולטרה מיני חללית הופעלה!":["🛸 Ultra Mini Ship activated!","🛸 ¡Mini nave Ultra activada!","🛸 Mini-vaisseau Ultra activé !","🛸 Ultra-Mini-Raumschiff aktiviert!","🛸 Ультра-мини-корабль активирован!","🛸 تم تفعيل السفينة الصغيرة ألترا!"]
+});
 window.GAME_TRANSLATIONS=Object.freeze({
   supported:Object.freeze(["he","en","es","fr","de","ru","ar"]),
   ui:Object.freeze(ui),
