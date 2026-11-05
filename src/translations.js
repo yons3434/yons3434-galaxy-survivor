@@ -139,6 +139,22 @@ const ui={
 "🃏 כל הקלפים":["🃏 All Cards","🃏 Todas las cartas","🃏 Toutes les cartes","🃏 Alle Karten","🃏 Все карты","🃏 جميع البطاقات"]
 };
 Object.assign(ui,{
+"הישגים רגילים:":["Common Achievements:","Logros comunes:","Succès courants :","Gewöhnliche Erfolge:","Обычные достижения:","الإنجازات العادية:"],
+"הישגים נדירים:":["Rare Achievements:","Logros raros:","Succès rares :","Seltene Erfolge:","Редкие достижения:","الإنجازات النادرة:"],
+"הישגים אדירים:":["Epic Achievements:","Logros épicos:","Succès épiques :","Epische Erfolge:","Эпические достижения:","الإنجازات الملحمية:"],
+"הישגים אגדיים:":["Legendary Achievements:","Logros legendarios:","Succès légendaires :","Legendäre Erfolge:","Легендарные достижения:","الإنجازات الأسطورية:"],
+"הישגים מדהימים:":["Amazing Achievements:","Logros asombrosos:","Succès incroyables :","Fantastische Erfolge:","Удивительные достижения:","الإنجازات المذهلة:"],
+"Ultra":["Ultra","Ultra","Ultra","Ultra","Ультра","ألترا"],
+"בחירה מורחבת":["Expanded Choice","Elección ampliada","Choix étendu","Erweiterte Auswahl","Расширенный выбор","اختيار موسّع"],
+"Streak:":["Streak:","Racha:","Série :","Serie:","Серия:","سلسلة:"],
+"ימים":["days","días","jours","Tage","дней","أيام"],
+"👥 שחקנים ששיחקו אי פעם":["Players who have ever played","Jugadores que han jugado alguna vez","Joueurs ayant déjà joué","Spieler insgesamt","Всего игроков","اللاعبون الذين لعبوا من قبل"],
+"בחירה מורחבת":["Expanded Choice","Elección ampliada","Choix étendu","Erweiterte Auswahl","Расширенный выбор","اختيار موسّع"],
+"קל":["Easy","Fácil","Facile","Einfach","Легко","سهل"],
+"בינוני":["Normal","Normal","Normal","Normal","Средне","متوسط"],
+"קשה":["Hard","Difícil","Difficile","Schwer","Сложно","صعب"],
+"סופר קשה":["Super Hard","Muy difícil","Très difficile","Sehr schwer","Очень сложно","صعب جدًا"],
+"בלתי אפשרי":["Impossible","Imposible","Impossible","Unmöglich","Невозможно","مستحيل"],
 "מטאוריט רגיל שמופיע בחלל.":["A regular meteorite that appears in space.","Un meteorito normal que aparece en el espacio.","Une météorite ordinaire qui apparaît dans l’espace.","Ein gewöhnlicher Meteorit, der im Weltraum erscheint.","Обычный метеорит, появляющийся в космосе.","نيزك عادي يظهر في الفضاء."],
 "חללית אויב רגילה שיורה על השחקן.":["A regular enemy spaceship that shoots at the player.","Una nave enemiga normal que dispara al jugador.","Un vaisseau ennemi ordinaire qui tire sur le joueur.","Ein gewöhnliches feindliches Raumschiff, das auf den Spieler schießt.","Обычный вражеский корабль, который стреляет по игроку.","سفينة عدو عادية تطلق النار على اللاعب."],
 "בוס בסיסי עם הרבה חיים ומתקפות חזקות.":["A basic boss with lots of health and powerful attacks.","Un jefe básico con mucha salud y ataques potentes.","Un boss de base avec beaucoup de points de vie et des attaques puissantes.","Ein einfacher Boss mit vielen Lebenspunkten und starken Angriffen.","Базовый босс с большим запасом здоровья и мощными атаками.","زعيم أساسي لديه الكثير من الصحة وهجمات قوية."],
