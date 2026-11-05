@@ -218,12 +218,12 @@ function translateRemainingAchievementText(source,lang){
  if(heading){const groups=[["הישגים רגילים","Common Achievements","Logros comunes","Succès courants","Gewöhnliche Erfolge","Обычные достижения","الإنجازات العادية"],["הישגים נדירים","Rare Achievements","Logros raros","Succès rares","Seltene Erfolge","Редкие достижения","الإنجازات النادرة"],["הישגים אדירים","Epic Achievements","Logros épicos","Succès épiques","Epische Erfolge","Эпические достижения","الإنجازات الملحمية"],["הישגים אגדיים","Legendary Achievements","Logros legendarios","Succès légendaires","Legendäre Erfolge","Легендарные достижения","الإنجازات الأسطورية"],["הישגים מדהימים","Amazing Achievements","Logros asombrosos","Succès incroyables","Fantastische Erfolge","Удивительные достижения","الإنجازات المذهلة"]];const row=groups.find(x=>source.startsWith(x[0]));if(row)return row[i]+(heading[1]?" "+heading[1]:"");}
  const remainingMatch=source.match(/^הרוס (\d+) חלליות(?: אויב)?\.?$/);
  if(remainingMatch)return ["Destroy "+remainingMatch[1]+" enemy spaceships.","Destruye "+remainingMatch[1]+" naves enemigas.","Détruis "+remainingMatch[1]+" vaisseaux ennemis.","Zerstöre "+remainingMatch[1]+" feindliche Raumschiffe.","Уничтожь "+remainingMatch[1]+" вражеских кораблей.","دمر "+remainingMatch[1]+" سفن عدو."][i];
- m=source.match(/^הרוס (\d+) מטאוריטים?\.?$/);
- if(m)return ["Destroy "+m[1]+" meteorites.","Destruye "+m[1]+" meteoritos.","Détruis "+m[1]+" météorites.","Zerstöre "+m[1]+" Meteoriten.","Уничтожь "+m[1]+" метеоритов.","دمر "+m[1]+" نيازك."][i];
- m=source.match(/^הגעה לרמה (\d+) במשחק אחד\.?$/);
- if(m)return ["Reach level "+m[1]+" in one game.","Alcanza el nivel "+m[1]+" en una partida.","Atteins le niveau "+m[1]+" en une partie.","Erreiche Level "+m[1]+" in einem Spiel.","Достигни уровня "+m[1]+" за одну игру.","صل إلى المستوى "+m[1]+" في مباراة واحدة."][i];
- m=source.match(/^עלה (\d+) רמות\.?$/);
- if(m)return ["Gain "+m[1]+" levels.","Sube "+m[1]+" niveles.","Gagne "+m[1]+" niveaux.","Steige "+m[1]+" Level auf.","Получи "+m[1]+" уровней.","ارفع "+m[1]+" مستويات."][i];
+ const meteorMatch=source.match(/^הרוס (\d+) מטאוריטים?\.?$/);
+ if(meteorMatch)return ["Destroy "+meteorMatch[1]+" meteorites.","Destruye "+meteorMatch[1]+" meteoritos.","Détruis "+meteorMatch[1]+" météorites.","Zerstöre "+meteorMatch[1]+" Meteoriten.","Уничтожь "+meteorMatch[1]+" метеоритов.","دمر "+meteorMatch[1]+" نيازك."][i];
+ const reachLevelMatch=source.match(/^הגעה לרמה (\d+) במשחק אחד\.?$/);
+ if(reachLevelMatch)return ["Reach level "+reachLevelMatch[1]+" in one game.","Alcanza el nivel "+reachLevelMatch[1]+" en una partida.","Atteins le niveau "+reachLevelMatch[1]+" en une partie.","Erreiche Level "+reachLevelMatch[1]+" in einem Spiel.","Достигни уровня "+reachLevelMatch[1]+" за одну игру.","صل إلى المستوى "+reachLevelMatch[1]+" في مباراة واحدة."][i];
+ const gainLevelsMatch=source.match(/^עלה (\d+) רמות\.?$/);
+ if(gainLevelsMatch)return ["Gain "+gainLevelsMatch[1]+" levels.","Sube "+gainLevelsMatch[1]+" niveles.","Gagne "+gainLevelsMatch[1]+" niveaux.","Steige "+gainLevelsMatch[1]+" Level auf.","Получи "+gainLevelsMatch[1]+" уровней.","ارفع "+gainLevelsMatch[1]+" مستويات."][i];
  if(source==="Ultra")return ["Ultra","Ultra","Ultra","Ultra","Ультра","ألترا"][i];
  return source;
 }
