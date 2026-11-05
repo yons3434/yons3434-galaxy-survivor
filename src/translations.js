@@ -319,6 +319,23 @@ Object.assign(ui,{
 "🃏 בחירה מורחבת":["🃏 Expanded Choice","🃏 Elección ampliada","🃏 Choix étendu","🃏 Erweiterte Auswahl","🃏 Расширенный выбор","🃏 اختيار موسّع"],
 "אקדח":["Pistol","Pistola","Pistolet","Pistole","Пистолет","مسدس"]
 });
+// Exact source strings used by the live achievement, profile, and leaderboard renderers.
+Object.assign(ui,{
+  "הישגים רגילים":["Common Achievements","Logros comunes","Succès courants","Gewöhnliche Erfolge","Обычные достижения","الإنجازات العادية"],
+  "הישגים נדירים":["Rare Achievements","Logros raros","Succès rares","Seltene Erfolge","Редкие достижения","الإنجازات النادرة"],
+  "הישגים אדירים":["Epic Achievements","Logros épicos","Succès épiques","Epische Erfolge","Эпические достижения","الإنجازات الملحمية"],
+  "הישגים אגדיים":["Legendary Achievements","Logros legendarios","Succès légendaires","Legendäre Erfolge","Легендарные достижения","الإنجازات الأسطورية"],
+  "הישגים מדהימים":["Amazing Achievements","Logros asombrosos","Succès incroyables","Fantastische Erfolge","Удивительные достижения","الإنجازات المذهلة"],
+  "⭐ רמת שחקן":["⭐ Player Level","⭐ Nivel del jugador","⭐ Niveau du joueur","⭐ Spielerlevel","⭐ Уровень игрока","⭐ مستوى اللاعب"],
+  "רמת שחקן":["Player Level","Nivel del jugador","Niveau du joueur","Spielerlevel","Уровень игрока","مستوى اللاعب"],
+  "XP כולל":["Total XP","XP total","XP total","Gesamt-XP","Всего XP","إجمالي XP"],
+  "XP לרמה הבאה":["XP to next level","XP para el siguiente nivel","XP avant le niveau suivant","XP bis zum nächsten Level","XP до следующего уровня","XP للمستوى التالي"],
+  "🟢 קל":["🟢 Easy","🟢 Fácil","🟢 Facile","🟢 Einfach","🟢 Легко","🟢 سهل"],
+  "⚪ בינוני":["⚪ Normal","⚪ Normal","⚪ Normal","⚪ Normal","⚪ Средне","⚪ متوسط"],
+  "🟠 קשה":["🟠 Hard","🟠 Difícil","🟠 Difficile","🟠 Schwer","🟠 Сложно","🟠 صعب"],
+  "🔴 סופר קשה":["🔴 Super Hard","🔴 Muy difícil","🔴 Très difficile","🔴 Sehr schwer","🔴 Очень сложно","🔴 صعب جدًا"],
+  "⚫ בלתי אפשרי":["⚫ Impossible","⚫ Imposible","⚫ Impossible","⚫ Unmöglich","⚫ Невозможно","⚫ مستحيل"]
+});
 window.GAME_TRANSLATIONS=Object.freeze({
   supported:Object.freeze(["he","en","es","fr","de","ru","ar"]),
   ui:Object.freeze(ui),
