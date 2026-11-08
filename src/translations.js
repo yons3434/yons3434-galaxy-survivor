@@ -383,15 +383,15 @@ window.GAME_TRANSLATIONS=Object.freeze({
   "deadlyLoot": {
     "title": ["Deadly Loot", "Botín mortal", "Butin mortel", "Tödliche Beute", "Смертельная добыча", "غنائم قاتلة"],
     "description": [
-      "Enemies, meteorites and bosses can drop falling pickups: lives, shields, XP, ammo or Rage. Touch to collect; missed drops disappear. Base chance: 4% normal, 1% double. Each card level raises the chance; Luck adds half that increase. Enemies: up to 2 drops; small/medium/large meteorites: 0/1/2; bosses: up to 6 with doubled chances.",
-      "Los enemigos, meteoritos y jefes pueden soltar objetos: vidas, escudos, XP, munición o Furia. Tócalos para recogerlos; desaparecen al caer. Probabilidad base: 4% normal y 1% doble. Cada nivel aumenta la probabilidad; Suerte añade la mitad. Enemigos: hasta 2; meteoritos pequeños/medianos/grandes: 0/1/2; jefes: hasta 6 con probabilidad doble.",
-      "Les ennemis, météorites et boss peuvent lâcher des objets : vies, boucliers, XP, munitions ou Rage. Touchez-les pour les ramasser ; ils disparaissent en tombant. Chances de base : 4 % normal, 1 % doublé. Chaque niveau augmente les chances ; Chance ajoute la moitié de cette hausse. Ennemis : 2 max ; petites/moyennes/grandes météorites : 0/1/2 ; boss : 6 max avec chances doublées.",
-      "Gegner, Meteoriten und Bosse können Beute fallen lassen: Leben, Schilde, XP, Munition oder Wut. Berühre sie zum Einsammeln; verpasste Beute verschwindet. Grundchance: 4 % normal, 1 % doppelt. Jede Kartenstufe erhöht die Chance; Glück fügt die Hälfte hinzu. Gegner: bis zu 2; kleine/mittlere/große Meteoriten: 0/1/2; Bosse: bis zu 6 bei doppelter Chance.",
-      "Враги, метеориты и боссы могут оставлять добычу: жизни, щиты, XP, боеприпасы или Ярость. Коснитесь предмета, чтобы собрать его; пропущенная добыча исчезает. Базовый шанс: 4% обычный, 1% двойной. Каждый уровень карты повышает шанс; Удача добавляет половину этого прироста. Враги: до 2; малые/средние/крупные метеориты: 0/1/2; боссы: до 6 с удвоенным шансом.",
-      "يمكن للأعداء والنيازك والزعماء إسقاط غنائم: أرواح ودروع ونقاط خبرة وذخيرة أو غضب. المس العنصر لجمعه؛ تختفي العناصر التي تفوتك عند سقوطها. الاحتمال الأساسي: 4% للعادي و1% للمضاعف. كل مستوى يزيد الاحتمال، ويضيف الحظ نصف هذه الزيادة. الأعداء: حتى عنصرين؛ النيازك الصغيرة/المتوسطة/الكبيرة: 0/1/2؛ الزعماء: حتى 6 مع مضاعفة الاحتمال."
+      "Enemies, meteorites and bosses may drop lives, shields, XP, ammo or Rage. Pickups fall downward; touch them before they disappear.",
+      "Los enemigos, meteoritos y jefes pueden soltar vidas, escudos, XP, munición o Furia. Los objetos caen; tócalos antes de que desaparezcan.",
+      "Les ennemis, météorites et boss peuvent lâcher des vies, des boucliers, de l’XP, des munitions ou de la Rage. Les objets tombent : touchez-les avant leur disparition.",
+      "Gegner, Meteoriten und Bosse können Leben, Schilde, XP, Munition oder Wut fallen lassen. Die Beute fällt nach unten – berühre sie, bevor sie verschwindet.",
+      "Враги, метеориты и боссы могут оставлять жизни, щиты, XP, боеприпасы или Ярость. Предметы падают вниз — коснитесь их, пока они не исчезли.",
+      "قد يُسقط الأعداء والنيازك والزعماء أرواحًا ودروعًا ونقاط خبرة وذخيرة أو غضبًا. تسقط العناصر إلى الأسفل؛ المسها قبل اختفائها."
     ],
     "sourceTitle": "שלל קטלני",
-    "sourceDescription": "בהשמדת אויבים, מטאוריטים ובוסים יש סיכוי להפיל פרסים שנופלים למטה: חיים, מגנים, XP, תחמושת או מצב זעם. כל פרס נאסף במגע ונעלם אם נופל מחוץ למסך. סיכוי בסיסי: 4% לפרס רגיל ו־1% לפרס כפול; לכל רמה נוספת הסיכוי גדל. מזל משפר את הסיכוי בחצי מהשפעת רמת הקלף. אויב רגיל: עד 2 פרסים; מטאוריט קטן: 0, בינוני: 1, גדול: 2; בוס: עד 6 וסיכוי כפול."
+    "sourceDescription": "אויבים, מטאוריטים ובוסים עשויים להפיל חיים, מגנים, XP, תחמושת או זעם. הפרסים נופלים למטה — גע בהם לפני שייעלמו."
   },
   "chainExplosion": {
     "title": [
