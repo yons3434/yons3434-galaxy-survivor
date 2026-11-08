@@ -205,7 +205,7 @@ button:hover{transform:scale(1.05);background:#90e0ef}
 <div id="startScreen" class="overlay"><h1>🚀 GALAXY DEFENDER 🚀</h1><p>השמד מטאוריטים וחלליות אויב, צבור XP ועלה רמות.</p><h2>בחר דרגת קושי</h2><select id="difficultySelect"><option value="easy">קל</option><option value="normal" selected>בינוני</option><option value="hard">קשה</option><option value="super">סופר קשה</option><option value="impossible">בלתי אפשרי</option></select><div style="margin:10px 0;font-size:16px">👤 שם משתמש: <b id="homeProfileName">שחקן</b><br><small>אפשר לשנות את השם דרך 👤 פרופיל</small></div><button type="button" id="startButton">התחל משחק</button><div id="homeDailyMissions" role="button" tabindex="0" title="פתח משימות יומיות"><div class="homeDailyHead"><span>📅 משימות יומיות</span><span id="homeDailyCount">0/5</span></div><div class="homeDailyBar"><div id="homeDailyFill" class="homeDailyFill" style="width:0%"></div></div><div class="homeDailyText" id="homeDailyNext">טוען משימות...</div><div class="homeDailyStreak" id="homeDailyStreak">🔥 רצף: 0 ימים</div><div id="homeDailyRows" class="homeDailyRows"></div><div id="homeDailyBonus" class="homeDailyBonus">🎁 השלמת כל 5 המשימות: +100 XP</div></div><div id="startBottomOptions"><button type="button" class="startOption iconOption" id="leaderboardButton" aria-label="לוח תוצאות מובילות" title="לוח תוצאות מובילות">🏆</button><button type="button" class="startOption iconOption" id="collectionButton" aria-label="אוסף בוסים ואויבים" title="אוסף בוסים ואויבים">📕</button><button type="button" class="startOption iconOption" id="homeButton" aria-label="מסך הבית" title="מסך הבית">🏚️</button><button type="button" class="startOption iconOption" id="helpButton" aria-label="איך משחקים והקלפים" title="איך משחקים והקלפים">📖</button></div></div>
 <div id="levelUp"><h1>🆙 עלית רמה!</h1><p>בחר שדרוג אחד:</p><div id="upgradeContainer" class="upgradeContainer"></div></div>
 <div id="pauseMenu"><h1>⏸️ המשחק נעצר</h1><h2>הקלפים והשדרוגים שבחרת</h2><div id="selectedCards"></div><div><button type="button" id="resumeButton">▶️ המשך משחק</button><button type="button" id="endGameButton">🏁 סיים משחק</button></div></div>
-<div id="profileOverlay" class="overlay"><div id="profilePanel"><button type="button" id="profileAchievementsButton" title="הישגים">🏅</button><h1>👤 פרופיל</h1><div id="profileEditArea"><p>שם המשתמש שלך:</p><input id="profileNameInput" maxlength="16" placeholder="השם שלך"><br><button type="button" id="saveProfileNameButton">💾 שמור שם</button></div><div id="profileStats" class="profileStats"></div><div id="playerXpSummary"></div><div id="profileAchievementSummary" class="profileAchievementSummary"></div><h2>🏆 השיאים שלי</h2><table class="profileBest"><thead><tr><th>דרגה</th><th>שיחק</th><th>שיא</th></tr></thead><tbody id="profileBestBody"></tbody></table><br><button type="button" id="closeProfileButton">✖️ סגור</button></div></div>
+<div id="profileOverlay" class="overlay"><div id="profilePanel"><button type="button" id="profileAchievementsButton" title="הישגים">🏅</button><h1>👤 פרופיל</h1><div id="profileEditArea"><p>שם המשתמש שלך:</p><input id="profileNameInput" maxlength="16" placeholder="השם שלך"><br><label for="profileCountrySelect" style="display:block;margin:8px 0 4px">🌍 מדינה:</label><select id="profileCountrySelect" style="width:100%;padding:8px;font-size:16px"></select><br><button type="button" id="saveProfileNameButton">💾 שמור פרופיל</button></div><div id="profileStats" class="profileStats"></div><div id="playerXpSummary"></div><div id="profileAchievementSummary" class="profileAchievementSummary"></div><h2>🏆 השיאים שלי</h2><table class="profileBest"><thead><tr><th>דרגה</th><th>שיחק</th><th>שיא</th></tr></thead><tbody id="profileBestBody"></tbody></table><br><button type="button" id="closeProfileButton">✖️ סגור</button></div></div>
 <div id="achievementsOverlay" class="overlay"><div id="achievementsPanel"><h1>🏅 הישגים</h1><p id="achievementsSummary">0 / 0 הישגים</p><div id="dailyMissionsPanel"><div class="dailyMissionsHeader"><h2>📅 משימות יומיות</h2><div id="dailyMissionsStreak">🔥 רצף: 0 ימים</div></div><div id="dailyMissionsSummary"></div><div id="dailyMissionsList"></div></div><div id="achievementsGrid"></div><button type="button" id="closeAchievementsButton">✖️ סגור</button></div></div>
 <div id="leaderboard" class="overlay"><div id="leaderboardPanel"><h1>🏆 לוח תוצאות</h1><div id="globalPlayerCount" class="globalPlayerCount">👥 שחקנים ששיחקו אי פעם: 0</div><p>100 התוצאות הטובות ביותר בכל דרגת קושי</p><div id="leaderboardTabs"></div><table id="leaderboardTable"><thead><tr><th>#</th><th>שחקן</th><th>מרחק</th><th>רמה</th></tr></thead><tbody id="leaderboardBody"></tbody></table><button type="button" id="closeLeaderboardButton">✖️ סגור</button></div></div><div id="collectionOverlay" class="overlay"><div id="collectionPanel"><h1>📕 אוסף בוסים ואויבים</h1><p>כל הבוסים והאויבים במשחק, לפי האזור שלהם</p><div id="collectionContent"></div><button type="button" id="closeCollectionButton">✖️ סגור</button></div></div>
 <div id="helpOverlay" class="overlay" style="display:none"><div id="helpPanel"><h1>📖 איך משחקים והקלפים</h1><div id="helpContent"></div><button type="button" id="closeHelpButton">✖️ סגור</button></div></div>
@@ -352,7 +352,39 @@ function closeAchievements(){achievementsOverlay.style.display="none"}
 
 const playerProfileId=(()=>{let id=localStorage.getItem(PROFILE_ID_KEY);if(!id){id="p_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,10);localStorage.setItem(PROFILE_ID_KEY,id)}return id})();
 let profileName=localStorage.getItem(PROFILE_NAME_KEY)||"שחקן";
-profileNameInput.value=profileName;homeProfileName.textContent=profileName;renderPlayerXPUI();
+const PROFILE_COUNTRY_KEY="galaxyDefenderProfileCountry";
+let profileCountry=String(localStorage.getItem(PROFILE_COUNTRY_KEY)||"").toUpperCase();
+const COUNTRY_CODES=["AW","AF","AO","AI","AX","AL","AD","AE","AR","AM","AS","AQ","TF","AG","AU","AT","AZ","BI","BE","BJ","BQ","BF","BD","BG","BH","BS","BA","BL","BY","BZ","BM","BO","BR","BB","BN","BT","BV","BW","CF","CA","CC","CH","CL","CN","CI","CM","CD","CG","CK","CO","KM","CV","CR","CU","CW","CX","KY","CY","CZ","DE","DJ","DM","DK","DO","DZ","EC","EG","ER","EH","ES","EE","ET","FI","FJ","FK","FR","FO","FM","GA","GB","GE","GG","GH","GI","GN","GP","GM","GW","GQ","GR","GD","GL","GT","GF","GU","GY","HK","HM","HN","HR","HT","HU","ID","IM","IN","IO","IE","IR","IQ","IS","IL","IT","JM","JE","JO","JP","KZ","KE","KG","KH","KI","KN","KR","KW","LA","LB","LR","LY","LC","LI","LK","LS","LT","LU","LV","MO","MF","MA","MC","MD","MG","MV","MX","MH","MK","ML","MT","MM","MN","MP","MZ","MR","MS","MQ","MU","MW","MY","YT","NA","NC","NE","NF","NG","NI","NU","NL","NO","NP","NR","NZ","OM","PK","PA","PN","PE","PH","PW","PG","PL","PR","KP","PT","PY","PS","PF","QA","RE","RO","RU","RW","SA","SD","SN","SG","GS","SH","SJ","SB","SL","SV","SM","SO","PM","RS","SS","ST","SR","SK","SI","SE","SZ","SX","SC","SY","TC","TD","TG","TH","TJ","TK","TM","TL","TO","TT","TN","TR","TV","TW","TZ","UG","UA","UM","UY","US","UZ","VA","VC","VE","VG","VI","VN","VU","WF","WS","YE","ZA","ZM","ZW"];
+function countryDisplayName(code){
+  try{
+    const lang=(typeof GalaxyI18n!=="undefined"&&GalaxyI18n.getLanguage)?GalaxyI18n.getLanguage():navigator.language||"en";
+    return new Intl.DisplayNames([lang],{type:"region"}).of(code)||code;
+  }catch(e){return code}
+}
+function populateProfileCountrySelect(){
+  const select=document.getElementById("profileCountrySelect");
+  if(!select)return;
+  select.innerHTML="";
+  const none=document.createElement("option");
+  none.value="";
+  none.textContent=GalaxyI18n.translate("🌐 ללא מדינה");
+  select.appendChild(none);
+  COUNTRY_CODES.forEach(code=>{
+    const option=document.createElement("option");
+    option.value=code;
+    option.textContent=countryFlag(code)+" "+countryDisplayName(code);
+    select.appendChild(option);
+  });
+  select.value=COUNTRY_CODES.includes(profileCountry)?profileCountry:"";
+}
+function setProfileCountry(code){
+  profileCountry=String(code||"").toUpperCase();
+  if(!COUNTRY_CODES.includes(profileCountry))profileCountry="";
+  if(profileCountry)localStorage.setItem(PROFILE_COUNTRY_KEY,profileCountry);
+  else localStorage.removeItem(PROFILE_COUNTRY_KEY);
+}
+
+profileNameInput.value=profileName;homeProfileName.textContent=profileName;populateProfileCountrySelect();renderPlayerXPUI();
 
 const SUPABASE_URL="https://xuuolwzgumkperloybwx.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_1W5HZKcovGMiXQSSzf3DgA_RvsDUMWI";
@@ -435,6 +467,32 @@ async function loadAllGlobalLeaderboards(){
 function getStats(){try{const x=JSON.parse(localStorage.getItem(STATS_KEY)||"{}");return {totalTime:Number(x.totalTime)||0,games:Number(x.games)||0,played:x.played&&typeof x.played==="object"?x.played:{}}}catch(e){return {totalTime:0,games:0,played:{}}}}
 function saveStatsForGame(){const st=getStats();st.totalTime+=Math.max(0,Math.floor(gameTime));st.games++;st.played[difficulty]=(Number(st.played[difficulty])||0)+1;try{localStorage.setItem(STATS_KEY,JSON.stringify(st))}catch(e){}}
 function setProfileName(name){profileName=(String(name||"").trim()||"שחקן").slice(0,16);localStorage.setItem(PROFILE_NAME_KEY,profileName);homeProfileName.textContent=profileName}
+async function syncProfileToLeaderboard(){
+  if(!supabaseClient)return true;
+  const name=(String(profileName||"שחקן").trim()||"שחקן").slice(0,20);
+  const country=COUNTRY_CODES.includes(profileCountry)?profileCountry:null;
+  try{
+    const registry=await supabaseClient.from("player_registry").upsert({
+      player_id:playerProfileId,
+      player_name:name,
+      country_code:country,
+      last_seen:new Date().toISOString()
+    },{onConflict:"player_id"});
+    if(registry.error)throw registry.error;
+    const leaderboardUpdate=await supabaseClient.from("leaderboard").update({
+      player_name:name,
+      country_code:country
+    }).eq("player_id",playerProfileId);
+    if(leaderboardUpdate.error)throw leaderboardUpdate.error;
+    Object.keys(globalLeaderboardCache).forEach(mode=>{
+      globalLeaderboardCache[mode]=(globalLeaderboardCache[mode]||[]).map(entry=>entry.playerId===playerProfileId?{...entry,name,countryCode:country||""}:entry);
+    });
+    return true;
+  }catch(e){
+    console.warn("Profile sync failed.",e);
+    return false;
+  }
+}
 function getPersonalBest(mode=difficulty){
   const list=getLeaderboard(mode);
   const mine=list.find(x=>x.playerId===playerProfileId);
@@ -638,7 +696,32 @@ gameOverLeaderboardButton.addEventListener("click",e=>{e.preventDefault();e.stop
 
 profileButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openMyProfile()});
 closeProfileButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();closeProfile()});
-saveProfileNameButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();setProfileName(profileNameInput.value);renderProfile();renderAchievements();showMessage("✅ שם המשתמש נשמר!")});
+saveProfileNameButton.addEventListener("click",async e=>{
+  e.preventDefault();e.stopPropagation();
+  const newName=(String(profileNameInput.value||"").trim()||"שחקן").slice(0,16);
+  const newCountry=String(document.getElementById("profileCountrySelect")?.value||"").toUpperCase();
+  if(await isPlayerNameTaken(newName)){
+    showMessage(GalaxyI18n.translate("השם הזה כבר תפוס. בחר שם אחר."));
+    return;
+  }
+  const oldName=profileName;
+  const oldCountry=profileCountry;
+  setProfileName(newName);
+  setProfileCountry(newCountry);
+  const synced=await syncProfileToLeaderboard();
+  if(!synced){
+    setProfileName(oldName);
+    setProfileCountry(oldCountry);
+    profileNameInput.value=oldName;
+    populateProfileCountrySelect();
+    showMessage(GalaxyI18n.translate("לא ניתן לשמור את השם כרגע. נסה שוב."));
+    return;
+  }
+  profileNameInput.value=profileName;
+  populateProfileCountrySelect();
+  renderProfile();renderAchievements();
+  showMessage("✅ "+GalaxyI18n.translate("הפרופיל נשמר!"));
+});
 profileOverlay.addEventListener("click",e=>{if(e.target===profileOverlay)closeProfile()});
 function updateProfileButtonVisibility(){const b=document.getElementById("profileButton");if(b)b.style.display=(!gameStarted&&!gameRunning)?"flex":"none";}
 
