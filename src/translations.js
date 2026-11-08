@@ -197,6 +197,9 @@ Object.assign(ui,{
 });
 Object.assign(ui,{
 "שחקן":["Player","Jugador","Joueur","Spieler","Игрок","لاعب"],
+"🌐 ללא מדינה":["🌐 No country","🌐 Sin país","🌐 Aucun pays","🌐 Kein Land","🌐 Без страны","🌐 بدون دولة"],
+"🌍 מדינה":["🌍 Country","🌍 País","🌍 Pays","🌍 Land","🌍 Страна","🌍 الدولة"],
+"הפרופיל נשמר!":["Profile saved!","¡Perfil guardado!","Profil enregistré !","Profil gespeichert!","Профиль сохранён!","تم حفظ الملف الشخصي!"],
 "שם לשיא":["Record name","Nombre para el récord","Nom du record","Rekordname","Имя для рекорда","اسم الرقم القياسي"],
 "כתוב את השם שיופיע בלוח התוצאות:":["Enter the name that will appear on the leaderboard:","Escribe el nombre que aparecerá en la clasificación:","Saisissez le nom qui apparaîtra dans le classement :","Gib den Namen ein, der in der Bestenliste erscheinen soll:","Введите имя, которое будет отображаться в таблице лидеров:","اكتب الاسم الذي سيظهر في لوحة المتصدرين:"],
 "שמור והמשך":["Save and continue","Guardar y continuar","Enregistrer et continuer","Speichern und fortfahren","Сохранить и продолжить","حفظ ومتابعة"],
