@@ -367,7 +367,7 @@ function populateProfileCountrySelect(){
   select.innerHTML="";
   const none=document.createElement("option");
   none.value="";
-  none.textContent=GalaxyI18n.translate("🌐 ללא מדינה");
+  none.textContent=(typeof GalaxyI18n!=="undefined"&&GalaxyI18n.translate)?GalaxyI18n.translate("🌐 ללא מדינה"):"🌐 ללא מדינה";
   select.appendChild(none);
   COUNTRY_CODES.forEach(code=>{
     const option=document.createElement("option");
@@ -567,7 +567,7 @@ function renderProfile(id=playerProfileId,name=profileName,editable=id===playerP
   profileOverlay.style.display="flex";
 }
 function openPublicProfile(id,name){closeLeaderboard();renderProfile(id,name,false)}
-function openMyProfile(){renderProfile();}
+function openMyProfile(){populateProfileCountrySelect();const label=document.getElementById("profileCountryLabel");if(label)label.textContent=(typeof GalaxyI18n!=="undefined"&&GalaxyI18n.translate)?GalaxyI18n.translate("🌍 מדינה")+":":"🌍 מדינה:";renderProfile();}
 function closeProfile(){profileOverlay.style.display="none";profileNameInput.disabled=false;}
 function escapeHtml(value){
   return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
