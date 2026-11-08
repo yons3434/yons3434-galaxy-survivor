@@ -387,3 +387,10 @@ test("dynamic game content passes through the active locale translator", () => {
   assert.match(i18n, /for\(const namespace of \["cards","achievements","dailyMissions","collection"\]\)/);
   assert.match(catalog, /"🎁 כל 5 המשימות הושלמו! \+100 XP"/);
 });
+
+test("Deadly Loot is a selectable Epic card and is loaded into the game", () => {
+  assert.match(js, /id:"deadlyLoot",rarity:"אדיר",rarityClass:"epic",icon:"🎁",title:"שלל קטלני"/);
+  assert.match(index, /src\/deadly-loot\.js/);
+  assert.ok(index.indexOf("src/deadly-loot.js") < index.indexOf("src/game.js"));
+  assert.match(js, /function renderHelp\(\)[\s\S]*\[\.\.\.upgrades\]/);
+});
