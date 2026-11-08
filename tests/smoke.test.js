@@ -447,7 +447,7 @@ test("Ultra, shield, reward, and healing visual effects are wired and translatab
   assert.match(mini, /window\.GalaxyUltraMiniShips = \{ isActive: \(\) => ultraMiniModeActive \}/);
   assert.match(js, /function spawnFloatingReward\(drop\)/);
   assert.match(js, /function triggerHealingEffect\(amount=1\)/);
-  assert.match(js, /size:84/);
+  assert.match(js, /duration:1575\+Math\.random\(\)\*525,size:126/);
   assert.match(js, /const finalPhase=Math\.max\(0,Math\.min\(1,\(progress-2\/3\)\/\(1\/3\)\)\),particleScale=1-\.9\*finalPhase/);
   assert.match(js, /ctx\.globalAlpha=1-finalPhase/);
   assert.match(js, /ctx\.scale\(particleScale,particleScale\)/);
