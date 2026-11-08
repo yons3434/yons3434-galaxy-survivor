@@ -367,7 +367,11 @@ test("Ultra shields replace the lives HUD, are removed from the Ultra button, an
   assert.match(js, /const maxShields=Math\.max\(1,Number\(player\.maxLives\)\|\|1\)/);
   assert.match(js, /shieldRatio=count\/maxShields/);
   assert.match(js, /Math\.min\(1,\.68\*intensityScale\*shieldRatio\)/);
-  assert.match(js, /Math\.min\(100,60\*intensityScale\*shieldRatio\)/);
+  assert.match(js, /const active=intensity>0&&count>0/);
+  assert.match(js, /shield\.style\.opacity=active\?String\(\.68\*shieldRatio\):"0"/);
+  assert.match(js, /shield\.style\.setProperty\("--shield-blue",String\(baseAlpha\*shieldRatio\)\)/);
+  assert.match(js, /shield\.style\.setProperty\("--shield-spread",Math\.min\(100,baseSpread\*shieldRatio\)\+"%"/);
+  assert.match(css, /#shieldEffectOverlay\[data-active="1"\]\{visibility:visible;animation:none;opacity:\.68\}/);
   assert.match(css, /rgba\(30,150,255,var\(--shield-blue,\.96\)\)/);
   assert.match(js, /const shieldBubbleVisible=ultraShields>0\|\|performance\.now\(\)<shieldBubbleFlashUntil/);
   assert.match(js, /ctx\.arc\(0,0,41\+\(pulse\?2:0\),0,Math\.PI\*2\)/);
