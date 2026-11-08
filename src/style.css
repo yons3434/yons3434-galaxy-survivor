@@ -270,3 +270,11 @@ html[dir="rtl"] body {
 body :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achievementToast,.upgradeCard,.selectedCard,.helpSection,.helpCard,.collectionSection,.collectionCard,.dailyMissionRow,.profileStat,.profileAchievementTier,.profileAchievementTitle,.profileAchievementPercent,#message,#levelText,#speedComboText,#zoneIndicator,#bossContainer) {
   unicode-bidi: plaintext;
 }
+
+/* Ambient Ultra and shield edge glows; intentionally subtler than low-health heartbeat. */
+#ultraEffectOverlay,#shieldEffectOverlay{position:fixed;inset:0;z-index:9996;pointer-events:none;visibility:hidden;opacity:0;transition:opacity .12s linear;will-change:opacity}
+#ultraEffectOverlay{background:linear-gradient(to right,rgba(255,0,70,.75),transparent var(--ultra-spread,10%)),linear-gradient(to left,rgba(0,220,255,.75),transparent var(--ultra-spread,10%)),linear-gradient(to bottom,rgba(120,0,255,.72),transparent var(--ultra-spread,10%)),linear-gradient(to top,rgba(255,220,0,.72),transparent var(--ultra-spread,10%));filter:saturate(1.3)}
+#shieldEffectOverlay{background:linear-gradient(to right,rgba(30,150,255,.9),transparent var(--shield-spread,8%)),linear-gradient(to left,rgba(30,150,255,.9),transparent var(--shield-spread,8%)),linear-gradient(to bottom,rgba(30,150,255,.8),transparent var(--shield-spread,8%)),linear-gradient(to top,rgba(30,150,255,.8),transparent var(--shield-spread,8%))}
+#healPulseOverlay{position:fixed;inset:0;z-index:10001;pointer-events:none;visibility:hidden;opacity:0;border:0 solid rgba(30,255,105,0);box-shadow:inset 0 0 0 0 rgba(30,255,105,0)}
+#healPulseOverlay.active{visibility:visible;animation:healScreenPulse .9s ease-out forwards}
+@keyframes healScreenPulse{0%{opacity:.5;border-width:0;box-shadow:inset 0 0 65px 18px rgba(30,255,105,.34)}45%{opacity:.3;border-width:8px;box-shadow:inset 0 0 38px 8px rgba(30,255,105,.2)}100%{opacity:0;border-width:18px;box-shadow:inset 0 0 0 0 rgba(30,255,105,0);visibility:hidden}}
