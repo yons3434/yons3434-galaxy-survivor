@@ -8,6 +8,13 @@ const index = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const js = fs.readFileSync(path.join(root, "src", "game.js"), "utf8");
 const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 
+test("game simulation uses a fixed 60 FPS timestep independent of display refresh rate", () => {
+  assert.match(js, /const FIXED_UPDATE_STEP=1000\/60/);
+  assert.match(js, /const frameDelta=Math\.min\(MAX_FRAME_DELTA,Math\.max\(0,frameNow-lastFrameTimestamp\)\)/);
+  assert.match(js, /while\(updateAccumulator>=FIXED_UPDATE_STEP&&updateSteps<MAX_CATCH_UP_STEPS\)\{update\(\);updateAccumulator-=FIXED_UPDATE_STEP;updateSteps\+\+\}/);
+  assert.match(js, /requestAnimationFrame\(gameLoop\)/);
+});
+
 test("split project has the expected entry files", () => {
   assert.match(index, /src\/style\.css/);
   assert.match(index, /src\/game\.js/);
