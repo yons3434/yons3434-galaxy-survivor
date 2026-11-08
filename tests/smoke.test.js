@@ -429,9 +429,14 @@ test("Ultra, shield, reward, and healing visual effects are wired and translatab
   assert.match(mini, /window\.GalaxyUltraMiniShips = \{ isActive: \(\) => ultraMiniModeActive \}/);
   assert.match(js, /function spawnFloatingReward\(drop\)/);
   assert.match(js, /function triggerHealingEffect\(amount=1\)/);
+  assert.match(js, /size:48\+Math\.random\(\)\*12/);
+  assert.match(js, /ctx\.font="900 "\+p\.size\+"px Arial"/);
+  assert.match(js, /ctx\.lineWidth=2\.5/);
   assert.match(js, /drawFloatingRewardsAndHealing\(\)/);
   assert.match(js, /localStorage\.setItem\("galaxyDefenderHealingEffects"/);
   assert.match(css, /@keyframes healScreenPulse/);
+  assert.match(css, /border:26px solid rgba\(0,255,75,\.82\)/);
+  assert.match(css, /0 0 105px 35px rgba\(0,255,75,\.58\)/);
   assert.match(catalog, /"💚 אפקטי ריפוי"/);
   assert.match(catalog, /"🔴 מספרי נזק ופרסים מעל אויבים"/);
 });
