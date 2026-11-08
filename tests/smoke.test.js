@@ -394,4 +394,6 @@ test("Deadly Loot is a selectable Epic card and is loaded into the game", () => 
   assert.ok(index.indexOf("src/deadly-loot.js") < index.indexOf("src/game.js"));
   assert.match(js, /function renderHelp\(\)[\s\S]*\[\.\.\.upgrades\]/);
   assert.match(js, /ammo\.shotgun\+=amount\.shotgun;ammo\.rpg\+=amount\.rpg/);
+  assert.match(js, /speedMultiplier:drop\.doubled\?1\.5:1/);
+  assert.match(js, /p\.x\+=\(\(Number\(p\.vx\)\|\|0\)\+Math\.sin\(p\.drift\)\*\.35\)\*speed;p\.y\+=\(Number\(p\.vy\)\|\|1\.5\)\*speed/);
 });
