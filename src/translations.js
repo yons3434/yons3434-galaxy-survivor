@@ -235,7 +235,6 @@ Object.assign(ui,{
 "התחמקות":["Dodge","Evasión","Esquive","Ausweichen","Уклонение","مراوغة"],
 "⚡ מהירות: ×1.00":["⚡ Speed: ×1.00","⚡ Velocidad: ×1.00","⚡ Vitesse : ×1.00","⚡ Geschwindigkeit: ×1.00","⚡ Скорость: ×1.00","⚡ السرعة: ×1.00"],
 "👻 בלתי פגיע!":["👻 Invulnerable!","👻 ¡Invulnerable!","👻 Invulnérable !","👻 Unverwundbar!","👻 Неуязвим!","👻 غير قابل للإصابة!"],
-"חלליות שמסתובבות סביב השחקן ויורות קרני לייזר לעבר אויבים. כל רמה מוסיפה חללית נוספת.":["Spaceships that orbit the player and fire laser beams at enemies. Each level adds another spaceship.","Naves que orbitan al jugador y disparan rayos láser a los enemigos. Cada nivel añade otra nave.","Des vaisseaux qui tournent autour du joueur et tirent des rayons laser sur les ennemis. Chaque niveau ajoute un vaisseau supplémentaire.","Raumschiffe, die den Spieler umkreisen und Laserstrahlen auf Gegner abfeuern. Jede Stufe fügt ein weiteres Raumschiff hinzu.","Корабли, вращающиеся вокруг игрока и стреляющие лазерными лучами по врагам. Каждый уровень добавляет ещё один корабль.","سفن تدور حول اللاعب وتطلق أشعة ليزر على الأعداء. يضيف كل مستوى سفينة أخرى."],
 "🛸 אולטרה מיני חללית":["🛸 Ultra Mini Ship","🛸 Mini nave Ultra","🛸 Mini-vaisseau Ultra","🛸 Ultra-Mini-Raumschiff","🛸 Ультра-мини-корабль","🛸 سفينة ألترا صغيرة"],
 "🌈 אולטרה לייזר":["🌈 Ultra Laser","🌈 Láser Ultra","🌈 Laser Ultra","🌈 Ultra-Laser","🌈 Ультра-лазер","🌈 ليزر ألترا"],
 "🌈 מצב אולטרה":["🌈 Ultra Mode","🌈 Modo Ultra","🌈 Mode Ultra","🌈 Ultra-Modus","🌈 Режим Ультра","🌈 وضع ألترا"],
@@ -792,6 +791,26 @@ window.GAME_TRANSLATIONS=Object.freeze({
     ],
     "sourceTitle": "מצב לייזר",
     "sourceDescription": "פותח לייזר חזק שעוקב אחרי העכבר וגורם נזק."
+  },
+  "ultraMiniShip": {
+    "title": [
+      "Ultra Mini Ship",
+      "Mini nave Ultra",
+      "Mini-vaisseau Ultra",
+      "Ultra-Mini-Raumschiff",
+      "Ультра-мини-корабль",
+      "سفينة ألترا صغيرة"
+    ],
+    "description": [
+      "Spaceships that orbit the player and fire laser beams at enemies. Each level adds another spaceship.",
+      "Naves que orbitan al jugador y disparan rayos láser a los enemigos. Cada nivel añade otra nave.",
+      "Des vaisseaux qui tournent autour du joueur et tirent des rayons laser sur les ennemis. Chaque niveau ajoute un vaisseau supplémentaire.",
+      "Raumschiffe, die den Spieler umkreisen und Laserstrahlen auf Gegner abfeuern. Jede Stufe fügt ein weiteres Raumschiff hinzu.",
+      "Корабли, вращающиеся вокруг игрока и стреляющие лазерными лучами по врагам. Каждый уровень добавляет ещё один корабль.",
+      "سفن تدور حول اللاعب وتطلق أشعة ليزر على الأعداء. يضيف كل مستوى سفينة أخرى."
+    ],
+    "sourceTitle": "אולטרה מיני חללית",
+    "sourceDescription": "חלליות שמסתובבות סביב השחקן ויורות קרני לייזר לעבר אויבים. כל רמה מוסיפה חללית נוספת."
   },
   "laserHeat": {
     "title": [
