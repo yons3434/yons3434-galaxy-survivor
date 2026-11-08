@@ -404,3 +404,12 @@ test("Deadly Loot is a selectable Epic card and is loaded into the game", () => 
   assert.match(js, /speedMultiplier:drop\.doubled\?1\.5:1/);
   assert.match(js, /p\.x\+=\(\(Number\(p\.vx\)\|\|0\)\+Math\.sin\(p\.drift\)\*\.35\)\*speed;p\.y\+=\(Number\(p\.vy\)\|\|1\.5\)\*speed/);
 });
+
+test("level-up cards display left-to-right number shortcuts and can be selected with number keys", () => {
+  assert.match(js, /direction:ltr/);
+  assert.match(js, /upgradeHotkey/);
+  assert.match(js, /choices\.indexOf\(upgrade\)\+1/);
+  assert.match(js, /if\(levelUpOpen\)\{const choiceNumber=\/\^\(\?:Digit\|Numpad\)\[1-6\]\$\//);
+  assert.match(js, /upgradeContainer\.children\[choiceNumber-1\]\?\.click\(\)/);
+  assert.match(css, /\.upgradeHotkey\{/);
+});
