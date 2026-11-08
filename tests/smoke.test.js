@@ -422,8 +422,11 @@ test("Ultra, shield, reward, and healing visual effects are wired and translatab
   assert.match(index, /id="healPulseOverlay"/);
   assert.match(index, /id="uiHealingEffects"/);
   assert.match(js, /function updateAmbientEffectOverlays\(\)/);
-  assert.match(js, /ultraModeActive\?1:0/);
+  assert.match(js, /ultraModeActive&&!miniActive\?1:0/);
   assert.match(js, /ultraLaserActive\?1:0/);
+  assert.match(js, /window\.GalaxyUltraMiniShips&&window\.GalaxyUltraMiniShips\.isActive\(\)/);
+  const mini = fs.readFileSync(path.join(root, "src", "ultra-mini-ships.js"), "utf8");
+  assert.match(mini, /window\.GalaxyUltraMiniShips = \{ isActive: \(\) => ultraMiniModeActive \}/);
   assert.match(js, /function spawnFloatingReward\(drop\)/);
   assert.match(js, /function triggerHealingEffect\(amount=1\)/);
   assert.match(js, /drawFloatingRewardsAndHealing\(\)/);
