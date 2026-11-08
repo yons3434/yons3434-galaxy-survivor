@@ -406,7 +406,7 @@ test("Deadly Loot is a selectable Epic card and is loaded into the game", () => 
 });
 
 test("level-up cards display left-to-right number shortcuts and can be selected with number keys", () => {
-  assert.match(js, /direction:ltr/);
+  assert.match(css, /direction:ltr/);
   assert.match(js, /upgradeHotkey/);
   assert.match(js, /choices\.indexOf\(upgrade\)\+1/);
   assert.match(js, /if\(levelUpOpen\)\{const choiceNumber=\/\^\(\?:Digit\|Numpad\)\[1-6\]\$\//);
