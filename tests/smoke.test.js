@@ -413,3 +413,22 @@ test("level-up cards display left-to-right number shortcuts and can be selected 
   assert.match(js, /upgradeContainer\.children\[choiceNumber-1\]\?\.click\(\)/);
   assert.match(css, /\.upgradeHotkey\{/);
 });
+
+
+test("Ultra, shield, reward, and healing visual effects are wired and translatable", () => {
+  const catalog = fs.readFileSync(path.join(root, "src", "translations.js"), "utf8");
+  assert.match(index, /id="ultraEffectOverlay"/);
+  assert.match(index, /id="shieldEffectOverlay"/);
+  assert.match(index, /id="healPulseOverlay"/);
+  assert.match(index, /id="uiHealingEffects"/);
+  assert.match(js, /function updateAmbientEffectOverlays\(\)/);
+  assert.match(js, /ultraModeActive\?1:0/);
+  assert.match(js, /ultraLaserActive\?1:0/);
+  assert.match(js, /function spawnFloatingReward\(drop\)/);
+  assert.match(js, /function triggerHealingEffect\(amount=1\)/);
+  assert.match(js, /drawFloatingRewardsAndHealing\(\)/);
+  assert.match(js, /localStorage\.setItem\("galaxyDefenderHealingEffects"/);
+  assert.match(css, /@keyframes healScreenPulse/);
+  assert.match(catalog, /"💚 אפקטי ריפוי"/);
+  assert.match(catalog, /"🔴 מספרי נזק ופרסים מעל אויבים"/);
+});
