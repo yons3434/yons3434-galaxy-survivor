@@ -6,6 +6,9 @@
 (() => {
 "use strict";
 const ui={
+"🔫 תחמושת נאספה":["🔫 Ammo collected","🔫 Munición recogida","🔫 Munitions récupérées","🔫 Munition gesammelt","🔫 Боеприпасы собраны","🔫 تم جمع الذخيرة"],
+"🔥 מצב זעם הופעל!":["🔥 Rage activated!","🔥 ¡Furia activada!","🔥 Rage activée !","🔥 Wut aktiviert!","🔥 Ярость активирована!","🔥 تم تفعيل الغضب!"],
+"🎁 נאסף שלל!":["🎁 Loot collected!","🎁 ¡Botín recogido!","🎁 Butin récupéré !","🎁 Beute gesammelt!","🎁 Добыча собрана!","🎁 تم جمع الغنيمة!"],
 "⚙️ הגדרות ממשק":["⚙️ Interface Settings","⚙️ Ajustes de interfaz","⚙️ Paramètres de l’interface","⚙️ Oberflächeneinstellungen","⚙️ Настройки интерфейса","⚙️ إعدادات الواجهة"],
 "הצג או הסתר חלקים מה־HUD וכבה את כפתורי המגע בטלפון.":["Show or hide HUD elements and disable mobile touch controls.","Muestra u oculta elementos del HUD y desactiva los controles táctiles.","Afficher ou masquer des éléments du HUD et désactiver les commandes tactiles.","HUD-Elemente ein- oder ausblenden und Touch-Steuerung deaktivieren.","Показывать или скрывать элементы HUD и отключать сенсорное управление.","إظهار عناصر HUD أو إخفاؤها وتعطيل أدوات التحكم باللمس."],
 "שפה":["Language","Idioma","Langue","Sprache","Язык","اللغة"],
