@@ -263,8 +263,8 @@ test("poison and burn damage-over-time ticks display their actual damage", () =>
   assert.match(js, /burnDamage=isBoss\?rawBurnDamage\/4:rawBurnDamage/);
 });
 test("sword hits show their actual damage against enemies and meteorites", () => {
-  assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\)\*\(ultraModeActive\?2:1\);enemy\.health-=swordHitDamage;showDamageNumber\(enemy,swordHitDamage\)/);
-  assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\)\*\(ultraModeActive\?2:1\);a\.health-=swordHitDamage;showDamageNumber\(a,swordHitDamage\)/);
+  assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\)\*\(deadlyLootRageActive\(\)\?1\.25:1\)\*\(ultraModeActive\?2:1\);enemy\.health-=swordHitDamage;showDamageNumber\(enemy,swordHitDamage\)/);
+  assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\)\*\(deadlyLootRageActive\(\)\?1\.25:1\)\*\(ultraModeActive\?2:1\);a\.health-=swordHitDamage;showDamageNumber\(a,swordHitDamage\)/);
 });
 
 test("damage numbers cap lethal overkill and rapid-hit totals at the target's remaining health", () => {
@@ -393,4 +393,5 @@ test("Deadly Loot is a selectable Epic card and is loaded into the game", () => 
   assert.match(index, /src\/deadly-loot\.js/);
   assert.ok(index.indexOf("src/deadly-loot.js") < index.indexOf("src/game.js"));
   assert.match(js, /function renderHelp\(\)[\s\S]*\[\.\.\.upgrades\]/);
+  assert.match(js, /ammo\.shotgun\+=amount\.shotgun;ammo\.rpg\+=amount\.rpg/);
 });
