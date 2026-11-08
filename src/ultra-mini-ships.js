@@ -320,5 +320,6 @@
     updateHUD();
   });
 
+  window.GalaxyUltraMiniShips = { isActive: () => ultraMiniModeActive };
   updateButton();
 })();
