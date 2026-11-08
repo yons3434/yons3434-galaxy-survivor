@@ -160,7 +160,39 @@ function closeAchievements(){achievementsOverlay.style.display="none"}
 
 const playerProfileId=(()=>{let id=localStorage.getItem(PROFILE_ID_KEY);if(!id){id="p_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,10);localStorage.setItem(PROFILE_ID_KEY,id)}return id})();
 let profileName=localStorage.getItem(PROFILE_NAME_KEY)||"שחקן";
-profileNameInput.value=profileName;homeProfileName.textContent=profileName;renderPlayerXPUI();
+const PROFILE_COUNTRY_KEY="galaxyDefenderProfileCountry";
+let profileCountry=String(localStorage.getItem(PROFILE_COUNTRY_KEY)||"").toUpperCase();
+const COUNTRY_CODES=["AW","AF","AO","AI","AX","AL","AD","AE","AR","AM","AS","AQ","TF","AG","AU","AT","AZ","BI","BE","BJ","BQ","BF","BD","BG","BH","BS","BA","BL","BY","BZ","BM","BO","BR","BB","BN","BT","BV","BW","CF","CA","CC","CH","CL","CN","CI","CM","CD","CG","CK","CO","KM","CV","CR","CU","CW","CX","KY","CY","CZ","DE","DJ","DM","DK","DO","DZ","EC","EG","ER","EH","ES","EE","ET","FI","FJ","FK","FR","FO","FM","GA","GB","GE","GG","GH","GI","GN","GP","GM","GW","GQ","GR","GD","GL","GT","GF","GU","GY","HK","HM","HN","HR","HT","HU","ID","IM","IN","IO","IE","IR","IQ","IS","IL","IT","JM","JE","JO","JP","KZ","KE","KG","KH","KI","KN","KR","KW","LA","LB","LR","LY","LC","LI","LK","LS","LT","LU","LV","MO","MF","MA","MC","MD","MG","MV","MX","MH","MK","ML","MT","MM","MN","MP","MZ","MR","MS","MQ","MU","MW","MY","YT","NA","NC","NE","NF","NG","NI","NU","NL","NO","NP","NR","NZ","OM","PK","PA","PN","PE","PH","PW","PG","PL","PR","KP","PT","PY","PS","PF","QA","RE","RO","RU","RW","SA","SD","SN","SG","GS","SH","SJ","SB","SL","SV","SM","SO","PM","RS","SS","ST","SR","SK","SI","SE","SZ","SX","SC","SY","TC","TD","TG","TH","TJ","TK","TM","TL","TO","TT","TN","TR","TV","TW","TZ","UG","UA","UM","UY","US","UZ","VA","VC","VE","VG","VI","VN","VU","WF","WS","YE","ZA","ZM","ZW"];
+function countryDisplayName(code){
+  try{
+    const lang=(typeof GalaxyI18n!=="undefined"&&GalaxyI18n.getLanguage)?GalaxyI18n.getLanguage():navigator.language||"en";
+    return new Intl.DisplayNames([lang],{type:"region"}).of(code)||code;
+  }catch(e){return code}
+}
+function populateProfileCountrySelect(){
+  const select=document.getElementById("profileCountrySelect");
+  if(!select)return;
+  select.innerHTML="";
+  const none=document.createElement("option");
+  none.value="";
+  none.textContent=GalaxyI18n.translate("🌐 ללא מדינה");
+  select.appendChild(none);
+  COUNTRY_CODES.forEach(code=>{
+    const option=document.createElement("option");
+    option.value=code;
+    option.textContent=countryFlag(code)+" "+countryDisplayName(code);
+    select.appendChild(option);
+  });
+  select.value=COUNTRY_CODES.includes(profileCountry)?profileCountry:"";
+}
+function setProfileCountry(code){
+  profileCountry=String(code||"").toUpperCase();
+  if(!COUNTRY_CODES.includes(profileCountry))profileCountry="";
+  if(profileCountry)localStorage.setItem(PROFILE_COUNTRY_KEY,profileCountry);
+  else localStorage.removeItem(PROFILE_COUNTRY_KEY);
+}
+
+profileNameInput.value=profileName;homeProfileName.textContent=profileName;populateProfileCountrySelect();renderPlayerXPUI();
 function leaderboardKey(mode){return LEADERBOARD_PREFIX+mode}
 let globalLeaderboardCache=Object.fromEntries(Object.keys(difficultySettings).map(k=>[k,[]]));
 let globalLeaderboardReady=false;
@@ -288,6 +320,32 @@ async function updateGlobalPlayerCount(){
 function getStats(){try{const x=JSON.parse(localStorage.getItem(STATS_KEY)||"{}");return {totalTime:Number(x.totalTime)||0,games:Number(x.games)||0,played:x.played&&typeof x.played==="object"?x.played:{}}}catch(e){return {totalTime:0,games:0,played:{}}}}
 function saveStatsForGame(){const st=getStats();st.totalTime+=Math.max(0,Math.floor(gameTime));st.games++;st.played[difficulty]=(Number(st.played[difficulty])||0)+1;try{localStorage.setItem(STATS_KEY,JSON.stringify(st))}catch(e){}}
 function setProfileName(name){profileName=(String(name||"").trim()||"שחקן").slice(0,16);localStorage.setItem(PROFILE_NAME_KEY,profileName);homeProfileName.textContent=profileName}
+async function syncProfileToLeaderboard(){
+  if(!supabaseClient)return true;
+  const name=(String(profileName||"שחקן").trim()||"שחקן").slice(0,20);
+  const country=COUNTRY_CODES.includes(profileCountry)?profileCountry:null;
+  try{
+    const registry=await supabaseClient.from("player_registry").upsert({
+      player_id:playerProfileId,
+      player_name:name,
+      country_code:country,
+      last_seen:new Date().toISOString()
+    },{onConflict:"player_id"});
+    if(registry.error)throw registry.error;
+    const leaderboardUpdate=await supabaseClient.from("leaderboard").update({
+      player_name:name,
+      country_code:country
+    }).eq("player_id",playerProfileId);
+    if(leaderboardUpdate.error)throw leaderboardUpdate.error;
+    Object.keys(globalLeaderboardCache).forEach(mode=>{
+      globalLeaderboardCache[mode]=(globalLeaderboardCache[mode]||[]).map(entry=>entry.playerId===playerProfileId?{...entry,name,countryCode:country||""}:entry);
+    });
+    return true;
+  }catch(e){
+    console.warn("Profile sync failed.",e);
+    return false;
+  }
+}
 function getPersonalBest(mode=difficulty){
   const list=getLeaderboard(mode);
   const mine=list.find(x=>x.playerId===playerProfileId);
@@ -509,7 +567,32 @@ gameOverLeaderboardButton.addEventListener("click",e=>{e.preventDefault();e.stop
 
 profileButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openMyProfile()});
 closeProfileButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();closeProfile()});
-saveProfileNameButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();setProfileName(profileNameInput.value);renderProfile();renderAchievements();showMessage("✅ שם המשתמש נשמר!")});
+saveProfileNameButton.addEventListener("click",async e=>{
+  e.preventDefault();e.stopPropagation();
+  const newName=(String(profileNameInput.value||"").trim()||"שחקן").slice(0,16);
+  const newCountry=String(document.getElementById("profileCountrySelect")?.value||"").toUpperCase();
+  if(await isPlayerNameTaken(newName)){
+    showMessage(GalaxyI18n.translate("השם הזה כבר תפוס. בחר שם אחר."));
+    return;
+  }
+  const oldName=profileName;
+  const oldCountry=profileCountry;
+  setProfileName(newName);
+  setProfileCountry(newCountry);
+  const synced=await syncProfileToLeaderboard();
+  if(!synced){
+    setProfileName(oldName);
+    setProfileCountry(oldCountry);
+    profileNameInput.value=oldName;
+    populateProfileCountrySelect();
+    showMessage(GalaxyI18n.translate("לא ניתן לשמור את השם כרגע. נסה שוב."));
+    return;
+  }
+  profileNameInput.value=profileName;
+  populateProfileCountrySelect();
+  renderProfile();renderAchievements();
+  showMessage("✅ "+GalaxyI18n.translate("הפרופיל נשמר!"));
+});
 profileOverlay.addEventListener("click",e=>{if(e.target===profileOverlay)closeProfile()});
 function updateProfileButtonVisibility(){const b=document.getElementById("profileButton");if(b)b.style.display=(!gameStarted&&!gameRunning)?"flex":"none";}
 
