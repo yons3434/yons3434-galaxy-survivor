@@ -30,7 +30,12 @@ test("RPG cooldown never falls below one second, even with many fire-rate upgrad
 test("RPG uses an independent time-based cooldown and does not share the normal weapon cooldown", () => {
   assert.match(source, /let rpgCooldownUntil=0/);
   assert.match(source, /if\(performance\.now\(\)<rpgCooldownUntil\)return/);
-  assert.match(source, /rpgCooldownUntil=performance\.now\(\)\+getRpgCooldownMs\(fireRateLevel\)/);
+  assert.match(source, /rpgCooldownUntil=performance\.now\(\)\+getEffectiveRpgCooldownMs\(fireRateLevel\)/);
   assert.doesNotMatch(source, /if\(currentWeapon==="rpg"\)\{if\(player\.lastShot>0\)/);
   assert.match(source, /rpgCooldownUntil=0;gameStarted=true/);
+});
+
+test("Rage pickup boosts RPG reload speed by 50 percent", () => {
+  assert.match(source, /function getEffectiveRpgCooldownMs\(level\)\{return getRpgCooldownMs\(level\)\*\(deadlyLootRageActive\(\)\?2\/3:1\)\}/);
+  assert.match(source, /rpgCooldownUntil=performance\.now\(\)\+getEffectiveRpgCooldownMs\(fireRateLevel\)/);
 });
