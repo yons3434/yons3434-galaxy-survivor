@@ -196,6 +196,15 @@ Object.assign(ui,{
 "השם שלך":["Your name","Tu nombre","Ton nom","Dein Name","Твоё имя","اسمك"]
 });
 Object.assign(ui,{
+"שחקן":["Player","Jugador","Joueur","Spieler","Игрок","لاعب"],
+"שם לשיא":["Record name","Nombre para el récord","Nom du record","Rekordname","Имя для рекорда","اسم الرقم القياسي"],
+"כתוב את השם שיופיע בלוח התוצאות:":["Enter the name that will appear on the leaderboard:","Escribe el nombre que aparecerá en la clasificación:","Saisissez le nom qui apparaîtra dans le classement :","Gib den Namen ein, der in der Bestenliste erscheinen soll:","Введите имя, которое будет отображаться в таблице лидеров:","اكتب الاسم الذي سيظهر في لوحة المتصدرين:"],
+"שמור והמשך":["Save and continue","Guardar y continuar","Enregistrer et continuer","Speichern und fortfahren","Сохранить и продолжить","حفظ ومتابعة"],
+"יש להזין שם.":["Please enter a name.","Introduce un nombre.","Veuillez saisir un nom.","Bitte gib einen Namen ein.","Введите имя.","يرجى إدخال اسم."],
+"בודק אם השם פנוי…":["Checking if the name is available…","Comprobando si el nombre está disponible…","Vérification de la disponibilité du nom…","Überprüfe, ob der Name verfügbar ist…","Проверяем доступность имени…","جارٍ التحقق من توفر الاسم…"],
+"השם הזה כבר תפוס. בחר שם אחר.":["That name is already taken. Choose another name.","Ese nombre ya está ocupado. Elige otro nombre.","Ce nom est déjà pris. Choisissez un autre nom.","Dieser Name ist bereits vergeben. Wähle einen anderen Namen.","Это имя уже занято. Выберите другое имя.","هذا الاسم مستخدم بالفعل. اختر اسمًا آخر."],
+"לא ניתן לשמור את השם כרגע. נסה שוב.":["The name could not be saved right now. Try again.","No se pudo guardar el nombre ahora. Inténtalo de nuevo.","Impossible d’enregistrer le nom pour le moment. Réessayez.","Der Name konnte gerade nicht gespeichert werden. Versuche es erneut.","Сейчас не удалось сохранить имя. Попробуйте снова.","Не удалось сохранить имя сейчас. Попробуйте ещё раз."],
+"נכנסת ללוח התוצאות במקום":["You entered the leaderboard at place","Entraste en la clasificación en el puesto","Vous êtes entré dans le classement à la place","Du bist auf Platz","Вы вошли в таблицу лидеров на место","Вы вошли в таблицу лидеров на место"],
 "רמת שחקן":["Player Level","Nivel del jugador","Niveau du joueur","Spielerstufe","Уровень игрока","مستوى اللاعب"],
 "XP כולל":["total XP","XP total","XP total","XP insgesamt","всего XP","إجمالي XP"],
 "XP לרמה הבאה":["XP to next level","XP para el siguiente nivel","XP avant le niveau suivant","XP bis zum nächsten Level","XP до следующего уровня","XP للمستوى التالي"],
