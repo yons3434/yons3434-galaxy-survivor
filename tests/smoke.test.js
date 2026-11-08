@@ -396,6 +396,8 @@ test("low-health heartbeat renders visible red edges and scales with the selecte
   assert.match(js, /overlay\.style\.setProperty\("--heartbeat-strength",String\(intensityScale\)\)/);
   assert.match(css, /#lowHealthHeartbeatOverlay\{position:fixed;inset:0;z-index:9999/);
   assert.match(css, /linear-gradient\(to right,rgba\(255,0,15,var\(--heartbeat-red\)\)/);
+  assert.match(css, /66\.666%\{opacity:calc\(\.68 \* var\(--heartbeat-strength\)\);transform:scale\(1\)\}/);
+  assert.match(css, /100%\{opacity:0;transform:scale\(\.78\)\}/);
   assert.match(css, /@keyframes lowHealthHeartbeatPulse/);
 });
 
@@ -445,7 +447,10 @@ test("Ultra, shield, reward, and healing visual effects are wired and translatab
   assert.match(mini, /window\.GalaxyUltraMiniShips = \{ isActive: \(\) => ultraMiniModeActive \}/);
   assert.match(js, /function spawnFloatingReward\(drop\)/);
   assert.match(js, /function triggerHealingEffect\(amount=1\)/);
-  assert.match(js, /size:48\+Math\.random\(\)\*12/);
+  assert.match(js, /size:84/);
+  assert.match(js, /const finalPhase=Math\.max\(0,Math\.min\(1,\(progress-2\/3\)\/\(1\/3\)\)\),particleScale=1-\.9\*finalPhase/);
+  assert.match(js, /ctx\.globalAlpha=1-finalPhase/);
+  assert.match(js, /ctx\.scale\(particleScale,particleScale\)/);
   assert.match(js, /ctx\.font="900 "\+p\.size\+"px Arial"/);
   assert.match(js, /ctx\.lineWidth=2\.5/);
   assert.match(js, /drawFloatingRewardsAndHealing\(\)/);
