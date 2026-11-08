@@ -22,6 +22,8 @@ const ui={
 "⚔️ חרבות":["⚔️ Swords","⚔️ Espadas","⚔️ Épées","⚔️ Schwerter","⚔️ Мечи","⚔️ السيوف"],
 "💥 אפקטי פגיעה (רעידה)":["💥 Hit effects (shake)","💥 Efectos de impacto (vibración)","💥 Effets d’impact (secousse)","💥 Treffereffekte (Bildschirmwackeln)","💥 Эффекты попадания (тряска)","💥 تأثيرات الإصابة (اهتزاز)"],
 "🔴 מספרי נזק מעל אויבים":["🔴 Damage numbers above enemies","🔴 Números de daño sobre enemigos","🔴 Dégâts affichés au-dessus des ennemis","🔴 Schadenszahlen über Gegnern","🔴 Числа урона над врагами","🔴 أرقام الضرر فوق الأعداء"],
+"🔴 מספרי נזק ופרסים מעל אויבים":["🔴 Damage and reward numbers above enemies","🔴 Números de daño y recompensas sobre enemigos","🔴 Dégâts et récompenses au-dessus des ennemis","🔴 Schadens- und Belohnungszahlen über Gegnern","🔴 Числа урона и наград над врагами","🔴 أرقام الضرر والمكافآت فوق الأعداء"],
+"💚 אפקטי ריפוי":["💚 Healing effects","💚 Efectos de curación","💚 Effets de soin","💚 Heilungseffekte","💚 Эффекты лечения","💚 تأثيرات الشفاء"],
 "☄️ התפרקות מטאוריטים":["☄️ Meteorite breakup","☄️ Desintegración de meteoritos","☄️ Désintégration des météorites","☄️ Meteoritenzerfall","☄️ Разрушение метеоритов","☄️ تحطم النيازك"],
 "📱 כפתורי טאבלט/טלפון":["📱 Tablet/phone controls","📱 Controles de móvil/tableta","📱 Commandes tablette/téléphone","📱 Tablet-/Handysteuerung","📱 Управление на телефоне/планшете","📱 أزرار الهاتف/الجهاز اللوحي"],
 "🎮 צורת תנועה":["🎮 Movement style","🎮 Tipo de movimiento","🎮 Type de déplacement","🎮 Bewegungsart","🎮 Тип движения","🎮 نمط الحركة"],
