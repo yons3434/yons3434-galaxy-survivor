@@ -1555,7 +1555,7 @@ processSpecialEntities();
         if(b.rpg){b.dead=true;rpgExplosion(b.x,b.y,b.rpgMini===true);return}
         if(shouldSplitBullet(b)){b.dead=true;spawnSplitBullets(b);return}
         const piercingHit=getPiercingHit(b,a);if(!piercingHit)return;
-        const hitDamage=getContinuousFireDamage(a,b.damage*5*piercingHit.multiplier,b,performance.now());a.health-=hitDamage;showDamageNumber(a,hitDamage);applyPoison(a);applyFreeze(a);applyStun(a);applyBurn(a,false,hitDamage);
+        const hitDamage=getContinuousFireDamage(a,b.damage*5*piercingHit.multiplier,b,performance.now());a.health-=hitDamage;showDamageNumber(a,hitDamage);applyPoison(a);applyFreeze(a);applyStun(a);if(!b.burnFailed&&a.health>0&&burnLevel>0&&!applyBurn(a,false,hitDamage))b.burnFailed=true;
         if(chainLightningLevel>0)triggerChainLightning(a);
         if(piercingHit.deadAfterHit)b.dead=true;
         if(a.health<=0)destroyAsteroid(a);
@@ -1570,7 +1570,7 @@ processSpecialEntities();
         if(b.rpg){b.dead=true;rpgExplosion(b.x,b.y,b.rpgMini===true);return}
         if(shouldSplitBullet(b)){b.dead=true;spawnSplitBullets(b);return}
         const piercingHit=getPiercingHit(b,enemy);if(!piercingHit)return;
-        const hitDamage=getContinuousFireDamage(enemy,b.damage*5*piercingHit.multiplier,b,performance.now());enemy.health-=hitDamage;showDamageNumber(enemy,hitDamage);applyPoison(enemy);applyFreeze(enemy);applyStun(enemy);applyBurn(enemy,false,hitDamage);
+        const hitDamage=getContinuousFireDamage(enemy,b.damage*5*piercingHit.multiplier,b,performance.now());enemy.health-=hitDamage;showDamageNumber(enemy,hitDamage);applyPoison(enemy);applyFreeze(enemy);applyStun(enemy);if(!b.burnFailed&&enemy.health>0&&burnLevel>0&&!applyBurn(enemy,false,hitDamage))b.burnFailed=true;
         if(enemy.boss)screenShake(2,80);
         if(chainLightningLevel>0)triggerChainLightning(enemy);
         if(piercingHit.deadAfterHit)b.dead=true;
