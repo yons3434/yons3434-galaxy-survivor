@@ -261,6 +261,13 @@ test("laser and flamethrower show their actual continuous damage", () => {
   assert.match(js, /const flameDamage=effectiveDamage\(\)\*\.18\*scale;target\.health-=flameDamage;showDamageNumber\(target,flameDamage\)/);
 });
 
+test("poison visual indicator follows the permanent poison state", () => {
+  assert.match(js, /if\(Number\(a\.poisonStrength\)>0\)/);
+  assert.match(js, /if\(Number\(enemy\.poisonStrength\)>0\)/);
+  assert.doesNotMatch(js, /if\(a\.poisonUntil>performance\.now\(\)\)/);
+  assert.doesNotMatch(js, /if\(enemy\.poisonUntil>performance\.now\(\)\)/);
+});
+
 test("poison and burn damage-over-time ticks display their actual damage", () => {
   assert.match(js, /const poisonDamage=Math\.min\(Math\.max\(0,target\.health-1\),target\.health\*strength\)/);
   assert.match(js, /const strength=Math\.min\(1,Math\.max\(0,Number\(target\.poisonStrength\)\|\|0\)\)\*\(isBoss \? 0\.25 : 1\)/);
