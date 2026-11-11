@@ -493,3 +493,9 @@ test("rage card and deadly loot rage use the same strength and do not stack", ()
   assert.match(js, /rage:!deadlyLootRageActive\(\)&&!lowHealthActive\(\)/);
   assert.match(standalone, /function effectiveMoveSpeed\(\)\{let v=player\.speed;if\(lowHealthActive\(\)\)v\*=1\.2/);
 });
+
+test("Ultra 120-second achievement check runs only once instead of every frame", () => {
+  assert.match(js, /runUltraTimeAchievementChecked=false/);
+  assert.match(js, /runUltraModeSeconds>=120&&!runUltraTimeAchievementChecked\)\{runUltraTimeAchievementChecked=true;checkAchievements\(\)\}/);
+  assert.doesNotMatch(js, /runUltraModeSeconds>=120\)checkAchievements\(\)/);
+});
