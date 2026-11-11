@@ -499,3 +499,8 @@ test("Ultra 120-second achievement check runs only once instead of every frame",
   assert.match(js, /runUltraModeSeconds>=120&&!runUltraTimeAchievementChecked\)\{runUltraTimeAchievementChecked=true;checkAchievements\(\)\}/);
   assert.doesNotMatch(js, /runUltraModeSeconds>=120\)checkAchievements\(\)/);
 });
+
+test("asteroid poison rendering uses Number() correctly and cannot call it on the asteroid", () => {
+  assert.match(js, /if\\(Number\\(a\\.poisonStrength\\)>0\\)/);
+  assert.doesNotMatch(js, /if\\(a\\.Number\\(a\\.poisonStrength\\)>0\\)/);
+});
