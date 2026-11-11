@@ -323,6 +323,13 @@ test("piercing bullets hit each target multiple times with level-based reduced d
   assert.doesNotMatch(js, /function consumeBulletPierce/);
 });
 
+test("burn failure on a piercing bullet does not carry the burn to later targets", () => {
+  assert.match(js, /if\(!b\.burnFailed&&a\.health>0&&burnLevel>0&&!applyBurn\(a,false,hitDamage\)\)b\.burnFailed=true/);
+  assert.match(js, /if\(!b\.burnFailed&&enemy\.health>0&&burnLevel>0&&!applyBurn\(enemy,false,hitDamage\)\)b\.burnFailed=true/);
+  assert.doesNotMatch(js, /applyBurn\(a,false,hitDamage\);\s*if\(chainLightningLevel/);
+  assert.doesNotMatch(js, /applyBurn\(enemy,false,hitDamage\);\s*if\(enemy\.boss\)/);
+});
+
 test("continuous fire upgrade is rare and grows damage by 20 percentage points per level", () => {
   assert.match(js, /id:"continuousFire",rarity:"נדיר",rarityClass:"rare",icon:"🎯",title:"ירי רציף"/);
   assert.match(js, /lastDamage\*\(1\+\.2\*continuousFireLevel\)/);
