@@ -7,6 +7,7 @@ const root = path.resolve(__dirname, "..");
 const index = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const js = fs.readFileSync(path.join(root, "src", "game.js"), "utf8");
 const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
+const standalone = fs.readFileSync(path.join(root, "Galaxy-Defender.html"), "utf8");
 
 test("game simulation uses a fixed 60 FPS timestep independent of display refresh rate", () => {
   assert.match(js, /const FIXED_UPDATE_STEP=1000\/60/);
@@ -460,4 +461,12 @@ test("Ultra, shield, reward, and healing visual effects are wired and translatab
   assert.match(css, /0 0 105px 35px rgba\(0,255,75,\.58\)/);
   assert.match(catalog, /"💚 אפקטי ריפוי"/);
   assert.match(catalog, /"🔴 מספרי נזק ופרסים מעל אויבים"/);
+});
+
+test("standalone Galaxy-Defender healing plus effect matches the updated animation", () => {
+  assert.match(standalone, /function triggerHealingEffect\(amount=1\)/);
+  assert.match(standalone, /duration:1575\+Math\.random\(\)\*525,size:126/);
+  assert.match(standalone, /finalPhase=Math\.max\(0,Math\.min\(1,\(progress-2\/3\)\/\(1\/3\)\),particleScale=1-\.9\*finalPhase/);
+  assert.match(standalone, /ctx\.globalAlpha=1-finalPhase/);
+  assert.match(standalone, /drawHealingPlusParticles\(\)/);
 });
