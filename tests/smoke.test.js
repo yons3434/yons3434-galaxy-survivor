@@ -470,3 +470,12 @@ test("standalone Galaxy-Defender healing plus effect matches the updated animati
   assert.match(standalone, /ctx\.globalAlpha=1-finalPhase/);
   assert.match(standalone, /drawHealingPlusParticles\(\)/);
 });
+
+test("rage card and deadly loot rage use the same strength and do not stack", () => {
+  assert.match(js, /function rageActive\(\)\{return lowHealthActive\(\)\|\|deadlyLootRageActive\(\)\}/);
+  assert.match(js, /function effectiveMoveSpeed\(\)\{let v=player\.speed;if\(rageActive\(\)\)v\*=1\.2/);
+  assert.match(js, /function effectiveDamage\(\)\{return player\.damage\*\(rageActive\(\)\?1\.25:1\)/);
+  assert.match(js, /function effectiveFireRate\(\)\{let v=rageActive\(\)\?Math\.max\(2,player\.fireRate\/1\.5\):player\.fireRate/);
+  assert.match(js, /rage:!deadlyLootRageActive\(\)&&!lowHealthActive\(\)/);
+  assert.match(standalone, /function effectiveMoveSpeed\(\)\{let v=player\.speed;if\(lowHealthActive\(\)\)v\*=1\.2/);
+});
