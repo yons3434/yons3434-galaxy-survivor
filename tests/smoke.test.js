@@ -505,3 +505,11 @@ test("poison rendering uses Number() correctly for asteroids and enemies", () =>
   assert.match(js, /if\\(Number\\(enemy\\.poisonStrength\\)>0\\)/);
   assert.doesNotMatch(js, /\\.Number\\(/);
 });
+
+test("level-up healing happens after card selection and scales with the selected card level", () => {
+  assert.doesNotMatch(js, /xpNeeded=Math\.floor\(xpNeeded\*1\.25\);if\(levelHealLevel>0\)\{/);
+  assert.match(js, /case"levelHeal":levelHealLevel\+\+;\{const healAmount=Math\.min\(levelHealLevel,Math\.max\(0,player\.maxLives-player\.lives\)\);if\(healAmount>0\)\{player\.lives\+=healAmount;triggerHealingEffect\(healAmount\);\}\}break;/);
+  assert.match(js, /levelUpScreen\.style\.display="none";levelUpOpen=false;gameRunning=true;updateHUD\(\)/);
+  assert.match(standalone, /case"levelHeal":levelHealLevel\+\+;\{const healAmount=Math\.min\(levelHealLevel,Math\.max\(0,player\.maxLives-player\.lives\)\);if\(healAmount>0\)\{player\.lives\+=healAmount;triggerHealingEffect\(healAmount\);\}\}break;/);
+  assert.doesNotMatch(standalone, /xpNeeded=Math\.floor\(xpNeeded\*1\.25\);if\(levelHealLevel>0\)\{/);
+});
