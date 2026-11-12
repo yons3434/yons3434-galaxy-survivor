@@ -791,6 +791,13 @@ window.GAME_TRANSLATIONS=Object.freeze({
     "sourceTitle": "מיני־חללית RPG",
     "sourceDescription": "מוסיף מיני־חללית מיוחדת שיורה טילי RPG אוטומטיים."
   },
+  "infernoBomb": {
+    "title": ["Inferno Bomb","Bomba infernal","Bombe infernale","Höllenbombe","Адская бомба","قنبلة الجحيم"],
+    "description": ["Aim and click to lock a target. The bomb launches after one second and creates a damaging fire zone. Enemies and meteorites burn; you are immune to your own fire.","Apunta y haz clic para fijar el objetivo. La bomba se lanza tras un segundo y crea una zona de fuego dañina. Los enemigos y meteoritos arden; eres inmune a tu propio fuego.","Visez et cliquez pour verrouiller la cible. La bombe part après une seconde et crée une zone de feu qui inflige des dégâts. Les ennemis et météorites brûlent ; vous êtes immunisé contre votre propre feu.","Zielen und klicken, um das Ziel festzulegen. Die Bombe startet nach einer Sekunde und erzeugt eine schädliche Feuerzone. Gegner und Meteoriten brennen; du bist gegen dein eigenes Feuer immun.","Наведитесь и щёлкните, чтобы зафиксировать цель. Бомба запускается через секунду и создаёт огненную зону, наносящую урон. Враги и метеориты горят; вы невосприимчивы к собственному огню.","صوّب وانقر لتثبيت الهدف. تنطلق القنبلة بعد ثانية وتنشئ منطقة نارية مؤذية. تحترق الأعداء والنيازك، وأنت محصّن ضد نارك."]
+    ,
+    "sourceTitle": "פצצת תופת",
+    "sourceDescription": "כוון עם העכבר ולחץ כדי לנעול מטרה. הפצצה נזרקת כעבור שנייה ויוצרת אזור אש שפוגע באויבים ובמטאוריטים. ביציאה מהאש נגרם נזק נוסף. השחקן חסין לאש שלו."
+  },
   "blackHole": {
     "title": [
       "Black Hole Gun",
