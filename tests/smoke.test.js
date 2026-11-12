@@ -513,3 +513,19 @@ test("level-up healing happens after card selection and scales with the selected
   assert.match(standalone, /case"levelHeal":levelHealLevel\+\+;\{const healAmount=Math\.min\(levelHealLevel,Math\.max\(0,player\.maxLives-player\.lives\)\);if\(healAmount>0\)\{player\.lives\+=healAmount;triggerHealingEffect\(healAmount\);\}\}break;/);
   assert.doesNotMatch(standalone, /xpNeeded=Math\.floor\(xpNeeded\*1\.25\);if\(levelHealLevel>0\)\{/);
 });
+
+
+test("Inferno Bomb is an Amazing card with nine levels, scaling cooldown, area, damage, duration, and ammo", () => {
+  assert.match(js, /id:"infernoBomb",rarity:"מדהים",rarityClass:"amazing",icon:"💣",title:"פצצת תופת"/);
+  assert.match(js, /infernoBombLevel=Math\.min\(9,infernoBombLevel\+1\)/);
+  assert.match(js, /Math\.max\(1000,5000-500\*Math\.max\(0,infernoBombLevel-1\)\)/);
+  assert.match(js, /return 1\+\.25\*Math\.max\(0,infernoBombLevel-1\)/);
+  assert.match(js, /infernoBombMaxAmmo=4/);
+  assert.match(js, /infernoBombAmmoChance\(\)/);
+  assert.match(js, /totalDamage\*\.5\/INFERNO_BOMB_BASE\.exitPulses/);
+  assert.match(js, /launchAt:now\+1000/);
+  assert.match(js, /updateInfernoBombs\(\)/);
+  assert.match(js, /drawInfernoBombEffects\(\)/);
+  assert.match(index, /id="infernoBombHud"/);
+  assert.match(fs.readFileSync(path.join(root, "src", "translations.js"), "utf8"), /"infernoBomb"/);
+});
