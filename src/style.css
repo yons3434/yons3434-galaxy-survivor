@@ -282,21 +282,3 @@ body :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achieve
 #bombEffectOverlay{position:fixed;inset:0;z-index:180;pointer-events:none;background:#fff;opacity:0}
 #bombEffectOverlay.active{animation:bombEffectFlash 1s linear forwards}
 @keyframes bombEffectFlash{0%{opacity:0}25%{opacity:1}75%{opacity:1}100%{opacity:0}}
-
-
-/* Engine flame customizer */
-.engineFlameSettings{margin:12px 0;text-align:center}
-.engineFlameOpenButton{width:100%;background:linear-gradient(100deg,#42220c,#7a3b12);border:1px solid #ffad42;color:#fff}
-.engineFlameCustomizer{margin-top:12px;padding:13px;border:1px solid rgba(255,166,64,.55);border-radius:13px;background:rgba(255,145,40,.07);text-align:center}
-.engineFlameCustomizer h2{font-size:19px;margin:4px 0 7px;color:#ffd08a}
-.engineFlameCustomizer p{font-size:13px;color:#c8d4e8;margin:0 0 10px}
-#engineFlamePreview{display:block;width:100%;max-width:480px;height:auto;margin:0 auto 12px;border:1px solid #455a78;border-radius:10px;background:#050a17}
-.engineFlameControls{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0 13px;text-align:right}
-.engineFlameControls label{display:flex;flex-direction:column;gap:7px;padding:9px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:14px}
-.engineFlameControls select{width:100%;padding:8px;border-radius:7px;background:#080d20;color:#fff;border:1px solid #4cc9f0}
-.engineFlameControls input[type=range]{width:100%;accent-color:#ff9b35}
-.engineFlameControls .engineFlamePower{grid-column:1/-1}
-.engineFlameControls .engineFlameCheck{flex-direction:row;align-items:center;justify-content:space-between}
-.engineFlameControls .engineFlameCheck input{width:20px;height:20px;accent-color:#ff9b35}
-#closeEngineFlameCustomizer{width:100%;background:#263b59}
-@media(max-width:560px){.engineFlameControls{grid-template-columns:1fr}.engineFlameControls .engineFlamePower{grid-column:auto}}
