@@ -12,5 +12,13 @@ test("engine flame effect and customizer are fully removed", () => {
 test("game script still parses after removing the optional effect", () => {
   assert.doesNotThrow(() => new vm.Script(game, { filename: "src/game.js" }));
   assert.match(game, /function draw\(\)/);
-  assert.match(game, /function initGame\(/);
+  assert.match(game, /function resizeCanvas\(/);
+});
+test("space dust effect is drawn behind gameplay and has a persistent settings toggle", () => {
+  assert.match(html, /id="uiSpaceDust"/);
+  assert.match(game, /spaceDustEnabled=localStorage\.getItem\("galaxyDefenderSpaceDust"\)!=="off"/);
+  assert.match(game, /function drawSpaceDust\(/);
+  assert.match(game, /drawSpaceDust\(\);drawInfernoBombEffects\(\)/);
+  assert.match(game, /localStorage\.setItem\("galaxyDefenderSpaceDust"/);
+  assert.match(translations, /"🌌 אבק חלל":\["🌌 Space dust"/);
 });
