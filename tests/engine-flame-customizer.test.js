@@ -23,7 +23,7 @@ test("space background picker is separate from settings and supports presets and
   assert.match(game, /function drawSpaceBackground\(/);
   assert.match(game, /drawSpaceBackground\(\);drawSpaceDust\(\)/);
   assert.match(game, /galaxyDefenderCustomBackground/);
-  assert.match(game, /file\.size>5\*1024\*1024/);
+  assert.match(game, /file\\.size>3\\*1024\\*1024/);
   assert.match(game, /setSpaceBackground\(button\.dataset\.spaceBackground\)/);
   assert.match(css, /#spaceBackgroundPanel/);
   assert.match(translations, /"🌌 רקע חלל":\["🌌 Space background"/);
