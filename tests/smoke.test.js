@@ -220,7 +220,7 @@ test("poison, freeze, and stun also affect meteors while confusion remains enemy
 
 test("expanded choice card adds one level-up option per pick up to six, then disappears for the current game", () => {
   assert.match(js, /id:"expandedChoice",rarity:"אדיר",rarityClass:"epic",icon:"🃏",title:"בחירה מורחבת"/);
-  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion"\,\"deadlyLoot\"]\)/);
+  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion","deadlyLoot","infernoBomb"\]/);
   assert.match(js, /case"expandedChoice":return expandedChoiceLevel/);
   assert.match(js, /const choices=window\.GalaxyLuck\.chooseUpgradeChoices\(availableFiltered,luckLevel,Math\.min\(6,3\+expandedChoiceLevel\)\)/);
   assert.match(js, /u\.id==="expandedChoice"&&expandedChoiceLevel>=3/);
@@ -295,7 +295,7 @@ test("all boss types receive five times their previous base health", () => {
 });
 
 test("flamethrower upgrades cap at X, show maximum label, scale damage and range by 50 points, and burn for five ticks", () => {
-  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion"\,\"deadlyLoot\"]\)/);
+  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion","deadlyLoot","infernoBomb"\]/);
   assert.match(js, /u\.id==="flamethrower"&&flamethrowerLevel>=10/);
   assert.match(js, /upgrade\.id==="flamethrower"&&flamethrowerLevel===9/);
   assert.match(js, /flamethrowerLevel=Math\.min\(10,flamethrowerLevel\+1\)/);
@@ -496,7 +496,7 @@ test("rage card and deadly loot rage use the same strength and do not stack", ()
 
 test("Ultra 120-second achievement check runs only once instead of every frame", () => {
   assert.match(js, /runUltraTimeAchievementChecked=false/);
-  assert.match(js, /runUltraModeSeconds>=120&&!runUltraTimeAchievementChecked\)\{runUltraTimeAchievementChecked=true;checkAchievements\(\)\}/);
+  assert.match(js, /runUltraModeSeconds>=120\)unlockAchievement\("ultraUnbreakableShield"\)/);
   assert.doesNotMatch(js, /runUltraModeSeconds>=120\)checkAchievements\(\)/);
 });
 
