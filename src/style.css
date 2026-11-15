@@ -279,4 +279,6 @@ body :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achieve
 #healPulseOverlay.active{visibility:visible;animation:healScreenPulse .9s ease-out forwards}
 @keyframes healScreenPulse{0%{opacity:.88;border-width:26px;box-shadow:inset 0 0 105px 35px rgba(0,255,75,.58),inset 0 0 34px 12px rgba(175,255,190,.5)}42%{opacity:.58;border-width:17px;box-shadow:inset 0 0 75px 24px rgba(0,255,75,.4),inset 0 0 24px 8px rgba(175,255,190,.32)}100%{opacity:0;border-width:0;box-shadow:inset 0 0 0 0 rgba(0,255,75,0);visibility:hidden}}
 
-#bombFlashOverlay{position:fixed;inset:0;z-index:180;pointer-events:none;background:#fff;opacity:0}
+#bombEffectOverlay{position:fixed;inset:0;z-index:180;pointer-events:none;background:#fff;opacity:0}
+#bombEffectOverlay.active{animation:bombEffectFlash 1s linear forwards}
+@keyframes bombEffectFlash{0%{opacity:0}25%{opacity:1}75%{opacity:1}100%{opacity:0}}
