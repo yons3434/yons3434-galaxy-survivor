@@ -29,6 +29,7 @@ const ui={
 "💚 אפקטי ריפוי":["💚 Healing effects","💚 Efectos de curación","💚 Effets de soin","💚 Heilungseffekte","💚 Эффекты лечения","💚 تأثيرات الشفاء"],
 "אפקט פצצה💣":["Bomb effect💣","Efecto de bomba💣","Effet de bombe💣","Bombeneffekt💣","Эффект бомбы💣","تأثير القنبلة💣"],
 "☄️ התפרקות מטאוריטים":["☄️ Meteorite breakup","☄️ Desintegración de meteoritos","☄️ Désintégration des météorites","☄️ Meteoritenzerfall","☄️ Разрушение метеоритов","☄️ تحطم النيازك"],
+"🌌 אבק חלל":["🌌 Space dust","🌌 Polvo espacial","🌌 Poussière spatiale","🌌 Weltraumstaub","🌌 Космическая пыль","🌌 غبار الفضاء"],
 "📱 כפתורי טאבלט/טלפון":["📱 Tablet/phone controls","📱 Controles de móvil/tableta","📱 Commandes tablette/téléphone","📱 Tablet-/Handysteuerung","📱 Управление на телефоне/планшете","📱 أزرار الهاتف/الجهاز اللوحي"],
 "🎮 צורת תנועה":["🎮 Movement style","🎮 Tipo de movimiento","🎮 Type de déplacement","🎮 Bewegungsart","🎮 Тип движения","🎮 نمط الحركة"],
 "⚪ עיגול גרירה":["⚪ Drag joystick","⚪ Joystick táctil","⚪ Joystick à glisser","⚪ Zieh-Joystick","⚪ Джойстик перетаскивания","⚪ عصا تحكم بالسحب"],
