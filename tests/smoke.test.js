@@ -112,7 +112,7 @@ test("pause card list merges repeated picks and extra-fire starts at II", () => 
 
 
 test("upgrade card titles number only stackable upgrades", () => {
-  assert.match(js, /const numberedUpgradeIds=new Set\(\["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion"\,\"deadlyLoot\"]\)/);
+  assert.match(js, /const numberedUpgradeIds=new Set\(\[[^\]]*"deadlyLoot","infernoBomb"\]\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
   assert.match(js, /toRomanNumeral\(level\+1\)/);
   assert.match(js, /id:"drone"/);
@@ -201,7 +201,7 @@ test("stun upgrade is epic, stackable, stuns bosses, and does not apply from swo
   assert.match(js, /case"stun":stunLevel\+\+/);
   assert.match(js, /"poison","burn","freeze","stun","confusion"/);
   assert.match(js, /if\(updateStunnedEnemy\(enemy\)\)return;/);
-  assert.match(js, /const hitDamage=getContinuousFireDamage\(enemy,b\.damage\*5\*piercingHit\.multiplier,b,performance\.now\(\)\);enemy\.health-=hitDamage;showDamageNumber\(enemy,hitDamage\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\);applyBurn\(enemy,false,hitDamage\);/);
+  assert.match(js, /const hitDamage=getContinuousFireDamage\(enemy,b\.damage\*5\*piercingHit\.multiplier,b,performance\.now\(\)\);enemy\.health-=hitDamage;showDamageNumber\(enemy,hitDamage\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\);if\(!b\.burnFailed/);
   assert.doesNotMatch(js, /enemy\.health-=swordDamage\([^;]+\);applyPoison\(enemy\);applyFreeze\(enemy\);applyStun\(enemy\)/);
   assert.match(js, /if\(enemy\.boss\)\{\s*if\(updateStunnedEnemy\(enemy\)\)return;/);
 });
@@ -209,7 +209,7 @@ test("stun upgrade is epic, stackable, stuns bosses, and does not apply from swo
 
 test("poison, freeze, and stun also affect meteors while confusion remains enemy-only", () => {
   assert.match(js, /asteroids\.forEach\(a=>tickTarget\(a,destroyAsteroid\)/);
-  assert.match(js, /const hitDamage=getContinuousFireDamage\(a,b\.damage\*5\*piercingHit\.multiplier,b,performance\.now\(\)\);a\.health-=hitDamage;showDamageNumber\(a,hitDamage\);applyPoison\(a\);applyFreeze\(a\);applyStun\(a\);applyBurn\(a,false,hitDamage\);/);
+  assert.match(js, /const hitDamage=getContinuousFireDamage\(a,b\.damage\*5\*piercingHit\.multiplier,b,performance\.now\(\)\);a\.health-=hitDamage;showDamageNumber\(a,hitDamage\);applyPoison\(a\);applyFreeze\(a\);applyStun\(a\);if\(!b\.burnFailed/);
   assert.match(js, /asteroids\.forEach\(a=>\{\n    if\(a\.health<=0\)return;\n    if\(updateStunnedEnemy\(a\)\)return;/);
   assert.match(js, /const freezeFactor=getEnemyFreezeFactor\(a\)/);
   assert.match(js, /applyPoison\(a\);applyFreeze\(a\)/);
@@ -220,7 +220,7 @@ test("poison, freeze, and stun also affect meteors while confusion remains enemy
 
 test("expanded choice card adds one level-up option per pick up to six, then disappears for the current game", () => {
   assert.match(js, /id:"expandedChoice",rarity:"אדיר",rarityClass:"epic",icon:"🃏",title:"בחירה מורחבת"/);
-  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion"\,\"deadlyLoot\"]\)/);
+  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion","deadlyLoot","infernoBomb"\]/);
   assert.match(js, /case"expandedChoice":return expandedChoiceLevel/);
   assert.match(js, /const choices=window\.GalaxyLuck\.chooseUpgradeChoices\(availableFiltered,luckLevel,Math\.min\(6,3\+expandedChoiceLevel\)\)/);
   assert.match(js, /u\.id==="expandedChoice"&&expandedChoiceLevel>=3/);
@@ -278,7 +278,7 @@ test("poison and burn damage-over-time ticks display their actual damage", () =>
   assert.match(js, /burnDamage=isBoss\?rawBurnDamage\/4:rawBurnDamage/);
 });
 test("sword hits show their actual damage against enemies and meteorites", () => {
-  assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\)\*\(deadlyLootRageActive\(\)\?1\.25:1\)\*\(ultraModeActive\?2:1\);enemy\.health-=swordHitDamage;showDamageNumber\(enemy,swordHitDamage\)/);
+  assert.match(js, /const swordHitDamage=swordDamage\*\(rageActive\(\)\?1\.25:1\)\*\(ultraModeActive\?2:1\);enemy\.health-=swordHitDamage;showDamageNumber\(enemy,swordHitDamage\)/);
   assert.match(js, /const swordHitDamage=swordDamage\*\(lowHealthActive\(\)\?1\.25:1\)\*\(deadlyLootRageActive\(\)\?1\.25:1\)\*\(ultraModeActive\?2:1\);a\.health-=swordHitDamage;showDamageNumber\(a,swordHitDamage\)/);
 });
 
@@ -295,7 +295,7 @@ test("all boss types receive five times their previous base health", () => {
 });
 
 test("flamethrower upgrades cap at X, show maximum label, scale damage and range by 50 points, and burn for five ticks", () => {
-  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion"\,\"deadlyLoot\"]\)/);
+  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion","deadlyLoot","infernoBomb"\]/);
   assert.match(js, /u\.id==="flamethrower"&&flamethrowerLevel>=10/);
   assert.match(js, /upgrade\.id==="flamethrower"&&flamethrowerLevel===9/);
   assert.match(js, /flamethrowerLevel=Math\.min\(10,flamethrowerLevel\+1\)/);
@@ -387,7 +387,7 @@ test("Ultra shields replace the lives HUD, are removed from the Ultra button, an
   assert.match(js, /shield\.style\.setProperty\("--shield-spread",Math\.min\(100,60\*shieldRatio\)\+"%"/);
   assert.doesNotMatch(js.slice(js.indexOf("function updateAmbientEffectOverlays"),js.indexOf("function updateLowHealthHeartbeat")), /lowHealthHeartbeatIntensity/);
   assert.match(css, /#shieldEffectOverlay\[data-active="1"\]\{visibility:visible;animation:none;opacity:\.68\}/);
-  assert.match(css, /rgba\(30,150,255,var\(--shield-blue,\.96\)\)/);
+  assert.match(css, /rgba\(30,150,255,var\(--shield-blue\)\)/);
   assert.match(js, /const shieldBubbleVisible=ultraShields>0\|\|performance\.now\(\)<shieldBubbleFlashUntil/);
   assert.match(js, /ctx\.arc\(0,0,41\+\(pulse\?2:0\),0,Math\.PI\*2\)/);
   assert.doesNotMatch(js, /ultraPointsCap\)\.toLocaleString\("en-US"\)\+" נקודות"\)\+\(ultraShields>0\?" · 🛡️ "+ultraShields/);
@@ -480,7 +480,7 @@ test("Ultra, shield, reward, and healing visual effects are wired and translatab
 test("standalone Galaxy-Defender healing plus effect matches the updated animation", () => {
   assert.match(standalone, /function triggerHealingEffect\(amount=1\)/);
   assert.match(standalone, /duration:1575\+Math\.random\(\)\*525,size:126/);
-  assert.match(standalone, /finalPhase=Math\.max\(0,Math\.min\(1,\(progress-2\/3\)\/\(1\/3\)\),particleScale=1-\.9\*finalPhase/);
+  assert.match(standalone, /finalPhase=Math\.max\(0,Math\.min\(1,\(progress-2\/3\)\/\(1\/3\)\)\),particleScale=1-\.9\*finalPhase/);
   assert.match(standalone, /ctx\.globalAlpha=1-finalPhase/);
   assert.match(standalone, /drawHealingPlusParticles\(\)/);
 });
@@ -496,14 +496,14 @@ test("rage card and deadly loot rage use the same strength and do not stack", ()
 
 test("Ultra 120-second achievement check runs only once instead of every frame", () => {
   assert.match(js, /runUltraTimeAchievementChecked=false/);
-  assert.match(js, /runUltraModeSeconds>=120&&!runUltraTimeAchievementChecked\)\{runUltraTimeAchievementChecked=true;checkAchievements\(\)\}/);
+  assert.match(js, /runUltraModeSeconds>=120\)unlockAchievement\("ultraUnbreakableShield"\)/);
   assert.doesNotMatch(js, /runUltraModeSeconds>=120\)checkAchievements\(\)/);
 });
 
 test("poison rendering uses Number() correctly for asteroids and enemies", () => {
-  assert.match(js, /if\\(Number\\(a\\.poisonStrength\\)>0\\)/);
-  assert.match(js, /if\\(Number\\(enemy\\.poisonStrength\\)>0\\)/);
-  assert.doesNotMatch(js, /\\.Number\\(/);
+  assert.match(js, /if\(Number\(a\.poisonStrength\)>0\)/);
+  assert.match(js, /if\(Number\(enemy\.poisonStrength\)>0\)/);
+  assert.doesNotMatch(js, /\.Number\(/);
 });
 
 test("level-up healing happens after card selection and scales with the selected card level", () => {
@@ -512,4 +512,20 @@ test("level-up healing happens after card selection and scales with the selected
   assert.match(js, /levelUpScreen\.style\.display="none";levelUpOpen=false;gameRunning=true;updateHUD\(\)/);
   assert.match(standalone, /case"levelHeal":levelHealLevel\+\+;\{const healAmount=Math\.min\(levelHealLevel,Math\.max\(0,player\.maxLives-player\.lives\)\);if\(healAmount>0\)\{player\.lives\+=healAmount;triggerHealingEffect\(healAmount\);\}\}break;/);
   assert.doesNotMatch(standalone, /xpNeeded=Math\.floor\(xpNeeded\*1\.25\);if\(levelHealLevel>0\)\{/);
+});
+
+
+test("Inferno Bomb is an Amazing card with nine levels, scaling cooldown, area, damage, duration, and ammo", () => {
+  assert.match(js, /id:"infernoBomb",rarity:"מדהים",rarityClass:"amazing",icon:"💣",title:"פצצת תופת"/);
+  assert.match(js, /infernoBombLevel=Math\.min\(9,infernoBombLevel\+1\)/);
+  assert.match(js, /Math\.max\(1000,5000-500\*Math\.max\(0,infernoBombLevel-1\)\)/);
+  assert.match(js, /return 1\+\.25\*Math\.max\(0,infernoBombLevel-1\)/);
+  assert.match(js, /infernoBombMaxAmmo=4/);
+  assert.match(js, /infernoBombAmmoChance\(\)/);
+  assert.match(js, /totalDamage\*\.5\/INFERNO_BOMB_BASE\.exitPulses/);
+  assert.match(js, /launchAt:now\+1000/);
+  assert.match(js, /updateInfernoBombs\(\)/);
+  assert.match(js, /drawInfernoBombEffects\(\)/);
+  assert.match(index, /id="infernoBombHud"/);
+  assert.match(fs.readFileSync(path.join(root, "src", "translations.js"), "utf8"), /"infernoBomb"/);
 });

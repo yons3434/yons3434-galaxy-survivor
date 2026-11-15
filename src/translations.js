@@ -9,6 +9,8 @@ const ui={
 "🔫 תחמושת נאספה":["🔫 Ammo collected","🔫 Munición recogida","🔫 Munitions récupérées","🔫 Munition gesammelt","🔫 Боеприпасы собраны","🔫 تم جمع الذخيرة"],
 "🔥 מצב זעם הופעל!":["🔥 Rage activated!","🔥 ¡Furia activada!","🔥 Rage activée !","🔥 Wut aktiviert!","🔥 Ярость активирована!","🔥 تم تفعيل الغضب!"],
 "🎁 נאסף שלל!":["🎁 Loot collected!","🎁 ¡Botín recogido!","🎁 Butin récupéré !","🎁 Beute gesammelt!","🎁 Добыча собрана!","🎁 تم جمع الغنيمة!"],
+"💣 אין פצצות זמינות!":["💣 No bombs available!","💣 ¡No hay bombas disponibles!","💣 Aucune bombe disponible !","💣 Keine Bomben verfügbar!","💣 Нет доступных бомб!","💣 لا توجد قنابل متاحة!"],
+"💣 +1 פצצה!":["💣 +1 Bomb!","💣 ¡+1 bomba!","💣 +1 bombe !","💣 +1 Bombe!","💣 +1 бомба!","💣 +1 قنبلة!"],
 "⚙️ הגדרות ממשק":["⚙️ Interface Settings","⚙️ Ajustes de interfaz","⚙️ Paramètres de l’interface","⚙️ Oberflächeneinstellungen","⚙️ Настройки интерфейса","⚙️ إعدادات الواجهة"],
 "הצג או הסתר חלקים מה־HUD וכבה את כפתורי המגע בטלפון.":["Show or hide HUD elements and disable mobile touch controls.","Muestra u oculta elementos del HUD y desactiva los controles táctiles.","Afficher ou masquer des éléments du HUD et désactiver les commandes tactiles.","HUD-Elemente ein- oder ausblenden und Touch-Steuerung deaktivieren.","Показывать или скрывать элементы HUD и отключать сенсорное управление.","إظهار عناصر HUD أو إخفاؤها وتعطيل أدوات التحكم باللمس."],
 "שפה":["Language","Idioma","Langue","Sprache","Язык","اللغة"],
@@ -790,6 +792,13 @@ window.GAME_TRANSLATIONS=Object.freeze({
     ],
     "sourceTitle": "מיני־חללית RPG",
     "sourceDescription": "מוסיף מיני־חללית מיוחדת שיורה טילי RPG אוטומטיים."
+  },
+  "infernoBomb": {
+    "title": ["Inferno Bomb","Bomba infernal","Bombe infernale","Höllenbombe","Адская бомба","قنبلة الجحيم"],
+    "description": ["Aim and click to lock a target. The bomb launches after one second and creates a damaging fire zone. Enemies and meteorites burn; you are immune to your own fire.","Apunta y haz clic para fijar el objetivo. La bomba se lanza tras un segundo y crea una zona de fuego dañina. Los enemigos y meteoritos arden; eres inmune a tu propio fuego.","Visez et cliquez pour verrouiller la cible. La bombe part après une seconde et crée une zone de feu qui inflige des dégâts. Les ennemis et météorites brûlent ; vous êtes immunisé contre votre propre feu.","Zielen und klicken, um das Ziel festzulegen. Die Bombe startet nach einer Sekunde und erzeugt eine schädliche Feuerzone. Gegner und Meteoriten brennen; du bist gegen dein eigenes Feuer immun.","Наведитесь и щёлкните, чтобы зафиксировать цель. Бомба запускается через секунду и создаёт огненную зону, наносящую урон. Враги и метеориты горят; вы невосприимчивы к собственному огню.","صوّب وانقر لتثبيت الهدف. تنطلق القنبلة بعد ثانية وتنشئ منطقة نارية مؤذية. تحترق الأعداء والنيازك، وأنت محصّن ضد نارك."]
+    ,
+    "sourceTitle": "פצצת תופת",
+    "sourceDescription": "כוון עם העכבר ולחץ כדי לנעול מטרה. הפצצה נזרקת כעבור שנייה ויוצרת אזור אש שפוגע באויבים ובמטאוריטים. ביציאה מהאש נגרם נזק נוסף. השחקן חסין לאש שלו."
   },
   "blackHole": {
     "title": [
