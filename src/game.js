@@ -834,7 +834,7 @@ function addBossSpeedCombo(){
   speedComboPermanentBonus=Math.min(9,speedComboPermanentBonus+bonus);
   updateSpeedComboUI();
 }
-function shoot(){if(!gameRunning||paused||levelUpOpen)return;if(currentWeapon==="laser"||currentWeapon==="flamethrower")return;if(currentWeapon==="blackHole"){if(player.lastShot>0){player.lastShot--;return}if(blackHoleAmmo<=0){showMessage("🌌 נגמרו יריות חור שחור!");return}shootBlackHole();blackHoleAmmo--;ammo.blackHole=blackHoleAmmo;player.lastShot=Math.max(24,48-fireRateLevel*2);updateHUD();return;}if(currentWeapon==="rpg"){if(performance.now()<rpgCooldownUntil)return;if(ammo.rpg<=0){showMessage("🚀 נגמרה תחמושת ה־RPG!");return}shootRPG();ammo.rpg--;rpgCooldownUntil=performance.now()+getEffectiveRpgCooldownMs(fireRateLevel);updateHUD();return}if(currentWeapon!=="pistol"&&ammo[currentWeapon]!==Infinity&&ammo[currentWeapon]<=0){showMessage("🎯 נגמרה התחמושת!");return}if(player.lastShot>0){player.lastShot--;return}if(currentWeapon==="shotgun"){shootShotgun();ammo.shotgun--}else shootPistol();player.lastShot=Math.max(2,effectiveFireRate()-fireRateLevel*2);updateHUD()}
+function shoot(){if(!gameRunning||paused||levelUpOpen)return;if(currentWeapon==="laser"||currentWeapon==="flamethrower"||currentWeapon==="infernoBomb")return;if(currentWeapon==="blackHole"){if(player.lastShot>0){player.lastShot--;return}if(blackHoleAmmo<=0){showMessage("🌌 נגמרו יריות חור שחור!");return}shootBlackHole();blackHoleAmmo--;ammo.blackHole=blackHoleAmmo;player.lastShot=Math.max(24,48-fireRateLevel*2);updateHUD();return;}if(currentWeapon==="rpg"){if(performance.now()<rpgCooldownUntil)return;if(ammo.rpg<=0){showMessage("🚀 נגמרה תחמושת ה־RPG!");return}shootRPG();ammo.rpg--;rpgCooldownUntil=performance.now()+getEffectiveRpgCooldownMs(fireRateLevel);updateHUD();return}if(currentWeapon!=="pistol"&&ammo[currentWeapon]!==Infinity&&ammo[currentWeapon]<=0){showMessage("🎯 נגמרה התחמושת!");return}if(player.lastShot>0){player.lastShot--;return}if(currentWeapon==="shotgun"){shootShotgun();ammo.shotgun--}else shootPistol();player.lastShot=Math.max(2,effectiveFireRate()-fireRateLevel*2);updateHUD()}
 function createBullet(angle,speed,damage,size,extra={}){bullets.push({x:player.x,y:player.y-30,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,damage,size,pierceRemaining:piercingLevel,hitTargets:[],piercingHits:[],homing:homingLevel>0,splitGeneration:0,splitTravel:0,...extra})}
 function getPiercingHit(b,target){
   if(!b||!target)return null;
@@ -1449,11 +1449,12 @@ function infernoBombCooldownMs(){return Math.max(1000,5000-500*Math.max(0,infern
 function infernoBombAmmoChance(){return Math.min(64,10+3*infernoBombLevel+2*deadlyLootLevel+luckLevel)}
 function infernoTargetRadius(target,isAsteroid){return isAsteroid?(Number(target.size)||16):(target.boss?55:(Number(target.size)||25))}
 function infernoApplyDamage(target,amount){if(!target||target.health<=0||!(amount>0))return 0;const actual=Math.min(target.health,amount);target.health-=actual;showDamageNumber(target,actual);return actual}
+function triggerBombEffect(){if(!bombEffectEnabled)return;const overlay=document.getElementById("bombEffectOverlay");if(!overlay)return;overlay.classList.remove("active");void overlay.offsetWidth;overlay.classList.add("active")}
 function infernoCreateFireZone(x,y,now){
  const scale=infernoBombScale(),radius=INFERNO_BOMB_BASE.radius*scale;
  const zone={x,y,radius,damage:INFERNO_BOMB_BASE.pulseDamage*scale,expiresAt:now+INFERNO_BOMB_BASE.durationMs*scale,nextTickAt:now+500,targets:new Map()};
  for(const target of [...enemies,...asteroids]){if(target.health>0&&Math.hypot(target.x-x,target.y-y)<=radius+infernoTargetRadius(target,asteroids.includes(target)))infernoApplyDamage(target,INFERNO_BOMB_BASE.directDamage*scale)}
- if(bombEffectEnabled)infernoExplosionVisuals.push({x,y,radius,startAt:now,duration:1000});
+ if(bombEffectEnabled)infernoExplosionVisuals.push({x,y,radius,startAt:now,duration:1000});triggerBombEffect();
  infernoFireZones.push(zone);
 }
 function infernoBeginExitBurn(target,totalDamage,now){if(totalDamage>0&&target&&target.health>0)infernoExitBurns.push({target,damagePerPulse:totalDamage*.5/INFERNO_BOMB_BASE.exitPulses,pulsesLeft:INFERNO_BOMB_BASE.exitPulses,nextAt:now+1000})}
@@ -1499,7 +1500,7 @@ function drawInfernoBombEffects(){
  const now=performance.now();
  for(const zone of infernoFireZones){const pulse=.88+.12*Math.sin(now/90);ctx.save();ctx.globalAlpha=.24;ctx.fillStyle="#ff3b0b";ctx.shadowColor="#ff4b00";ctx.shadowBlur=34;ctx.beginPath();ctx.arc(zone.x,zone.y,zone.radius*pulse,0,Math.PI*2);ctx.fill();ctx.globalAlpha=.85;ctx.strokeStyle="#ff9b22";ctx.lineWidth=3;ctx.stroke();ctx.restore()}
  for(const p of infernoBombProjectiles){ctx.save();ctx.fillStyle="#1a0a0a";ctx.strokeStyle="#ff3838";ctx.lineWidth=3;ctx.shadowColor="#ff1717";ctx.shadowBlur=18;ctx.beginPath();ctx.arc(p.x,p.y,10,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()}
- for(const e of infernoExplosionVisuals){const progress=(now-e.startAt)/e.duration;let flashAlpha=progress<.25?progress/.25:progress<.75?1:Math.max(0,1-(progress-.75)/.25);ctx.save();ctx.globalAlpha=flashAlpha*.95;ctx.fillStyle="#ffffff";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.globalAlpha=1-progress;ctx.strokeStyle="#ffd54f";ctx.lineWidth=8*(1-progress)+1;ctx.shadowColor="#ff3d00";ctx.shadowBlur=28;ctx.beginPath();ctx.arc(e.x,e.y,e.radius*(.55+.45*progress),0,Math.PI*2);ctx.stroke();ctx.restore()}
+ for(const e of infernoExplosionVisuals){const progress=(now-e.startAt)/e.duration;ctx.save();ctx.globalAlpha=1-progress;ctx.strokeStyle="#ffd54f";ctx.lineWidth=8*(1-progress)+1;ctx.shadowColor="#ff3d00";ctx.shadowBlur=28;ctx.beginPath();ctx.arc(e.x,e.y,e.radius*(.55+.45*progress),0,Math.PI*2);ctx.stroke();ctx.restore()}
  if(infernoBombLevel>0&&infernoBombAmmo>0&&now-infernoBombLastThrowAt>=infernoBombCooldownMs()&&!infernoBombPending){
   const scale=infernoBombScale(),radius=INFERNO_BOMB_BASE.radius*scale;ctx.save();ctx.globalAlpha=.9;ctx.strokeStyle="#ff3030";ctx.fillStyle="rgba(255,25,25,.12)";ctx.lineWidth=2;ctx.setLineDash([8,6]);ctx.beginPath();ctx.arc(mouse.x,mouse.y,radius,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.setLineDash([]);ctx.beginPath();ctx.moveTo(mouse.x-12,mouse.y);ctx.lineTo(mouse.x+12,mouse.y);ctx.moveTo(mouse.x,mouse.y-12);ctx.lineTo(mouse.x,mouse.y+12);ctx.stroke();ctx.restore()
  }
