@@ -547,5 +547,5 @@ test("Inferno Bomb is weapon 7 with doubled explosion/fire damage and a one-seco
   assert.match(css, /@keyframes bombEffectFlash\{0%\{opacity:0\}25%\{opacity:1\}75%\{opacity:1\}100%\{opacity:0\}\}/);
   assert.match(index, /id="bombEffectOverlay"/);
   assert.match(index, /id="uiBombEffect"/);
-  assert.match(js, /"אפקט פצצה💣"/);
+  assert.match(index, /אפקט פצצה💣/);
 });
