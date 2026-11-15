@@ -24,42 +24,12 @@
 <div class="settingsRow"><label for="uiLives">❤️ חיים</label><input id="uiLives" type="checkbox" checked></div>
 <div class="settingsRow"><label for="uiDrones">🛸 מיני־חלליות</label><input id="uiDrones" type="checkbox" checked></div>
 <div class="settingsRow"><label for="uiSwords">⚔️ חרבות</label><input id="uiSwords" type="checkbox" checked></div><div class="settingsRow heartbeatIntensityRow"><label for="uiLowHealthHeartbeat"><span>פעימות ❤️ — עוצמת האפקט</span></label><div class="heartbeatIntensityControls"><div class="heartbeatNumberControls"><button type="button" id="heartbeatIntensityDown" class="heartbeatStepButton" aria-label="הפחתת עוצמת פעימות הלב באחוז אחד" title="הפחת 1%">▼</button><input id="heartbeatIntensityNumber" type="number" min="0" max="100" step="1" value="50" inputmode="numeric" aria-label="אחוז עוצמת פעימות הלב"><button type="button" id="heartbeatIntensityUp" class="heartbeatStepButton" aria-label="הגדלת עוצמת פעימות הלב באחוז אחד" title="הוסף 1%">▲</button><strong>%</strong></div><input id="uiLowHealthHeartbeat" type="range" min="0" max="100" step="1" value="50" aria-label="עוצמת אפקט פעימות הלב"></div></div><div class="settingsRow"><label for="uiHitFlash">🩸 פעימת פגיעה</label><input id="uiHitFlash" type="checkbox" checked></div><div class="settingsRow"><label for="uiHeartbeatPulse">💓 דופק פעימות</label><input id="uiHeartbeatPulse" type="checkbox" checked></div><div class="settingsRow"><label for="uiHitEffects">💥 אפקטי פגיעה (רעידה)</label><input id="uiHitEffects" type="checkbox" checked></div><div class="settingsRow"><label for="uiDamageNumbers">🔴 מספרי נזק ופרסים מעל אויבים</label><input id="uiDamageNumbers" type="checkbox" checked></div><div class="settingsRow"><label for="uiHealingEffects">💚 אפקטי ריפוי</label><input id="uiHealingEffects" type="checkbox" checked></div><div class="settingsRow"><label for="uiBombEffect">אפקט פצצה💣</label><input id="uiBombEffect" type="checkbox" checked></div><div class="settingsRow"><label for="uiMeteoriteBreak">☄️ התפרקות מטאוריטים</label><input id="uiMeteoriteBreak" type="checkbox" checked></div>
+<div class="settingsRow"><label>🌌 רקע חלל</label><button type="button" id="openSpaceBackgroundButton">בחר רקע</button></div>
 <div class="settingsRow" id="mobileToggleRow"><label for="mobileControlsToggle">📱 כפתורי טאבלט/טלפון</label><input id="mobileControlsToggle" type="checkbox" checked></div>
 <div class="settingsRow" id="controlModeRow"><label for="controlModeSelect">🎮 צורת תנועה</label><select id="controlModeSelect" style="padding:7px;border-radius:8px;background:#080d20;color:#fff;border:1px solid #4cc9f0"><option value="joystick">⚪ עיגול גרירה</option><option value="arrows">⬆️ חצים</option></select></div>
-<div class="engineFlameSettings">
-  <button type="button" id="openEngineFlameCustomizer" class="engineFlameOpenButton">🔥 התאמת אפקטי מנוע</button>
-  <div id="engineFlameCustomizer" class="engineFlameCustomizer" style="display:none">
-    <h2>תצוגה והתאמה של להבות המנוע</h2>
-    <p>החללית בתצוגה אינה ניתנת להזזה או לירי. השינויים מוצגים כאן וגם במשחק.</p>
-    <canvas id="engineFlamePreview" width="480" height="230" aria-label="תצוגה מקדימה של חללית ולהבות מנוע"></canvas>
-    <div class="engineFlameControls">
-      <label>צורת הלהבה
-        <select id="engineFlameShape">
-          <option value="smooth">חלקה</option>
-          <option value="energy">אנרגטית</option>
-          <option value="pixel">פיקסלית</option>
-        </select>
-      </label>
-      <label>צבע הלהבה
-        <select id="engineFlameColor">
-          <option value="orange">כתום־צהוב</option>
-          <option value="blue">כחול־תכלת</option>
-          <option value="purple">סגול</option>
-          <option value="rainbow">קשת</option>
-        </select>
-      </label>
-      <label class="engineFlamePower">עוצמה: <strong id="engineFlamePowerValue">75%</strong>
-        <input id="engineFlamePower" type="range" min="0" max="100" value="75">
-      </label>
-      <label class="engineFlameCheck"><span>זוהר סביב המנועים</span><input id="engineFlameGlow" type="checkbox" checked></label>
-      <label class="engineFlameCheck"><span>ניצוצות</span><input id="engineFlameSparks" type="checkbox" checked></label>
-      <label class="engineFlameCheck"><span>שובל תנועה</span><input id="engineFlameTrail" type="checkbox" checked></label>
-    </div>
-    <button type="button" id="closeEngineFlameCustomizer">סיום התאמה</button>
-  </div>
 </div>
-</div>
-<button type="button" id="closeGameSettingsButton">✔️ סגור</button></div></div>
+id="closeGameSettingsButton">✔️ סגור</button></div></div>
+<div id="spaceBackgroundOverlay" class="overlay" style="display:none;z-index:245"><div id="spaceBackgroundPanel"><h1>🌌 רקע חלל</h1><p>בחר רקע למשחק או העלה תמונה מהמחשב.</p><div id="spaceBackgroundChoices"><button type="button" class="spaceBackgroundChoice" data-space-background="original"><span class="spaceBackgroundSwatch original"></span><span>מקורי</span></button><button type="button" class="spaceBackgroundChoice" data-space-background="blue"><span class="spaceBackgroundSwatch blue"></span><span>ערפילית כחולה</span></button><button type="button" class="spaceBackgroundChoice" data-space-background="purple"><span class="spaceBackgroundSwatch purple"></span><span>ערפילית סגולה</span></button><button type="button" class="spaceBackgroundChoice" data-space-background="nebula"><span class="spaceBackgroundSwatch nebula"></span><span>גלקסיה</span></button></div><label id="spaceBackgroundUploadLabel" for="spaceBackgroundUpload">🖼️ העלה תמונה מהמחשב</label><input id="spaceBackgroundUpload" type="file" accept="image/*" hidden><div id="spaceBackgroundFileName"></div><div class="spaceBackgroundActions"><button type="button" id="resetSpaceBackgroundButton">↩️ חזור לרקע המקורי</button><button type="button" id="closeSpaceBackgroundButton">✔️ סגור</button></div></div></div>
 <div id="mobileControls" class="joystickMode">
 <div id="mobileWeaponBar">
 <button type="button" class="mobileWeaponBtn" data-weapon="pistol">🔫</button>

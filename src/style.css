@@ -283,20 +283,5 @@ body :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achieve
 #bombEffectOverlay.active{animation:bombEffectFlash 1s linear forwards}
 @keyframes bombEffectFlash{0%{opacity:0}25%{opacity:1}75%{opacity:1}100%{opacity:0}}
 
-
-/* Engine flame customizer */
-.engineFlameSettings{margin:12px 0;text-align:center}
-.engineFlameOpenButton{width:100%;background:linear-gradient(100deg,#42220c,#7a3b12);border:1px solid #ffad42;color:#fff}
-.engineFlameCustomizer{margin-top:12px;padding:13px;border:1px solid rgba(255,166,64,.55);border-radius:13px;background:rgba(255,145,40,.07);text-align:center}
-.engineFlameCustomizer h2{font-size:19px;margin:4px 0 7px;color:#ffd08a}
-.engineFlameCustomizer p{font-size:13px;color:#c8d4e8;margin:0 0 10px}
-#engineFlamePreview{display:block;width:100%;max-width:480px;height:auto;margin:0 auto 12px;border:1px solid #455a78;border-radius:10px;background:#050a17}
-.engineFlameControls{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0 13px;text-align:right}
-.engineFlameControls label{display:flex;flex-direction:column;gap:7px;padding:9px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:14px}
-.engineFlameControls select{width:100%;padding:8px;border-radius:7px;background:#080d20;color:#fff;border:1px solid #4cc9f0}
-.engineFlameControls input[type=range]{width:100%;accent-color:#ff9b35}
-.engineFlameControls .engineFlamePower{grid-column:1/-1}
-.engineFlameControls .engineFlameCheck{flex-direction:row;align-items:center;justify-content:space-between}
-.engineFlameControls .engineFlameCheck input{width:20px;height:20px;accent-color:#ff9b35}
-#closeEngineFlameCustomizer{width:100%;background:#263b59}
-@media(max-width:560px){.engineFlameControls{grid-template-columns:1fr}.engineFlameControls .engineFlamePower{grid-column:auto}}
+/* Separate space-background picker */
+#spaceBackgroundPanel{width:min(620px,94vw);max-height:88vh;overflow:auto;background:linear-gradient(145deg,#111a38,#050918);border:2px solid #4cc9f0;border-radius:18px;padding:22px;box-shadow:0 0 35px rgba(76,201,240,.28);text-align:center}#spaceBackgroundChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}.spaceBackgroundChoice{display:flex;align-items:center;gap:12px;justify-content:flex-start;padding:10px;border:2px solid rgba(76,201,240,.35);border-radius:12px;background:rgba(255,255,255,.05);color:#fff}.spaceBackgroundChoice.selected{border-color:#4cc9f0;box-shadow:0 0 14px rgba(76,201,240,.35)}.spaceBackgroundSwatch{display:block;width:76px;height:48px;border-radius:8px;border:1px solid #fff5;flex:none}.spaceBackgroundSwatch.original{background:#050711}.spaceBackgroundSwatch.blue{background:linear-gradient(135deg,#020817,#09234a,#01030c)}.spaceBackgroundSwatch.purple{background:linear-gradient(135deg,#090316,#32105a,#03020c)}.spaceBackgroundSwatch.nebula{background:linear-gradient(135deg,#02030e,#18204b 45%,#42134e,#03020d)}#spaceBackgroundUploadLabel{display:block;margin:12px auto;padding:12px;border:1px dashed #4cc9f0;border-radius:10px;cursor:pointer;background:rgba(76,201,240,.08)}#spaceBackgroundFileName{min-height:22px;color:#9fe8ff;font-size:13px}.spaceBackgroundActions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:14px}@media(max-width:480px){#spaceBackgroundChoices{grid-template-columns:1fr}.spaceBackgroundSwatch{width:64px;height:42px}}
