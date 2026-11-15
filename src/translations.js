@@ -146,7 +146,24 @@ const ui={
 "🟠 קשה — אויבים חזקים יותר ויורים בשלשות.":["🟠 Hard — stronger enemies that fire in bursts of three.","🟠 Difícil: enemigos más fuertes que disparan en ráfagas de tres.","🟠 Difficile : ennemis plus puissants qui tirent par salves de trois.","🟠 Schwer — stärkere Gegner, die Dreiersalven abfeuern.","🟠 Сложный — более сильные враги стреляют очередями по три.","🟠 صعب — أعداء أقوى يطلقون ثلاث طلقات متتالية."],
 "🔴 סופר קשה — אויבים חזקים מאוד, פחות XP ופחות חיים.":["🔴 Super Hard — very strong enemies, less XP, and fewer lives.","🔴 Muy difícil: enemigos muy fuertes, menos XP y menos vidas.","🔴 Très difficile : ennemis très puissants, moins d’XP et moins de vies.","🔴 Sehr schwer — sehr starke Gegner, weniger XP und weniger Leben.","🔴 Очень сложно — очень сильные враги, меньше XP и жизней.","🔴 صعب جدًا — أعداء أقوياء جدًا وXP أقل وحياة أقل."],
 "⚫ בלתי אפשרי — אויבים חזקים במיוחד, מעט XP ורקע שחור עם זוהר.":["⚫ Impossible — extremely strong enemies, very little XP, and a black glowing background.","⚫ Imposible: enemigos extremadamente fuertes, muy poca XP y fondo negro brillante.","⚫ Impossible : ennemis extrêmement puissants, très peu d’XP et fond noir lumineux.","⚫ Unmöglich — extrem starke Gegner, sehr wenig XP und schwarzer Leuchthintergrund.","⚫ Невозможно — чрезвычайно сильные враги, мало XP и чёрный светящийся фон.","⚫ مستحيل — أعداء أقوياء للغاية وXP قليل وخلفية سوداء متوهجة."],
-"🃏 כל הקלפים":["🃏 All Cards","🃏 Todas las cartas","🃏 Toutes les cartes","🃏 Alle Karten","🃏 Все карты","🃏 جميع البطاقات"]
+"🃏 כל הקלפים":["🃏 All Cards","🃏 Todas las cartas","🃏 Toutes les cartes","🃏 Alle Karten","🃏 Все карты","🃏 جميع البطاقات"],
+"🔥 התאמת אפקטי מנוע":["🔥 Customize engine effects","🔥 Personalizar efectos del motor","🔥 Personnaliser les effets du moteur","🔥 Triebwerkseffekte anpassen","🔥 Настроить эффекты двигателя","🔥 تخصيص تأثيرات المحرك"],
+"תצוגה והתאמה של להבות המנוע":["Engine flame preview and customization","Vista y personalización de las llamas del motor","Aperçu et personnalisation des flammes du moteur","Vorschau und Anpassung der Triebwerksflammen","Предпросмотр и настройка пламени двигателя","معاينة وتخصيص لهب المحرك"],
+"החללית בתצוגה אינה ניתנת להזזה או לירי. השינויים מוצגים כאן וגם במשחק.":["The preview ship cannot move or fire. Changes appear here and in the game.","La nave de vista previa no se puede mover ni disparar. Los cambios se muestran aquí y en el juego.","Le vaisseau d’aperçu ne peut ni bouger ni tirer. Les changements s’affichent ici et dans le jeu.","Das Vorschauschiff kann sich nicht bewegen oder schießen. Änderungen werden hier und im Spiel angezeigt.","Корабль в предпросмотре нельзя двигать или использовать для стрельбы. Изменения видны здесь и в игре.","لا يمكن تحريك سفينة المعاينة أو إطلاق النار منها. تظهر التغييرات هنا وفي اللعبة."],
+"צורת הלהבה":["Flame shape","Forma de la llama","Forme de la flamme","Flammenform","Форма пламени","شكل اللهب"],
+"צבע הלהבה":["Flame color","Color de la llama","Couleur de la flamme","Flammenfarbe","Цвет пламени","لون اللهب"],
+"חלקה":["Smooth","Suave","Lisse","Glatt","Плавная","ناعم"],
+"אנרגטית":["Energetic","Energética","Énergique","Energetisch","Энергичная","نشيط"],
+"פיקסלית":["Pixelated","Pixelada","Pixelisée","Pixelig","Пиксельная","بكسلية"],
+"כתום־צהוב":["Orange-yellow","Naranja-amarillo","Orange-jaune","Orange-Gelb","Оранжево-жёлтый","برتقالي-أصفر"],
+"כחול־תכלת":["Blue-cyan","Azul-cian","Bleu-cyan","Blau-Cyan","Сине-голубой","أزرق سماوي"],
+"סגול":["Purple","Morado","Violet","Lila","Фиолетовый","أرجواني"],
+"קשת":["Rainbow","Arcoíris","Arc-en-ciel","Regenbogen","Радужный","قوس قزح"],
+"עוצמה:":["Power:","Intensidad:","Puissance :","Stärke:","Мощность:","القوة:"],
+"זוהר סביב המנועים":["Engine glow","Brillo del motor","Lueur du moteur","Triebwerksleuchten","Свечение двигателя","توهج المحرك"],
+"ניצוצות":["Sparks","Chispas","Étincelles","Funken","Искры","شرارات"],
+"שובל תנועה":["Motion trail","Estela de movimiento","Traînée de mouvement","Bewegungsspur","След движения","أثر الحركة"],
+"סיום התאמה":["Done","Terminar","Terminer","Fertig","Готово","تم"]
 };
 Object.assign(ui,{
 "הישגים רגילים:":["Common Achievements:","Logros comunes:","Succès courants :","Gewöhnliche Erfolge:","Обычные достижения:","الإنجازات العادية:"],
