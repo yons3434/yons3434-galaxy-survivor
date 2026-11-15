@@ -29,7 +29,6 @@ const ui={
 "💚 אפקטי ריפוי":["💚 Healing effects","💚 Efectos de curación","💚 Effets de soin","💚 Heilungseffekte","💚 Эффекты лечения","💚 تأثيرات الشفاء"],
 "אפקט פצצה💣":["Bomb effect💣","Efecto de bomba💣","Effet de bombe💣","Bombeneffekt💣","Эффект бомбы💣","تأثير القنبلة💣"],
 "☄️ התפרקות מטאוריטים":["☄️ Meteorite breakup","☄️ Desintegración de meteoritos","☄️ Désintégration des météorites","☄️ Meteoritenzerfall","☄️ Разрушение метеоритов","☄️ تحطم النيازك"],
-"🌌 רקע חלל":["🌌 Space background","🌌 Fondo espacial","🌌 Fond spatial","🌌 Weltraumhintergrund","🌌 Космический фон","🌌 خلفية فضائية"],
 "בחר רקע":["Choose background","Elegir fondo","Choisir un fond","Hintergrund wählen","Выбрать фон","اختر الخلفية"],
 "🌌 רקע חלל":["🌌 Space background","🌌 Fondo espacial","🌌 Fond spatial","🌌 Weltraumhintergrund","🌌 Космический фон","🌌 خلفية فضائية"],
 "בחר רקע למשחק או העלה תמונה מהמחשב.":["Choose a game background or upload an image from your computer.","Elige un fondo para el juego o sube una imagen desde tu ordenador.","Choisis un fond de jeu ou téléverse une image depuis ton ordinateur.","Wähle einen Spielhintergrund oder lade ein Bild von deinem Computer hoch.","Выберите фон игры или загрузите изображение с компьютера.","اختر خلفية للعبة أو ارفع صورة من جهازك."],
