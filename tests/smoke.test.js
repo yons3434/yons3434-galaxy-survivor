@@ -503,7 +503,7 @@ test("Ultra 120-second achievement check runs only once instead of every frame",
 test("poison rendering uses Number() correctly for asteroids and enemies", () => {
   assert.match(js, /if\\(Number\\(a\\.poisonStrength\\)>0\\)/);
   assert.match(js, /if\\(Number\\(enemy\\.poisonStrength\\)>0\\)/);
-  assert.doesNotMatch(js, /\\.Number\\(/);
+  assert.doesNotMatch(js, /\.Number\(/);
 });
 
 test("level-up healing happens after card selection and scales with the selected card level", () => {
