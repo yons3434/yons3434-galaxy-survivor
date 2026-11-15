@@ -523,7 +523,7 @@ test("Inferno Bomb is an Amazing card with nine levels, scaling cooldown, area, 
   assert.match(js, /infernoBombMaxAmmo=4/);
   assert.match(js, /infernoBombAmmoChance\(\)/);
   assert.match(js, /totalDamage\*\.5\/INFERNO_BOMB_BASE\.exitPulses/);
-  assert.match(js, /launchAt:now\+1000/);
+  assert.match(js, /launchAt:now\+500/);
   assert.match(js, /updateInfernoBombs\(\)/);
   assert.match(js, /drawInfernoBombEffects\(\)/);
   assert.match(index, /id="infernoBombHud"/);
