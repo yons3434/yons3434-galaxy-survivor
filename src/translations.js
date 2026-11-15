@@ -10,6 +10,7 @@ const ui={
 "🔥 מצב זעם הופעל!":["🔥 Rage activated!","🔥 ¡Furia activada!","🔥 Rage activée !","🔥 Wut aktiviert!","🔥 Ярость активирована!","🔥 تم تفعيل الغضب!"],
 "🎁 נאסף שלל!":["🎁 Loot collected!","🎁 ¡Botín recogido!","🎁 Butin récupéré !","🎁 Beute gesammelt!","🎁 Добыча собрана!","🎁 تم جمع الغنيمة!"],
 "💣 אין פצצות זמינות!":["💣 No bombs available!","💣 ¡No hay bombas disponibles!","💣 Aucune bombe disponible !","💣 Keine Bomben verfügbar!","💣 Нет доступных бомб!","💣 لا توجد قنابل متاحة!"],
+"💣 קודם צריך לקבל את קלף פצצת התופת!":["💣 First get the Inferno Bomb card!","💣 Primero consigue la carta Bomba infernal.","💣 Obtiens d’abord la carte Bombe infernale !","💣 Hol dir zuerst die Karte Höllenbombe!","💣 Сначала получи карту «Адская бомба»!","💣 احصل أولًا على بطاقة القنبلة الجحيمية!"],
 "💣 +1 פצצה!":["💣 +1 Bomb!","💣 ¡+1 bomba!","💣 +1 bombe !","💣 +1 Bombe!","💣 +1 бомба!","💣 +1 قنبلة!"],
 "⚙️ הגדרות ממשק":["⚙️ Interface Settings","⚙️ Ajustes de interfaz","⚙️ Paramètres de l’interface","⚙️ Oberflächeneinstellungen","⚙️ Настройки интерфейса","⚙️ إعدادات الواجهة"],
 "הצג או הסתר חלקים מה־HUD וכבה את כפתורי המגע בטלפון.":["Show or hide HUD elements and disable mobile touch controls.","Muestra u oculta elementos del HUD y desactiva los controles táctiles.","Afficher ou masquer des éléments du HUD et désactiver les commandes tactiles.","HUD-Elemente ein- oder ausblenden und Touch-Steuerung deaktivieren.","Показывать или скрывать элементы HUD и отключать сенсорное управление.","إظهار عناصر HUD أو إخفاؤها وتعطيل أدوات التحكم باللمس."],
@@ -26,6 +27,7 @@ const ui={
 "🔴 מספרי נזק מעל אויבים":["🔴 Damage numbers above enemies","🔴 Números de daño sobre enemigos","🔴 Dégâts affichés au-dessus des ennemis","🔴 Schadenszahlen über Gegnern","🔴 Числа урона над врагами","🔴 أرقام الضرر فوق الأعداء"],
 "🔴 מספרי נזק ופרסים מעל אויבים":["🔴 Damage and reward numbers above enemies","🔴 Números de daño y recompensas sobre enemigos","🔴 Dégâts et récompenses au-dessus des ennemis","🔴 Schadens- und Belohnungszahlen über Gegnern","🔴 Числа урона и наград над врагами","🔴 أرقام الضرر والمكافآت فوق الأعداء"],
 "💚 אפקטי ריפוי":["💚 Healing effects","💚 Efectos de curación","💚 Effets de soin","💚 Heilungseffekte","💚 Эффекты лечения","💚 تأثيرات الشفاء"],
+"אפקט פצצה💣":["Bomb effect💣","Efecto de bomba💣","Effet de bombe💣","Bombeneffekt💣","Эффект бомбы💣","تأثير القنبلة💣"],
 "☄️ התפרקות מטאוריטים":["☄️ Meteorite breakup","☄️ Desintegración de meteoritos","☄️ Désintégration des météorites","☄️ Meteoritenzerfall","☄️ Разрушение метеоритов","☄️ تحطم النيازك"],
 "📱 כפתורי טאבלט/טלפון":["📱 Tablet/phone controls","📱 Controles de móvil/tableta","📱 Commandes tablette/téléphone","📱 Tablet-/Handysteuerung","📱 Управление на телефоне/планшете","📱 أزرار الهاتف/الجهاز اللوحي"],
 "🎮 צורת תנועה":["🎮 Movement style","🎮 Tipo de movimiento","🎮 Type de déplacement","🎮 Bewegungsart","🎮 Тип движения","🎮 نمط الحركة"],
@@ -795,10 +797,10 @@ window.GAME_TRANSLATIONS=Object.freeze({
   },
   "infernoBomb": {
     "title": ["Inferno Bomb","Bomba infernal","Bombe infernale","Höllenbombe","Адская бомба","قنبلة الجحيم"],
-    "description": ["Aim and click to lock a target. The bomb launches after one second and creates a damaging fire zone. Enemies and meteorites burn; you are immune to your own fire.","Apunta y haz clic para fijar el objetivo. La bomba se lanza tras un segundo y crea una zona de fuego dañina. Los enemigos y meteoritos arden; eres inmune a tu propio fuego.","Visez et cliquez pour verrouiller la cible. La bombe part après une seconde et crée une zone de feu qui inflige des dégâts. Les ennemis et météorites brûlent ; vous êtes immunisé contre votre propre feu.","Zielen und klicken, um das Ziel festzulegen. Die Bombe startet nach einer Sekunde und erzeugt eine schädliche Feuerzone. Gegner und Meteoriten brennen; du bist gegen dein eigenes Feuer immun.","Наведитесь и щёлкните, чтобы зафиксировать цель. Бомба запускается через секунду и создаёт огненную зону, наносящую урон. Враги и метеориты горят; вы невосприимчивы к собственному огню.","صوّب وانقر لتثبيت الهدف. تنطلق القنبلة بعد ثانية وتنشئ منطقة نارية مؤذية. تحترق الأعداء والنيازك، وأنت محصّن ضد نارك."]
+    "description": ["Aim and click to lock a target. The bomb launches after half a second and creates a damaging fire zone. Enemies and meteorites burn; you are immune to your own fire.","Apunta y haz clic para fijar el objetivo. La bomba se lanza tras medio segundo y crea una zona de fuego dañina. Los enemigos y meteoritos arden; eres inmune a tu propio fuego.","Visez et cliquez pour verrouiller la cible. La bombe part après une demi-seconde et crée une zone de feu qui inflige des dégâts. Les ennemis et météorites brûlent ; vous êtes immunisé contre votre propre feu.","Zielen und klicken, um das Ziel festzulegen. Die Bombe startet nach einer halben Sekunde und erzeugt eine schädliche Feuerzone. Gegner und Meteoriten brennen; du bist gegen dein eigenes Feuer immun.","Наведитесь и щёлкните, чтобы зафиксировать цель. Бомба запускается через полсекунды и создаёт огненную зону, наносящую урон. Враги и метеориты горят; вы невосприимчивы к собственному огню.","صوّب وانقر لتثبيت الهدف. تنطلق القنبلة بعد نصف ثانية وتنشئ منطقة نارية مؤذية. تحترق الأعداء والنيازك، وأنت محصّن ضد نارك."]
     ,
     "sourceTitle": "פצצת תופת",
-    "sourceDescription": "כוון עם העכבר ולחץ כדי לנעול מטרה. הפצצה נזרקת כעבור שנייה ויוצרת אזור אש שפוגע באויבים ובמטאוריטים. ביציאה מהאש נגרם נזק נוסף. השחקן חסין לאש שלו."
+    "sourceDescription": "כוון עם העכבר ולחץ כדי לנעול מטרה. הפצצה נזרקת כעבור חצי שנייה ויוצרת אזור אש שפוגע באויבים ובמטאוריטים. ביציאה מהאש נגרם נזק נוסף. השחקן חסין לאש שלו."
   },
   "blackHole": {
     "title": [

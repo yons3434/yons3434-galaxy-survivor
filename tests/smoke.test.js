@@ -523,9 +523,29 @@ test("Inferno Bomb is an Amazing card with nine levels, scaling cooldown, area, 
   assert.match(js, /infernoBombMaxAmmo=4/);
   assert.match(js, /infernoBombAmmoChance\(\)/);
   assert.match(js, /totalDamage\*\.5\/INFERNO_BOMB_BASE\.exitPulses/);
-  assert.match(js, /launchAt:now\+1000/);
+  assert.match(js, /launchAt:now\+500/);
   assert.match(js, /updateInfernoBombs\(\)/);
   assert.match(js, /drawInfernoBombEffects\(\)/);
   assert.match(index, /id="infernoBombHud"/);
   assert.match(fs.readFileSync(path.join(root, "src", "translations.js"), "utf8"), /"infernoBomb"/);
+});
+
+
+test("Inferno Bomb is weapon 7 with doubled explosion/fire damage and a one-second configurable full-screen flash", () => {
+  assert.match(js, /currentWeapon==="infernoBomb"/);
+  assert.match(js, /e\.code==="Digit7"\|\|e\.key==="7"\)\{switchWeapon\("infernoBomb"\);return\}/);
+  assert.match(js, /if\(weapon==="infernoBomb"&&infernoBombMaxAmmo<=0\)/);
+  assert.match(js, /const INFERNO_BOMB_BASE=\{radius:100,directDamage:200,pulseDamage:20,durationMs:4000,exitPulses:5\}/);
+  assert.match(js, /launchAt:now\+500/);
+  assert.match(js, /if\(currentWeapon!=="infernoBomb"\|\|infernoBombLevel<=0/);
+  assert.match(js, /currentWeapon==="laser"\|\|currentWeapon==="flamethrower"\|\|currentWeapon==="infernoBomb"/);
+  assert.match(index, /id="uiBombEffect"/);
+  assert.match(js, /bombEffectEnabled=localStorage\.getItem\("galaxyDefenderBombEffect"\)!=="off"/);
+  assert.match(js, /localStorage\.setItem\("galaxyDefenderBombEffect",bombEffectEnabled\?"on":"off"\)/);
+  assert.match(js, /duration:1000/);
+  assert.match(css, /animation:bombEffectFlash 1s linear forwards/);
+  assert.match(css, /@keyframes bombEffectFlash\{0%\{opacity:0\}25%\{opacity:1\}75%\{opacity:1\}100%\{opacity:0\}\}/);
+  assert.match(index, /id="bombEffectOverlay"/);
+  assert.match(index, /id="uiBombEffect"/);
+  assert.match(index, /אפקט פצצה💣/);
 });

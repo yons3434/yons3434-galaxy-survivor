@@ -24,5 +24,5 @@ test("weapon number controls are compacted after removing minigun", () => {
 
 test("mobile weapon buttons use the same order as keyboard controls", () => {
   const weapons = [...html.matchAll(/class="mobileWeaponBtn" data-weapon="([^"]+)"/g)].map(m => m[1]);
-  assert.deepEqual(weapons, ["pistol", "rpg", "shotgun", "flamethrower", "laser", "blackHole"]);
+  assert.deepEqual(weapons, ["pistol", "rpg", "shotgun", "flamethrower", "laser", "blackHole", "infernoBomb"]);
 });
