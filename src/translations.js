@@ -10,6 +10,7 @@ const ui={
 "🔥 מצב זעם הופעל!":["🔥 Rage activated!","🔥 ¡Furia activada!","🔥 Rage activée !","🔥 Wut aktiviert!","🔥 Ярость активирована!","🔥 تم تفعيل الغضب!"],
 "🎁 נאסף שלל!":["🎁 Loot collected!","🎁 ¡Botín recogido!","🎁 Butin récupéré !","🎁 Beute gesammelt!","🎁 Добыча собрана!","🎁 تم جمع الغنيمة!"],
 "💣 אין פצצות זמינות!":["💣 No bombs available!","💣 ¡No hay bombas disponibles!","💣 Aucune bombe disponible !","💣 Keine Bomben verfügbar!","💣 Нет доступных бомб!","💣 لا توجد قنابل متاحة!"],
+"💣 קודם צריך לקבל את קלף פצצת התופת!":["💣 First get the Inferno Bomb card!","💣 Primero consigue la carta Bomba infernal.","💣 Obtiens d’abord la carte Bombe infernale !","💣 Hol dir zuerst die Karte Höllenbombe!","💣 Сначала получи карту «Адская бомба»!","💣 احصل أولًا على بطاقة القنبلة الجحيمية!"],
 "💣 +1 פצצה!":["💣 +1 Bomb!","💣 ¡+1 bomba!","💣 +1 bombe !","💣 +1 Bombe!","💣 +1 бомба!","💣 +1 قنبلة!"],
 "⚙️ הגדרות ממשק":["⚙️ Interface Settings","⚙️ Ajustes de interfaz","⚙️ Paramètres de l’interface","⚙️ Oberflächeneinstellungen","⚙️ Настройки интерфейса","⚙️ إعدادات الواجهة"],
 "הצג או הסתר חלקים מה־HUD וכבה את כפתורי המגע בטלפון.":["Show or hide HUD elements and disable mobile touch controls.","Muestra u oculta elementos del HUD y desactiva los controles táctiles.","Afficher ou masquer des éléments du HUD et désactiver les commandes tactiles.","HUD-Elemente ein- oder ausblenden und Touch-Steuerung deaktivieren.","Показывать или скрывать элементы HUD и отключать сенсорное управление.","إظهار عناصر HUD أو إخفاؤها وتعطيل أدوات التحكم باللمس."],
