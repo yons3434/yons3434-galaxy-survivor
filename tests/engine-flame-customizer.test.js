@@ -6,6 +6,7 @@ const vm = require("node:vm");
 const html = fs.readFileSync("index.html", "utf8");
 const game = fs.readFileSync("src/game.js", "utf8");
 const css = fs.readFileSync("src/style.css", "utf8");
+const translations = fs.readFileSync("src/translations.js", "utf8");
 test("engine flame effect and customizer are fully removed", () => {
   for (const source of [html, game, css]) assert.doesNotMatch(source, /engineFlame|EngineFlame|ENGINE_FLAME|drawEngineFlames|engine-flame/i);
 });
