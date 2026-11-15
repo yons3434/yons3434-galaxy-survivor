@@ -539,7 +539,7 @@ test("Inferno Bomb is weapon 7 with doubled explosion/fire damage and a one-seco
   assert.match(js, /launchAt:now\+500/);
   assert.match(js, /if\(currentWeapon!=="infernoBomb"\|\|infernoBombLevel<=0/);
   assert.match(js, /currentWeapon==="laser"\|\|currentWeapon==="flamethrower"\|\|currentWeapon==="infernoBomb"/);
-  assert.match(js, /id="uiBombEffect"/);
+  assert.match(index, /id="uiBombEffect"/);
   assert.match(js, /bombEffectEnabled=localStorage\.getItem\("galaxyDefenderBombEffect"\)!=="off"/);
   assert.match(js, /localStorage\.setItem\("galaxyDefenderBombEffect",bombEffectEnabled\?"on":"off"\)/);
   assert.match(js, /duration:1000/);
