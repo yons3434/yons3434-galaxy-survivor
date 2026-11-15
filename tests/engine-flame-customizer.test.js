@@ -15,11 +15,16 @@ test("game script still parses after removing the optional effect", () => {
   assert.match(game, /function draw\(\)/);
   assert.match(game, /function resizeCanvas\(/);
 });
-test("space dust effect is drawn behind gameplay and has a persistent settings toggle", () => {
-  assert.match(html, /id="uiSpaceDust"/);
-  assert.match(game, /spaceDustEnabled=localStorage\.getItem\("galaxyDefenderSpaceDust"\)!=="off"/);
-  assert.match(game, /function drawSpaceDust\(/);
-  assert.match(game, /drawSpaceDust\(\);drawInfernoBombEffects\(\)/);
-  assert.match(game, /localStorage\.setItem\("galaxyDefenderSpaceDust"/);
-  assert.match(translations, /"🌌 אבק חלל":\["🌌 Space dust"/);
+test("space background picker is separate from settings and supports presets and local image upload", () => {
+  assert.match(html, /id="openSpaceBackgroundButton"/);
+  assert.match(html, /id="spaceBackgroundOverlay"/);
+  assert.match(html, /id="spaceBackgroundUpload" type="file" accept="image\/\*"/);
+  assert.doesNotMatch(html, /id="uiSpaceDust"/);
+  assert.match(game, /function drawSpaceBackground\(/);
+  assert.match(game, /drawSpaceBackground\(\);drawSpaceDust\(\)/);
+  assert.match(game, /galaxyDefenderCustomBackground/);
+  assert.match(game, /file\.size>5\*1024\*1024/);
+  assert.match(game, /setSpaceBackground\(button\.dataset\.spaceBackground\)/);
+  assert.match(css, /#spaceBackgroundPanel/);
+  assert.match(translations, /"🌌 רקע חלל":\["🌌 Space background"/);
 });
