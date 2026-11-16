@@ -24,7 +24,7 @@ test("level-up animation preferences persist with safe defaults and supported sp
 test("level-up title is displayed for one second at normal speed and follows the speed setting", () => {
   assert.match(css, /@keyframes levelUpTitle/);
   assert.match(css, /20%\{opacity:1;transform:scale\(1\.12\)\}70%\{opacity:1/);
-  assert.match(game, /levelUpAnimationSettings\.speed\)\+"s"/);
+  assert.match(game, /\(2\/effects\.speed\)\+"s"/);
   assert.match(game, /2000\/effects\.speed/);
 });
 
