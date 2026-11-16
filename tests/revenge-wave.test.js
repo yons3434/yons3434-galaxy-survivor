@@ -16,12 +16,19 @@ test("Revenge Wave activates only on a real hit and cannot retrigger while activ
  assert.match(game,/performance\.now\(\)<revengeWaveActiveUntil/);
  assert.match(game,/revengeWaveActiveUntil=now\+1000/);
 });
-test("Revenge Wave scales damage and stun, clears bullets, and only controls ordinary targets", () => {
+test("Revenge Wave scales damage, pushes first, then slows ordinary targets while stunned", () => {
  assert.match(game,/1\+\.5\*\(Math\.max\(1,Math\.min\(9,Number\(level\)\|\|1\)\)-1\)/);
  assert.match(game,/stunDuration=1000\+500\*\(revengeWaveLevel-1\)/);
+ assert.match(game,/pushDuration=350/);
+ assert.match(game,/offset=\(\(isAsteroid\?entity\.size:25\)\+55\)\*2\.5/);
+ assert.match(game,/entity\.revengeWaveStunStartsAt=now\+pushDuration/);
+ assert.match(game,/entity\.revengeWaveStunnedUntil=now\+pushDuration\+stunDuration/);
+ assert.match(game,/getRevengeWaveSlowFactor\(entity,now=performance\.now\(\)\)\{return isRevengeWaveStunned\(entity,now\)\?0\.25:1\}/);
+ assert.match(game,/getEnemyFreezeFactor\(a\)\*getRevengeWaveSlowFactor\(a\)/);
+ assert.match(game,/getEnemyFreezeFactor\(enemy\)\*getRevengeWaveSlowFactor\(enemy\)/);
+ assert.match(game,/if\(!revengeStunned\)enemy\.timer-=freezeFactor/);
+ assert.match(game,/if\(!revengeStunned&&enemy\.timer<=0\)/);
  assert.match(game,/enemyBullets\.length=0/);
- assert.match(game,/!entity\.boss&&entity\.specialType==="normal"/);
- assert.match(game,/entity\.specialType==="normal"/);
  assert.match(game,/drawRevengeWaveEffect\(\)/);
 });
 test("Revenge Wave title and description are translated", () => {
