@@ -56,7 +56,7 @@ test("inversion boss charges for two seconds at 10% speed, then toggles persiste
 });
 
 test("doom enemies are mini-bosses and their fire rate scales with remaining health", () => {
-  assert.match(source, /activeSpecialBossArea==="doom"\?baseHealth\*3/);
+  assert.match(source, /spawnHealth=special==="doom"\?health\*3:health/);
   assert.match(source, /fireCooldown=Math\.max\(12,70\*\(\.2\+\.8\*healthRatio\)\)/);
   assert.match(source, /shotSpeed=2\.5\+\(1-healthRatio\)\*3/);
 });
