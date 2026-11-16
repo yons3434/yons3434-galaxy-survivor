@@ -2,6 +2,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
+// Regression coverage for the complete Revenge Wave card lifecycle.
 const game = fs.readFileSync(path.join(__dirname, "..", "src", "game.js"), "utf8");
 const translations = fs.readFileSync(path.join(__dirname, "..", "src", "translations.js"), "utf8");
 test("Revenge Wave is an amazing upgrade capped at nine levels", () => {
