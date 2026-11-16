@@ -55,4 +55,5 @@ test("upgrade cards animate into view after the level-up reveal with staggered t
   assert.ok(game.includes("index*90/speed"));
   assert.ok(css.includes("@keyframes levelUpCardAppear"));
   assert.ok(css.includes("opacity:0;transform:translateY(26px) scale(.88)"));
+  assert.doesNotMatch(css, /\.upgradeCard\.levelUpCardEntering\{animation-duration:1ms/);
 });
