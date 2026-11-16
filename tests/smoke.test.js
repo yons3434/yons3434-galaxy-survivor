@@ -112,7 +112,7 @@ test("pause card list merges repeated picks and extra-fire starts at II", () => 
 
 
 test("upgrade card titles number only stackable upgrades", () => {
-  assert.match(js, /const numberedUpgradeIds=new Set\(\[[^\]]*"deadlyLoot","infernoBomb"\]\)/);
+  assert.match(js, /const numberedUpgradeIds=new Set\(\[[^\]]*"deadlyLoot","infernoBomb","revengeWave"\]\)/);
   assert.match(js, /function getUpgradeCardTitle\(upgrade\)/);
   assert.match(js, /toRomanNumeral\(level\+1\)/);
   assert.match(js, /id:"drone"/);
@@ -220,7 +220,7 @@ test("poison, freeze, and stun also affect meteors while confusion remains enemy
 
 test("expanded choice card adds one level-up option per pick up to six, then disappears for the current game", () => {
   assert.match(js, /id:"expandedChoice",rarity:"אדיר",rarityClass:"epic",icon:"🃏",title:"בחירה מורחבת"/);
-  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion","deadlyLoot","infernoBomb"\]/);
+  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion","deadlyLoot","infernoBomb","revengeWave"\]/);
   assert.match(js, /case"expandedChoice":return expandedChoiceLevel/);
   assert.match(js, /const choices=window\.GalaxyLuck\.chooseUpgradeChoices\(availableFiltered,luckLevel,Math\.min\(6,3\+expandedChoiceLevel\)\)/);
   assert.match(js, /u\.id==="expandedChoice"&&expandedChoiceLevel>=3/);
@@ -295,7 +295,7 @@ test("all boss types receive five times their previous base health", () => {
 });
 
 test("flamethrower upgrades cap at X, show maximum label, scale damage and range by 50 points, and burn for five ticks", () => {
-  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion","deadlyLoot","infernoBomb"\]/);
+  assert.match(js, /"continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion","deadlyLoot","infernoBomb","revengeWave"\]/);
   assert.match(js, /u\.id==="flamethrower"&&flamethrowerLevel>=10/);
   assert.match(js, /upgrade\.id==="flamethrower"&&flamethrowerLevel===9/);
   assert.match(js, /flamethrowerLevel=Math\.min\(10,flamethrowerLevel\+1\)/);
