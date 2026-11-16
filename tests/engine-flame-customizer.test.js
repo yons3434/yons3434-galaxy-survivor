@@ -22,6 +22,11 @@ test("space background picker is separate from settings and supports presets and
   assert.doesNotMatch(html, /id="uiSpaceDust"/);
   assert.match(game, /function drawSpaceBackground\(/);
   assert.match(game, /drawSpaceBackground\(\);drawSpaceDust\(\)/);
+  assert.match(game, /spaceBackgroundCache/);
+  assert.match(game, /#003cff/);
+  assert.match(game, /#e100ff/);
+  assert.match(game, /#ff3b9d/);
+  assert.match(game, /#28d7ff/);
   assert.match(game, /galaxyDefenderCustomBackground/);
   assert.match(game, /file\.size>3\*1024\*1024/);
   assert.match(game, /setSpaceBackground\(button\.dataset\.spaceBackground\)/);
