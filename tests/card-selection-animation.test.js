@@ -31,7 +31,7 @@ test("selecting a card moves it to the center, grows it moderately, shrinks the 
   assert.match(css, /height:min\(440px,75vh\)/);
   assert.match(css, /cardSelectionAway/);
   assert.match(css, /cardSelectionActive.cardSelectionFade/);
-  assert.match(game, /moveMs= Math.max/);
+  assert.match(game, /moveMs=Math.max/);
 });
 
 test("the upgrade is applied only after the selection animation, while disabling it keeps selection immediate", () => {
