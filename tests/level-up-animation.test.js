@@ -1,0 +1,39 @@
+const test = require("node:test");
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const root = path.join(__dirname, "..");
+const game = fs.readFileSync(path.join(root, "src", "game.js"), "utf8");
+const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
+
+test("level-up animation settings are available from the game settings like the space-background picker", () => {
+  assert.match(html, /id="openLevelUpAnimationButton"/);
+  assert.match(html, /id="levelUpAnimationSettingsOverlay"/);
+  assert.match(game, /openLevelUpAnimationButton\.onclick=/);
+  assert.match(game, /closeLevelUpAnimationButton\.onclick=/);
+});
+
+test("level-up animation preferences persist with safe defaults and supported speed/color values", () => {
+  assert.match(game, /galaxyDefenderLevelUpAnimation/);
+  assert.match(game, /speed:Math\.max\(\.4,Math\.min\(2\.5/);
+  assert.match(game, /\["gold","blue","purple"\]/);
+  assert.match(game, /saveLevelUpAnimationSettings\(\)/);
+});
+
+test("level-up title is displayed for one second at normal speed and follows the speed setting", () => {
+  assert.match(css, /@keyframes levelUpTitle/);
+  assert.match(css, /20%\{opacity:1;transform:scale\(1\.12\)\}70%\{opacity:1/);
+  assert.match(game, /levelUpAnimationSettings\.speed\)\+"s"/);
+  assert.match(game, /2000\/effects\.speed/);
+});
+
+test("level-up effects can be toggled but the upgrade panel and card selection remain automatic", () => {
+  assert.match(game, /effects\.flash\?"block":"none"/);
+  assert.match(game, /effects\.ring\?"block":"none"/);
+  assert.match(game, /effects\.title\?"block":"none"/);
+  assert.match(game, /playLevelUpAnimation\(\)\}/);
+  assert.match(game, /levelUpScreen\.style\.display="flex"/);
+  assert.match(html, /חלון השדרוגים/);
+  assert.match(html, /LEVEL UP/);
+});
