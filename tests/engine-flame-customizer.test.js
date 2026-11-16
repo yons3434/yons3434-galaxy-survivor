@@ -28,6 +28,12 @@ test("space background picker is separate from settings and supports presets and
   assert.match(game, /#ff3b9d/);
   assert.match(game, /#28d7ff/);
   assert.match(game, /galaxyDefenderCustomBackground/);
+  assert.match(game, /if\(special==="king"\)\{/);
+  assert.match(game, /\["mirror","ice","gate","chaser","teleport","inversion","split","doom"\]/);
+  assert.match(game, /\["mirror","ice","gate","chaser","teleport","inversion","split"\]/);
+  assert.match(game, /section:"👑 אזור מלך החלל"[\s\S]*?title:"מלך החלל"/);
+  assert.doesNotMatch(game, /אויבים ומטאוריטים מכל האזורים/);
+
   assert.match(game, /file\.size>3\*1024\*1024/);
   assert.match(game, /setSpaceBackground\(button\.dataset\.spaceBackground\)/);
   assert.match(css, /#spaceBackgroundPanel/);

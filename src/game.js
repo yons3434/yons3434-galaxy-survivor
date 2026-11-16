@@ -530,7 +530,6 @@ const COLLECTION_DATA=[
     {icon:"👹",title:"בוס מתפצל",desc:"בוס ירוק שמתפצל לבוסים בינוניים ואז למיני־בוסים." ,boss:true}
   ]},
   {section:"👑 אזור מלך החלל",items:[
-    {icon:"☄️🛸",title:"אויבים ומטאוריטים מכל האזורים",desc:"באזור הזה אין אויב מיוחד — מופיעים אויבים ומטאוריטים באקראי מכל האזורים."},
     {icon:"👑",title:"מלך החלל",desc:"בוס מיוחד ובכיר שלוקח חלקים מהסגנונות של האזורים האחרים." ,boss:true}
   ]},
   {section:"☠️ אזור בוס האבדון",items:[
@@ -911,12 +910,16 @@ function spawnAsteroid(){
   const health=(10+size*.55+distance*.004)*5*difficultySettings[difficulty].enemyHP;
   const special=activeSpecialBossArea;
   let type="normal";
-  if(special==="mirror")type="mirror";
+  if(special==="king"){
+    const pool=["mirror","ice","gate","chaser","teleport","inversion","split"];
+    type=pool[Math.floor(Math.random()*pool.length)];
+  }else if(special==="mirror")type="mirror";
   else if(special==="ice")type="ice";
   else if(special==="gates")type="gate";
   else if(special==="chaser")type="chaser";
   else if(special==="teleport")type="teleport";
   else if(special==="inversion")type="inversion";
+  else if(special==="doom")type="doom";
   const splitOnDeath=special==="split";
   asteroids.push({x:Math.random()*canvas.width,y:-50,size,health,maxHealth:health,speed:2+Math.random()*2+distance/1500,specialType:type,splitOnDeath,teleportTimer:240,teleportMarker:null,teleportHidden:false,gateTimer:Math.random()*100,clone:false,cloneSpawned:false,splitDone:false,inversionReturning:false,shatterTimer:0});
 }
@@ -924,12 +927,16 @@ function spawnEnemy(){
   const health=(100+distance*.012)*difficultySettings[difficulty].enemyHP;
   const special=activeSpecialBossArea;
   let type="normal";
-  if(special==="mirror")type="mirror";
+  if(special==="king"){
+    const pool=["mirror","ice","gate","chaser","teleport","inversion","split","doom"];
+    type=pool[Math.floor(Math.random()*pool.length)];
+  }else if(special==="mirror")type="mirror";
   else if(special==="ice")type="ice";
   else if(special==="gates")type="gate";
   else if(special==="chaser")type="chaser";
   else if(special==="teleport")type="teleport";
   else if(special==="inversion")type="inversion";
+  else if(special==="doom")type="doom";
   const splitOnDeath=special==="split";
   enemies.push({x:Math.random()*canvas.width,y:-50,health,maxHealth:health,speed:type==="chaser"?2.8:1.5+distance/3000,timer:type==="chaser"?999999:100,boss:false,specialType:type,cloneSpawned:false,teleportTimer:240,teleportMarker:null,teleportHidden:false,gateTimer:Math.random()*120,splitOnDeath,clone:false,splitDone:false});
 }
