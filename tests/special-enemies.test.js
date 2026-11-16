@@ -26,7 +26,7 @@ test("mirror clones are half speed, fire half as often, and their shots move slo
 });
 
 test("chaser meteorites lock their direction when spawned and pass through the player", () => {
-  assert.match(source, /const dx=player\.x-h\.x,dy=player\.y-h\.y,len=Math\.hypot\(dx,dy)\|\|1;asteroids\.push/);
+  assert.ok(source.includes("const dx=player.x-h.x,dy=player.y-h.y,len=Math.hypot(dx,dy)||1;asteroids.push"));
   assert.match(source, /a\.chaserMeteor\)/);
   assert.match(source, /if\(a\.chaserMeteor\)\{damagePlayer\(\);return\}/);
 });
