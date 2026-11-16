@@ -917,7 +917,7 @@ function spawnAsteroid(){
   if(activeSpecialBossArea==="teleport")return;
   const size=Math.random()*18+12,health=(10+size*.55+distance*.004)*5*difficultySettings[difficulty].enemyHP,special=activeSpecialBossArea;
   let type="normal";
-  if(special==="king")type=["mirror","ice","gate","chaser","teleport","inversion","split"][Math.floor(Math.random()*7)];
+  if(special==="king"){type=["mirror","ice","gate","chaser","teleport","inversion","split"][Math.floor(Math.random()*7)];}
   else if(special==="mirror")type="mirror";else if(special==="ice")type="ice";else if(special==="gates")type="gate";else if(special==="chaser")type="chaser";else if(special==="teleport")type="teleport";else if(special==="inversion")type="inversion";else if(special==="doom")type="doom";
   asteroids.push({x:Math.random()*canvas.width,y:-50,size,health,maxHealth:health,speed:2+Math.random()*2+distance/1500,specialType:type,splitOnDeath:special==="split",teleportTimer:240,teleportMarker:null,teleportHidden:false,gateTimer:Math.random()*100,clone:false,cloneSpawned:false,splitDone:false,inversionReturning:false,shatterTimer:0});
 }
@@ -925,7 +925,7 @@ function spawnEnemy(){
   if(activeSpecialBossArea==="teleport")return;
   const baseHealth=(100+distance*.012)*difficultySettings[difficulty].enemyHP,health=activeSpecialBossArea==="doom"?baseHealth*3:baseHealth,special=activeSpecialBossArea;
   let type="normal";
-  if(special==="king")type=["mirror","ice","gate","chaser","teleport","inversion","split","doom"][Math.floor(Math.random()*8)];
+  if(special==="king"){type=["mirror","ice","gate","chaser","teleport","inversion","split","doom"][Math.floor(Math.random()*8)];}
   else if(special==="mirror")type="mirror";else if(special==="ice")type="ice";else if(special==="gates")type="gate";else if(special==="chaser")type="chaser";else if(special==="teleport")type="teleport";else if(special==="inversion")type="inversion";else if(special==="doom")type="doom";
   enemies.push({x:Math.random()*canvas.width,y:-50,health,maxHealth:health,speed:type==="chaser"?2.8:1.5+distance/3000,timer:type==="chaser"?999999:type==="doom"?70:100,boss:false,specialType:type,cloneSpawned:false,teleportTimer:240,teleportMarker:null,teleportHidden:false,gateTimer:Math.random()*120,splitOnDeath:special==="split",clone:false,splitDone:false});
 }
