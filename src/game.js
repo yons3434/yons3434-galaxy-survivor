@@ -986,7 +986,7 @@ function planNextBoss(d){
 }
 function spawnBoss(type="normal"){
   const rawType=String(type),isSpecialRaw=rawType.startsWith("special:"),requestedSpecial=isSpecialRaw?rawType.slice(8):"";
-  if(requestedSpecial==="teleport"){bossFightActive=false;pendingBossPlan=null;setSpecialBossArea("teleport",true);showMessage("🌀 אזור הטלפורט — השערים לא עושים דבר");return;}
+  if(requestedSpecial==="teleport"){bossFightActive=false;pendingBossPlan=null;setSpecialBossArea("teleport",true);return;}
   bossFightActive=true;
   const isBigSplit=rawType==="big"||requestedSpecial==="split",isSpecial=isSpecialRaw||isBigSplit,specialType=isBigSplit?"split":requestedSpecial;
   let health;if(isBigSplit)health=(700+distance*.5)*5*difficultySettings[difficulty].enemyHP;else if(isSpecial)health=(550+distance*.45)*5*difficultySettings[difficulty].enemyHP;else health=(350+distance*.35)*5*difficultySettings[difficulty].enemyHP;
@@ -1684,6 +1684,7 @@ processSpecialEntities();
   if(Math.hypot(a.x-player.x,a.y-player.y)<a.size+20){
     if(invincible||ultraModeActive||dodgeGhostTimer>0)return;
     if(a.specialType==="ice"){freezeTimer=Math.max(freezeTimer,420);a.health=0;destroyAsteroid(a);return}
+    if(a.chaserMeteor){damagePlayer();return}
     if(a.specialType==="inversion"){inversionTimer=Math.max(inversionTimer,120)}
     if(a.specialType==="chaser"){}
     a.health=0;damagePlayer();
@@ -1695,8 +1696,13 @@ processSpecialEntities();
     if(Math.hypot(enemy.x-player.x,enemy.y-player.y)<size+20){
       if(invincible||ultraModeActive||dodgeGhostTimer>0)return;
       if(enemy.specialType==="ice"){if(damagePlayer())freezeTimer=Math.max(freezeTimer,120);return}
-      if(enemy.specialType==="inversion"){if(damagePlayer())inversionTimer=Math.max(inversionTimer,120);return}
-      if(enemy.specialType==="chaser"){damagePlayer();return}
+      if(enemy.specialType==="inversion"){damagePlayer();return}
+      if(enemy.specialType==="chaser"){
+        const hit=damagePlayer();
+        if(hit&&!enemy.boss){enemy.chaserStraight=true;const len=Math.hypot(player.x-enemy.x,player.y-enemy.y)||1;enemy.chaserVx=(player.x-enemy.x)/len;enemy.chaserVy=(player.y-enemy.y)/len;}
+        else if(hit&&enemy.boss)enemy.chaserReturning=true;
+        return;
+      }
       damagePlayer();
     }
   });bullets=bullets.filter(b=>!b.dead&&b.y>-100&&b.y<canvas.height+100&&b.x>-100&&b.x<canvas.width+100);enemyBullets=enemyBullets.filter(b=>!b.dead&&b.y>-100&&b.y<canvas.height+100&&b.x>-100&&b.x<canvas.width+100);asteroids=asteroids.filter(a=>a.health>0&&a.y<canvas.height+100);enemies=enemies.filter(e=>e.health>0&&(e.boss||e.y<canvas.height+100));explosions.forEach(e=>{e.radius+=3;e.life--});explosions=explosions.filter(e=>e.life>0);chainExplosionEffects.forEach(e=>e.life--);chainExplosionEffects=chainExplosionEffects.filter(e=>e.life>0);const boss=enemies.find(e=>e.boss);if(boss){document.getElementById("bossContainer").style.display="block";document.getElementById("bossHealth").style.width=Math.max(0,boss.health/boss.maxHealth*100)+"%"}else document.getElementById("bossContainer").style.display="none";updateHUD()}
