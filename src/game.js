@@ -1596,13 +1596,13 @@ function update(){if(!gameRunning)return;gameTime+=1/60;updateDeadlyLootPickups(
     if(a.health<=0)return;
     updateMirrorCloneThresholds(a);
     if(updateStunnedEnemy(a))return;
-    const freezeFactor=getEnemyFreezeFactor(a);
-    if(a.specialType==="normal")a.y+=a.speed*worldSpeedMultiplier()*freezeFactor;
+    const freezeFactor=getEnemyFreezeFactor(a)*getRevengeWaveSlowFactor(a);
+    if(a.specialType==="normal"||!a.specialType)a.y+=a.speed*worldSpeedMultiplier()*freezeFactor;
   });
   enemies.forEach(enemy=>{
     if(enemy.health<=0)return;
     updateMirrorCloneThresholds(enemy);
-    const freezeFactor=getEnemyFreezeFactor(enemy);
+    const freezeFactor=getEnemyFreezeFactor(enemy)*getRevengeWaveSlowFactor(enemy);
     if(enemy.boss){
       if(updateStunnedEnemy(enemy))return;
       // Split bosses are updated in this main entity loop so they cannot be skipped by
