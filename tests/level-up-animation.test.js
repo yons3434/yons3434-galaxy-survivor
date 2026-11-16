@@ -49,10 +49,10 @@ test("card selection animation is wired to a real browser animation timeline", (
 
 
 test("upgrade cards animate into view after the level-up reveal with staggered timing", () => {
-  assert.match(game, /function animateLevelUpCards\\(\\)/);
-  assert.match(game, /card\\.classList\\.add\\("levelUpCardEntering"\\)/);
-  assert.match(game, /animateLevelUpCards\\(\\)\\},2000\\/effects\\.speed/);
-  assert.match(game, /index\\*90\\/speed/);
-  assert.match(css, /@keyframes levelUpCardAppear/);
-  assert.match(css, /opacity:0;transform:translateY\\(26px\\) scale\\(\\.88\\)/);
+  assert.ok(game.includes("function animateLevelUpCards()"));
+  assert.ok(game.includes('card.classList.add("levelUpCardEntering")'));
+  assert.ok(game.includes("animateLevelUpCards()}},2000/effects.speed"));
+  assert.ok(game.includes("index*90/speed"));
+  assert.ok(css.includes("@keyframes levelUpCardAppear"));
+  assert.ok(css.includes("opacity:0;transform:translateY(26px) scale(.88)"));
 });
