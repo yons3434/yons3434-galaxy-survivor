@@ -14,7 +14,7 @@ test("card appearance and card selection settings share the existing animation b
   assert.match(html, /id="levelUpAnimationSettingsOverlay"/);
   assert.match(html, /id="cardSelectionAnimationEnabled"/);
   assert.match(html, /id="cardSelectionAnimationSpeed"/);
-  assert.match(game, /renderLevelUpAnimationSettings();levelUpAnimationOverlay.style.display="flex"/);
+  assert.ok(game.includes('renderLevelUpAnimationSettings();levelUpAnimationOverlay.style.display="flex"'));
 });
 
 test("card selection animation is enabled by default and its speed and toggle persist", () => {
@@ -35,8 +35,8 @@ test("selecting a card moves it to the center, grows it moderately, shrinks the 
 });
 
 test("the upgrade is applied only after the selection animation, while disabling it keeps selection immediate", () => {
-  assert.match(game, /playCardSelectionAnimation(card,finish)/);
-  assert.match(game, /function completeUpgradeSelection(upgrade)/);
-  assert.match(game, /if(cardSelectionAnimationSettings.enabled)playCardSelectionAnimation/);
+  assert.ok(game.includes("playCardSelectionAnimation(card,finish)"));
+  assert.ok(game.includes("function completeUpgradeSelection(upgrade)"));
+  assert.ok(game.includes("if(cardSelectionAnimationSettings.enabled)playCardSelectionAnimation"));
   assert.match(translations, /🃏 אנימציית בחירת קלף/);
 });
