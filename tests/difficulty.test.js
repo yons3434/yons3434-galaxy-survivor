@@ -98,7 +98,7 @@ test("hit flash settings and overlays are wired without triggering on shield hit
   assert.match(html, /id="uiHitFlash"/);
   assert.match(html, /id="uiHeartbeatPulse"/);
   assert.match(game, /function triggerHitFlash\(\)/);
-  assert.match(game, /player\\.lives--;runLivesLost=true;\\s*activateRevengeWave\\(\\);\\s*triggerHitFlash\\(\\);/);
+  assert.match(game, /player\.lives--;runLivesLost=true;\s*activateRevengeWave\(\);\s*triggerHitFlash\(\);/);
   assert.match(game, /if\(ultraShields>0\)\{ultraShields--;[\s\S]*?return true;\}/);
   assert.match(game, /localStorage\.setItem\("galaxyDefenderHitFlash"/);
   assert.match(game, /localStorage\.setItem\("galaxyDefenderHeartbeatPulse"/);
