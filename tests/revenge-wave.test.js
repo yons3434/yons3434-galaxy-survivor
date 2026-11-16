@@ -23,7 +23,11 @@ test("Revenge Wave scales damage, pushes first, then slows ordinary targets whil
  assert.match(game,/offset=\(\(isAsteroid\?entity\.size:25\)\+55\)\*2\.5/);
  assert.match(game,/entity\.revengeWaveStunStartsAt=now\+pushDuration/);
  assert.match(game,/entity\.revengeWaveStunnedUntil=now\+pushDuration\+stunDuration/);
- assert.match(game,/getRevengeWaveSlowFactor\(entity,now=performance\.now\(\)\)\{return isRevengeWaveStunned\(entity,now\)\?\?0\.25:1\}/);
+ assert.match(game,/getRevengeWaveSlowFactor\(entity,now=performance\.now\(\)\)\{return isRevengeWaveStunned\(entity,now\)\?0\.25:1\}/);
+ assert.match(game,/getEnemyFreezeFactor\(a\)\*getRevengeWaveSlowFactor\(a\)/);
+ assert.match(game,/getEnemyFreezeFactor\(enemy\)\*getRevengeWaveSlowFactor\(enemy\)/);
+ assert.match(game,/if\(!revengeStunned\)enemy\.timer-=freezeFactor/);
+ assert.match(game,/if\(!revengeStunned&&enemy\.timer<=0\)/);
  assert.match(game,/enemyBullets\.length=0/);
  assert.match(game,/drawRevengeWaveEffect\(\)/);
 });
