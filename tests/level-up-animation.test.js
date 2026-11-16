@@ -37,3 +37,12 @@ test("level-up effects can be toggled but the upgrade panel and card selection r
   assert.match(html, /חלון השדרוגים/);
   assert.match(html, /LEVEL UP/);
 });
+
+
+test("card selection animation is wired to a real browser animation timeline", () => {
+  assert.match(game, /selectedCard\.animate\(\[/);
+  assert.match(game, /targetWidth=Math\.min\(340,window\.innerWidth\*\.75\)/);
+  assert.match(game, /targetHeight=Math\.min\(440,window\.innerHeight\*\.75\)/);
+  assert.doesNotMatch(game, /prefers-reduced-motion: reduce/);
+  assert.match(game, /cardSelectionAnimationHandle/);
+});
