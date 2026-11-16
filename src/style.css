@@ -285,3 +285,28 @@ body :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achieve
 
 /* Separate space-background picker */
 #spaceBackgroundPanel{width:min(620px,94vw);max-height:88vh;overflow:auto;background:linear-gradient(145deg,#111a38,#050918);border:2px solid #4cc9f0;border-radius:18px;padding:22px;box-shadow:0 0 35px rgba(76,201,240,.28);text-align:center}#spaceBackgroundChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}.spaceBackgroundChoice{display:flex;align-items:center;gap:12px;justify-content:flex-start;padding:10px;border:2px solid rgba(76,201,240,.35);border-radius:12px;background:rgba(255,255,255,.05);color:#fff}.spaceBackgroundChoice.selected{border-color:#4cc9f0;box-shadow:0 0 14px rgba(76,201,240,.35)}.spaceBackgroundSwatch{display:block;width:76px;height:48px;border-radius:8px;border:1px solid #fff5;flex:none}.spaceBackgroundSwatch.original{background:#050711}.spaceBackgroundSwatch.blue{background:linear-gradient(135deg,#020817,#09234a,#01030c)}.spaceBackgroundSwatch.purple{background:linear-gradient(135deg,#090316,#32105a,#03020c)}.spaceBackgroundSwatch.nebula{background:linear-gradient(135deg,#02030e,#18204b 45%,#42134e,#03020d)}#spaceBackgroundUploadLabel{display:block;margin:12px auto;padding:12px;border:1px dashed #4cc9f0;border-radius:10px;cursor:pointer;background:rgba(76,201,240,.08)}#spaceBackgroundFileName{min-height:22px;color:#9fe8ff;font-size:13px}.spaceBackgroundActions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:14px}@media(max-width:480px){#spaceBackgroundChoices{grid-template-columns:1fr}.spaceBackgroundSwatch{width:64px;height:42px}}
+
+
+/* Level-up animation and its settings picker */
+#levelUpAnimationSettingsPanel{width:min(560px,94vw);max-height:88vh;overflow:auto;background:linear-gradient(145deg,#111a38,#050918);border:2px solid #4cc9f0;border-radius:18px;padding:22px;box-shadow:0 0 35px rgba(76,201,240,.28);text-align:center;color:#fff}
+#levelUpAnimationSettingsPanel h3{color:#90e0ef;margin:16px 0 8px}
+.levelUpAnimationColors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.levelUpAnimationColors button{background:rgba(255,255,255,.06);color:#fff;border:2px solid rgba(76,201,240,.3)}
+.levelUpAnimationColors button.selected{border-color:#4cc9f0;box-shadow:0 0 14px rgba(76,201,240,.4)}
+.levelUpAnimationSpeedLabels{display:flex;justify-content:space-between;align-items:center;font-size:14px}
+#levelUpAnimationSpeed{width:100%;accent-color:#4cc9f0}
+.levelUpAnimationHint{font-size:12px;color:#a9c6dc}
+.levelUpAnimationEffects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;text-align:right}
+.levelUpAnimationEffects label{display:flex;align-items:center;gap:8px}
+.levelUpAnimationEffects input{accent-color:#4cc9f0;width:17px;height:17px}
+#levelUpAnimationOverlay{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;overflow:hidden;pointer-events:none;background:rgba(0,0,0,.94);--level-up-glow:#ffd45b}
+#levelUpAnimationOverlay .levelUpFlash{position:absolute;inset:0;opacity:0;background:radial-gradient(circle at center,#fff 0%,var(--level-up-glow) 16%,transparent 70%)}
+#levelUpAnimationOverlay .levelUpRing{position:absolute;width:34px;height:34px;border:4px solid var(--level-up-glow);border-radius:50%;opacity:0;box-shadow:0 0 24px var(--level-up-glow)}
+#levelUpAnimationOverlay .levelUpTitle{position:relative;font-size:clamp(32px,8vw,62px);font-weight:900;letter-spacing:2px;color:var(--level-up-glow);text-shadow:0 0 10px var(--level-up-glow),0 0 30px var(--level-up-glow);opacity:0;white-space:nowrap}
+#levelUpAnimationOverlay.active .levelUpFlash{animation:levelUpFlash var(--level-up-duration) ease-out both}
+#levelUpAnimationOverlay.active .levelUpRing{animation:levelUpRing var(--level-up-duration) ease-out both}
+#levelUpAnimationOverlay.active .levelUpTitle{animation:levelUpTitle var(--level-up-duration) ease-in-out both}
+@keyframes levelUpFlash{0%{opacity:0}8%{opacity:1}22%{opacity:.1}100%{opacity:0}}
+@keyframes levelUpRing{0%{opacity:1;transform:scale(.2)}35%{opacity:.8}55%,100%{opacity:0;transform:scale(12)}}
+@keyframes levelUpTitle{0%,14%{opacity:0;transform:scale(.35) translateY(15px)}20%{opacity:1;transform:scale(1.12)}70%{opacity:1;transform:scale(1)}80%,100%{opacity:0;transform:scale(.95) translateY(-25px)}}
+@media(max-width:480px){.levelUpAnimationColors{grid-template-columns:1fr}.levelUpAnimationEffects{grid-template-columns:1fr}}
