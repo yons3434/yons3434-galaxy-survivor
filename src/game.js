@@ -1696,7 +1696,70 @@ processSpecialEntities();
       if(invincible||ultraModeActive||dodgeGhostTimer>0)return;
       if(enemy.specialType==="ice"){if(damagePlayer())freezeTimer=Math.max(freezeTimer,120);return}
       if(enemy.specialType==="inversion"){if(damagePlayer())inversionTimer=Math.max(inversionTimer,120);return}
-      if(enemy.specialType==="chaser"){
+      if(enemy.specialType==="chaser"){damagePlayer();return}
+      damagePlayer();
+    }
+  });bullets=bullets.filter(b=>!b.dead&&b.y>-100&&b.y<canvas.height+100&&b.x>-100&&b.x<canvas.width+100);enemyBullets=enemyBullets.filter(b=>!b.dead&&b.y>-100&&b.y<canvas.height+100&&b.x>-100&&b.x<canvas.width+100);asteroids=asteroids.filter(a=>a.health>0&&a.y<canvas.height+100);enemies=enemies.filter(e=>e.health>0&&(e.boss||e.y<canvas.height+100));explosions.forEach(e=>{e.radius+=3;e.life--});explosions=explosions.filter(e=>e.life>0);chainExplosionEffects.forEach(e=>e.life--);chainExplosionEffects=chainExplosionEffects.filter(e=>e.life>0);const boss=enemies.find(e=>e.boss);if(boss){document.getElementById("bossContainer").style.display="block";document.getElementById("bossHealth").style.width=Math.max(0,boss.health/boss.maxHealth*100)+"%"}else document.getElementById("bossContainer").style.display="none";updateHUD()}
+function processSpecialEntities(){
+  if(freezeTimer>0)freezeTimer--;
+  if(inversionTimer>0)inversionTimer--;
+
+  // Special bosses and their unique attacks.
+  enemies.forEach(enemy=>{
+    if(!enemy.boss||!enemy.specialBoss||enemy.health<=0||enemy.specialType==="split")return;
+    const freezeFactor=getEnemyFreezeFactor(enemy);
+    if(updateStunnedEnemy(enemy))return;
+    if(enemy.specialType==="split"){
+      const stage=enemy.splitStage||0;
+      const splitMoveFactor=stage===0?1:stage===1?1.25:1.5;
+      enemy.x+=enemy.direction*bossSpeed*splitMoveFactor*freezeFactor;
+      const edge=stage===0?100:stage===1?65:45;
+      if(enemy.x<edge){enemy.x=edge;enemy.direction=1}
+      else if(enemy.x>canvas.width-edge){enemy.x=canvas.width-edge;enemy.direction=-1}
+      enemy.specialFireTimer=(enemy.specialFireTimer??(stage===0?600:stage===1?300:150))-freezeFactor;
+      if(enemy.specialFireTimer<=0){
+        const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
+        const stage=enemy.splitStage||0;
+        const speed=stage===0?2.5:stage===1?5:10;
+        const size=stage===0?18:stage===1?10:6;
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+size,vx:dx/len*speed,vy:dy/len*speed,size,
+          specialSplitBullet:true,splitStage:stage,damage:stage===0?2:1});
+        enemy.specialFireTimer=stage===0?600:stage===1?300:150;
+      }
+      return;
+    }
+    if(enemy.specialType==="mirror"){
+      updateMirrorCloneThresholds(enemy);enemy.x+=enemy.direction*bossSpeed*(enemy.mirrorClone?.5:1)*freezeFactor;
+      if(enemy.x<100||enemy.x>canvas.width-100)enemy.direction*=-1;enemy.timer=(enemy.timer??30)-freezeFactor;
+      if(enemy.timer<=0){const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1,shotSpeed=enemy.mirrorClone?1:2;enemyBullets.push({freezeSpeedMultiplier:freezeFactor,speedMultiplier:enemy.mirrorClone?.5:1,cloneBullet:!!enemy.mirrorClone,x:enemy.x,y:enemy.y+20,vx:dx/len*shotSpeed,vy:enemy.mirrorClone?1.5:3});enemy.timer=enemy.mirrorClone?200:30;}return;
+    }
+    if(enemy.specialType==="ice"){
+      enemy.x+=enemy.direction*bossSpeed*.9*freezeFactor;
+      if(enemy.x<100||enemy.x>canvas.width-100)enemy.direction*=-1;
+      enemy.timer=(enemy.timer??45)-freezeFactor;
+      if(enemy.timer<=0){
+        const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len*2,vy:3});
+        enemy.timer=45;
+      }
+      return;
+    }
+    if(enemy.specialType==="gates"){
+      enemy.gateTimer=(enemy.gateTimer??120)-freezeFactor;
+      if(enemy.gateTimer<=0){
+        enemy.gateTimer=180;
+        enemy.x=80+Math.random()*(canvas.width-160);
+        enemy.y=140+Math.random()*Math.max(80,canvas.height-300);
+      }
+      enemy.timer=(enemy.timer??60)-freezeFactor;
+      if(enemy.timer<=0){
+        const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len*2,vy:3});
+        enemy.timer=60;
+      }
+      return;
+    }
+    if(enemy.specialType==="chaser"){
       if(enemy.chaserReturning){const rdx=enemy.startX-enemy.x,rdy=enemy.startY-enemy.y,rlen=Math.hypot(rdx,rdy)||1,returnSpeed=Math.max(2.5,bossSpeed*1.35)*worldSpeedMultiplier()*freezeFactor;enemy.x+=rdx/rlen*returnSpeed;enemy.y+=rdy/rlen*returnSpeed;if(rlen<=returnSpeed){enemy.x=enemy.startX;enemy.y=enemy.startY;}if(!invincible&&!ultraModeActive&&dodgeGhostTimer<=0)enemy.chaserReturning=false;return;}
       const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1,chaseSpeed=Math.max(3.5,bossSpeed*1.45);enemy.x+=dx/len*chaseSpeed*worldSpeedMultiplier()*freezeFactor;enemy.y+=dy/len*chaseSpeed*worldSpeedMultiplier()*freezeFactor;
       const fireRange=330;enemy.timer=(enemy.timer??45)-freezeFactor;if(Math.hypot(dx,dy)<=fireRange&&enemy.timer<=0){for(let ss=0;ss<3;ss++){const base=Math.atan2(dy,dx)+(ss-1)*.16;enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:Math.cos(base)*4.5,vy:Math.sin(base)*4.5,shortRange:true,rangeLeft:fireRange});}enemy.timer=50;}return;
@@ -1727,7 +1790,7 @@ processSpecialEntities();
     }
     if(enemy.specialType==="inversion"){
       if(enemy.inversionChargeTimer>0){enemy.inversionChargeTimer=Math.max(0,enemy.inversionChargeTimer-freezeFactor);enemy.x+=enemy.direction*bossSpeed*.095*freezeFactor;if(enemy.inversionChargeTimer<=0){controlsInverted=!controlsInverted;enemy.inversionCooldownTimer=360+Math.random()*240;enemy.timer=50;showMessage(controlsInverted?"🔄 המקשים התהפכו!":"🔄 המקשים חזרו למצב רגיל!");}return;}
-      enemy.inversionCooldownTimer=(enemy.inversionCooldownTimer??(360+Math.random()*300))-freezeFactor;if(enemy.inversionCooldownTimer<=0){enemy.inversionChargeTimer=120;enemy.timer=50;return;}
+      enemy.inversionCooldownTimer=(enemy.inversionCooldownTimer??(360+Math.random()*240))-freezeFactor;if(enemy.inversionCooldownTimer<=0){enemy.inversionChargeTimer=120;enemy.timer=50;return;}
       enemy.x+=enemy.direction*bossSpeed*.95*freezeFactor;
       if(enemy.x<100||enemy.x>canvas.width-100)enemy.direction*=-1;
       enemy.timer=(enemy.timer??50)-freezeFactor;
