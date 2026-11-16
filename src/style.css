@@ -356,3 +356,4 @@ body :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achieve
   #upgradeContainer .upgradeCard.cardSelectionActive,
   #upgradeContainer .upgradeCard.cardSelectionAway{transition-duration:1ms!important}
 }
+\n/* Staggered entrance for upgrade cards after the LEVEL UP reveal. */\n.upgradeCard.levelUpCardEntering{animation:levelUpCardAppear var(--card-appear-duration,520ms) cubic-bezier(.2,.8,.2,1) var(--card-appear-delay,0ms) both}\n@keyframes levelUpCardAppear{0%{opacity:0;transform:translateY(26px) scale(.88);filter:blur(5px)}68%{opacity:1;transform:translateY(-4px) scale(1.025);filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}\n@media(prefers-reduced-motion:reduce){.upgradeCard.levelUpCardEntering{animation-duration:1ms!important;animation-delay:0ms!important}}\n
