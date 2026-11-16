@@ -915,7 +915,9 @@ function drawBlackHoles(){(window.activeBlackHoles||[]).forEach(h=>{ctx.save();c
 function rpgExplosion(x,y,isMini=false){const explosionRadius=isMini?120:120;explosion(x,y);screenShake(4,120);[...asteroids,...enemies].forEach(target=>{if(target.health<=0)return;const d=Math.hypot(target.x-x,target.y-y);if(d<=explosionRadius){const damage=effectiveDamage()*8*(1-d/explosionRadius*.5);target.health-=damage;applyPoison(target);applyFreeze(target);applyStun(target);applyBurn(target,false,damage);if(target.health<=0){if(enemies.includes(target))destroyEnemy(target);else destroyAsteroid(target)}}});showMessage("💥 RPG התפוצץ!") }
 function spawnAsteroid(){
   if(activeSpecialBossArea==="teleport")return;
-  const size=Math.random()*18+12,health=(10+size*.55+distance*.004)*5*difficultySettings[difficulty].enemyHP,special=activeSpecialBossArea;
+  const size=Math.random()*18+12;
+  const health=(10+size*.55+distance*.004)*5*difficultySettings[difficulty].enemyHP;
+  const special=activeSpecialBossArea;
   let type="normal";
   if(special==="king"){type=["mirror","ice","gate","chaser","teleport","inversion","split"][Math.floor(Math.random()*7)];}
   else if(special==="mirror")type="mirror";else if(special==="ice")type="ice";else if(special==="gates")type="gate";else if(special==="chaser")type="chaser";else if(special==="teleport")type="teleport";else if(special==="inversion")type="inversion";else if(special==="doom")type="doom";
@@ -923,11 +925,13 @@ function spawnAsteroid(){
 }
 function spawnEnemy(){
   if(activeSpecialBossArea==="teleport")return;
-  const baseHealth=(100+distance*.012)*difficultySettings[difficulty].enemyHP,health=activeSpecialBossArea==="doom"?baseHealth*3:baseHealth,special=activeSpecialBossArea;
+  const health=(100+distance*.012)*difficultySettings[difficulty].enemyHP;
+  const special=activeSpecialBossArea;
   let type="normal";
   if(special==="king"){type=["mirror","ice","gate","chaser","teleport","inversion","split","doom"][Math.floor(Math.random()*8)];}
   else if(special==="mirror")type="mirror";else if(special==="ice")type="ice";else if(special==="gates")type="gate";else if(special==="chaser")type="chaser";else if(special==="teleport")type="teleport";else if(special==="inversion")type="inversion";else if(special==="doom")type="doom";
-  enemies.push({x:Math.random()*canvas.width,y:-50,health,maxHealth:health,speed:type==="chaser"?2.8:1.5+distance/3000,timer:type==="chaser"?999999:type==="doom"?70:100,boss:false,specialType:type,cloneSpawned:false,teleportTimer:240,teleportMarker:null,teleportHidden:false,gateTimer:Math.random()*120,splitOnDeath:special==="split",clone:false,splitDone:false});
+  const spawnHealth=special==="doom"?health*3:health;
+  enemies.push({x:Math.random()*canvas.width,y:-50,health:spawnHealth,maxHealth:spawnHealth,speed:type==="chaser"?2.8:1.5+distance/3000,timer:type==="chaser"?999999:type==="doom"?70:100,boss:false,specialType:type,cloneSpawned:false,teleportTimer:240,teleportMarker:null,teleportHidden:false,gateTimer:Math.random()*120,splitOnDeath:special==="split",clone:false,splitDone:false});
 }
 function chooseSpecialBossType(){
   const pool=[
