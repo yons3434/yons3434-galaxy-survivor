@@ -20,7 +20,7 @@ test("card appearance and card selection settings share the existing animation b
 test("card selection animation is enabled by default and its speed and toggle persist", () => {
   assert.match(game, /galaxyDefenderCardSelectionAnimation/);
   assert.match(game, /enabled:saved.enabled!==false/);
-  assert.match(game, /speed:Math.max(.5,Math.min(2.5/);
+  assert.match(game, /speed:Math.max\\(\\.5,Math.min\\(2\\.5/);
   assert.match(game, /saveCardSelectionAnimationSettings()/);
 });
 
