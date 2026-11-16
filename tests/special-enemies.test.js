@@ -20,7 +20,8 @@ test("mirror clones spawn at 75% and 25% for normal entities and 75/50/25 for bo
 
 test("mirror clones are half speed, fire half as often, and their shots move slower and are translucent", () => {
   assert.match(source, /enemy\.mirrorClone\?\.5/);
-  assert.match(source, /enemy\.timer=enemy\.mirrorClone\?200/);\n  assert.match(source, /direction:entity\.direction,timer:60,mirrorClone:true/);
+  assert.match(source, /enemy\.timer=enemy\.mirrorClone\?200/);
+  assert.match(source, /direction:entity\.direction,timer:60,mirrorClone:true/);
   assert.match(source, /speedMultiplier:enemy\.mirrorClone\?\.5:1/);
   assert.match(source, /cloneBullet:!!enemy\.mirrorClone/);
   assert.match(source, /ctx\.globalAlpha=b\.cloneBullet\?\.45:1/);
@@ -28,12 +29,15 @@ test("mirror clones are half speed, fire half as often, and their shots move slo
 
 test("chaser meteorites lock their direction when spawned and pass through the player", () => {
   assert.ok(source.includes("const dx=player.x-h.x,dy=player.y-h.y,len=Math.hypot(dx,dy)||1;asteroids.push"));
-  assert.match(source, /a\.chaserMeteor\)/);\n  assert.match(source, /meteorSpeed=18\+distance\/4000/);\n  assert.match(source, /vx=dx\/len;vy=dy\/len;meteorSpeed=18\+distance\/4000/);
+  assert.match(source, /a\.chaserMeteor\)/);
+  assert.match(source, /meteorSpeed=18\+distance\/4000/);
+  assert.match(source, /vx=dx\/len;vy=dy\/len;meteorSpeed=18\+distance\/4000/);
   assert.match(source, /if\(a\.chaserMeteor\)\{damagePlayer\(\);return\}/);
 });
 
 test("chaser enemies are slower and go straight after hitting the player", () => {
-  assert.match(source, /chaseSpeed=Math\.max\(3\.2,enemy\.speed\*1\.05\)/);\n  assert.match(source, /for\(let ss=0;ss<2;ss\+\+\)/);
+  assert.match(source, /chaseSpeed=Math\.max\(3\.2,enemy\.speed\*1\.05\)/);
+  assert.match(source, /for\(let ss=0;ss<2;ss\+\+\)/);
   assert.match(source, /enemy\.chaserStraight=true/);
   assert.match(source, /enemy\.chaserVx=/);
 });
@@ -44,7 +48,9 @@ test("chaser boss fires three shots and returns to its start while the player is
   assert.match(source, /enemy\.startX/);
 });
 
-test("split enemies and meteorites are dark green and split children are light green", () => {\n  assert.match(source, /a\.specialType==="split"\?"#0b7d3b"/);\n  assert.match(source, /!enemy\.boss&&enemy\.specialType==="split"&&!enemy\.splitClone/);
+test("split enemies and meteorites are dark green and split children are light green", () => {
+  assert.match(source, /a\.specialType==="split"\?"#0b7d3b"/);
+  assert.match(source, /!enemy\.boss&&enemy\.specialType==="split"&&!enemy\.splitClone/);
   assert.match(source, /splitClone\?"#7cff9c"/);
   assert.match(source, /splitClone:true/);
 });
@@ -62,9 +68,12 @@ test("doom enemies are mini-bosses and their fire rate scales with remaining hea
   assert.match(source, /shotSpeed=2\.5\+\(1-healthRatio\)\*3/);
 });
 
-test("gate and teleport areas suppress enemies and bosses and only create inert visual gates", () => {\n  assert.match(source, /activeSpecialBossArea==="teleport"\|\|activeSpecialBossArea==="gates"/);\n  assert.match(source, /requestedSpecial==="gates".*?bossFightActive=false/s);
+test("gate and teleport areas suppress enemies and bosses and only create inert visual gates", () => {
+  assert.match(source, /activeSpecialBossArea==="teleport"\|\|activeSpecialBossArea==="gates"/);
+  assert.match(source, /requestedSpecial==="gates".*?bossFightActive=false/s);
   assert.match(source, /if\(activeSpecialBossArea==="teleport"\|\|activeSpecialBossArea==="gates"\)return/);
   assert.match(source, /requestedSpecial==="teleport".*?bossFightActive=false/s);
-  assert.match(source, /updateTeleportAreaGates/);\n  assert.match(source, /activeSpecialBossArea!=="teleport"&&activeSpecialBossArea!=="gates"/);
+  assert.match(source, /updateTeleportAreaGates/);
+  assert.match(source, /activeSpecialBossArea!=="teleport"&&activeSpecialBossArea!=="gates"/);
   assert.match(source, /teleportAreaGates\.push/);
 });
