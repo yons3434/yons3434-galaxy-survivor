@@ -46,3 +46,4 @@ test("card selection animation is wired to a real browser animation timeline", (
   assert.doesNotMatch(game, /prefers-reduced-motion: reduce/);
   assert.match(game, /cardSelectionAnimationHandle/);
 });
+\n\ntest("upgrade cards animate into view after the level-up reveal with staggered timing", () => {\n  assert.match(game, /function animateLevelUpCards\\(\\)/);\n  assert.match(game, /card\\.classList\\.add\\("levelUpCardEntering"\\)/);\n  assert.match(game, /animateLevelUpCards\\(\\)\\},2000\\/effects\\.speed/);\n  assert.match(game, /index\\*90\\/speed/);\n  assert.match(css, /@keyframes levelUpCardAppear/);\n  assert.match(css, /opacity:0;transform:translateY\\(26px\\) scale\\(\\.88\\)/);\n});\n
