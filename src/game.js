@@ -1140,7 +1140,7 @@ function getConfusionDamageMultiplier(){if(confusionLevel<=0)return 0;if(confusi
 function isConfusedEnemy(enemy){return !!(enemy&&!enemy.boss&&enemy.health>0&&enemy.confusedUntil>performance.now())}
 function findConfusionTarget(source){let nearest=null,best=Infinity;const now=performance.now();for(const target of enemies){if(target===source||target.health<=0)continue;if(target.confusedUntil>now)continue;const d=Math.hypot(target.x-source.x,target.y-source.y);if(d<best){best=d;nearest=target}}return nearest}
 function applyConfusion(enemy){if(confusionLevel<=0||!enemy||enemy.health<=0||enemy.boss)return false;if(Math.random()>=getConfusionChance())return false;const now=performance.now();enemy.confusedUntil=now+getConfusionDuration();enemy.confusedDamageMultiplier=getConfusionDamageMultiplier();enemy.confusedFireTimer=0;return true}
-function updateConfusedEnemy(enemy){if(!isConfusedEnemy(enemy))return false;const worldMultiplier=worldSpeedMultiplier(),freezeFactor=getEnemyFreezeFactor(enemy)*getRevengeWaveSlowFactor(enemy),moveSpeed=Math.max(.1,Number(enemy.speed)||1)*worldMultiplier*freezeFactor;enemy.y-=moveSpeed;enemy.x-=Math.sin(Date.now()/500)*.7*worldMultiplier*freezeFactor;enemy.confusedFireTimer=(enemy.confusedFireTimer??0)-freezeFactor;if(enemy.confusedFireTimer<=0){const target=findConfusionTarget(enemy);if(target){const dx=target.x-enemy.x,dy=target.y-enemy.y,len=Math.hypot(dx,dy)||1;enemyBullets.push({x:enemy.x,y:enemy.y,vx:dx/len*3.5,vy:dy/len*3.5,confusedBullet:true,confusedSource:enemy,confusedDamage:Number(enemy.confusedDamageMultiplier)||getConfusionDamageMultiplier(),freezeSpeedMultiplier:freezeFactor});enemy.confusedFireTimer=Math.max(25,100-(Math.max(0,confusionLevel-1)*5))}else enemy.confusedFireTimer=20}return true}
+function updateConfusedEnemy(enemy){if(!isConfusedEnemy(enemy))return false;const worldMultiplier=worldSpeedMultiplier(),freezeFactor=getEnemyFreezeFactor(enemy)*getRevengeWaveSlowFactor(enemy),moveSpeed=Math.max(.1,Number(enemy.speed)||1)*worldMultiplier*freezeFactor;enemy.y-=moveSpeed;enemy.x-=Math.sin(Date.now()/500)*.7*worldMultiplier*freezeFactor;if(isRevengeWaveStunned(enemy))return true;enemy.confusedFireTimer=(enemy.confusedFireTimer??0)-freezeFactor;if(enemy.confusedFireTimer<=0){const target=findConfusionTarget(enemy);if(target){const dx=target.x-enemy.x,dy=target.y-enemy.y,len=Math.hypot(dx,dy)||1;enemyBullets.push({x:enemy.x,y:enemy.y,vx:dx/len*3.5,vy:dy/len*3.5,confusedBullet:true,confusedSource:enemy,confusedDamage:Number(enemy.confusedDamageMultiplier)||getConfusionDamageMultiplier(),freezeSpeedMultiplier:freezeFactor});enemy.confusedFireTimer=Math.max(25,100-(Math.max(0,confusionLevel-1)*5))}else enemy.confusedFireTimer=20}return true}
 function addXP(amount){amount*=difficultySettings[difficulty].xp;amount*=1+xpBoostLevel*.25;xp+=amount;if(ultraUnlocked){ultraPoints=Math.min(ultraPointsCap,ultraPoints+amount);runUltraPointsEarned+=amount;}while(xp>=xpNeeded){xp-=xpNeeded;level++;if(ultraUnlocked)ultraPointsCap+=500;const ach=getAchievementStats();ach.levels++;saveAchievementStats(ach);checkAchievements();xpNeeded=Math.floor(xpNeeded*1.25);addPlayerXP(10,false,"עליית רמה");if(rpgLevel>0)ammo.rpg+=5;if(shotgunLevel>0)ammo.shotgun+=15;openLevelUp()}updateHUD()}
 const numberedUpgradeIds=new Set(["damage","fireRate","maxLives","speed","extraFire","splitBullet","xpBoost","luck","dodge","piercing","sword","levelHeal","chainLightning","lowHealthRage","poison","burn","freeze","stun","confusion","continuousFire","expandedChoice","flamethrower","laserHeat","chainExplosion","deadlyLoot","infernoBomb","revengeWave"]);
 function getUpgradeLevel(id){
@@ -1261,7 +1261,7 @@ function updateDrones(){drones.forEach(drone=>{drone.angle+=drone.rotationSpeed;
 function createDroneBullet(drone,angle,damage,size){bullets.push({x:drone.x,y:drone.y,vx:Math.cos(angle)*7,vy:Math.sin(angle)*7,damage:damage*(ultraModeActive?2:1),size,droneBullet:true,rpg:drone.type==="rpgMini",rpgMini:drone.type==="rpgMini",homing:homingLevel>0,piercing:piercingLevel>0,piercingEnabled:piercingLevel>0,targetHitCounts:[]})}
 function getRevengeWaveDamageMultiplier(level=revengeWaveLevel){return revengeWaveLevel>0?Math.min(5,1+.5*(Math.max(1,Math.min(9,Number(level)||1))-1)):0}
 function isRevengeWaveStunned(entity,now=performance.now()){return !!(entity&&entity.revengeWaveStunStartsAt>0&&now>=entity.revengeWaveStunStartsAt&&now<entity.revengeWaveStunnedUntil)}
-function getRevengeWaveSlowFactor(entity,now=performance.now()){return isRevengeWaveStunned(entity,now)?.25:1}
+function getRevengeWaveSlowFactor(entity,now=performance.now()){return isRevengeWaveStunned(entity,now)?0.25:1}
 function activateRevengeWave(){
   if(revengeWaveLevel<=0||performance.now()<revengeWaveActiveUntil)return false;
   const now=performance.now(),damage=player.damage*getRevengeWaveDamageMultiplier(),stunDuration=1000+500*(revengeWaveLevel-1),pushDuration=350;
@@ -1644,8 +1644,9 @@ function update(){if(!gameRunning)return;gameTime+=1/60;updateDeadlyLootPickups(
       if(updateConfusedEnemy(enemy))return;
       enemy.y+=enemy.speed*worldSpeedMultiplier()*freezeFactor;
       enemy.x+=Math.sin(Date.now()/500)*.7*worldSpeedMultiplier()*freezeFactor;
-      enemy.timer-=freezeFactor;
-      if(enemy.timer<=0){
+      const revengeStunned=isRevengeWaveStunned(enemy);
+      if(!revengeStunned)enemy.timer-=freezeFactor;
+      if(!revengeStunned&&enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
         const shots=difficultySettings[difficulty].enemyTriple?3:1;
         for(let ss=0;ss<shots;ss++){
