@@ -11,7 +11,8 @@ test("modular game.js has valid JavaScript syntax", () => {
 });
 
 test("mirror clones spawn at 75% and 25% for normal entities and 75/50/25 for bosses", () => {
-  assert.match(source, /thresholds=entity\.boss\?\[\.75,\.5,\.25\]:\[\.75,\.25\]/);\n  assert.match(source, /before>thresholdHealth&&after<=thresholdHealth/);
+  assert.match(source, /thresholds=entity\.boss\?\[\.75,\.5,\.25\]:\[\.75,\.25\]/);
+  assert.match(source, /before>thresholdHealth&&after<=thresholdHealth/);
   assert.match(source, /for\(let i=0;i<2;i\+\+\)enemies\.push\(\{boss:false/);
   assert.match(source, /for\(let i=0;i<2;i\+\+\)asteroids\.push\(\{x:entity\.x/);
   assert.match(source, /for\(let i=0;i<2;i\+\+\)enemies\.push\(\{boss:true/);
