@@ -1694,6 +1694,23 @@ processSpecialEntities();
       const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1,chaseSpeed=Math.max(3.5,bossSpeed*1.45);enemy.x+=dx/len*chaseSpeed*worldSpeedMultiplier()*freezeFactor;enemy.y+=dy/len*chaseSpeed*worldSpeedMultiplier()*freezeFactor;
       const fireRange=330;enemy.timer=(enemy.timer??45)-freezeFactor;if(Math.hypot(dx,dy)<=fireRange&&enemy.timer<=0){for(let ss=0;ss<3;ss++){const base=Math.atan2(dy,dx)+(ss-1)*.16;enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:Math.cos(base)*4.5,vy:Math.sin(base)*4.5,shortRange:true,rangeLeft:fireRange});}enemy.timer=50;}return;
     }
+    if(enemy.specialType==="chaser"){
+      if(enemy.chaserReturning){
+        const rdx=enemy.startX-enemy.x,rdy=enemy.startY-enemy.y,rlen=Math.hypot(rdx,rdy)||1,returnSpeed=Math.max(2.5,bossSpeed*1.35)*worldSpeedMultiplier()*freezeFactor;
+        enemy.x+=rdx/rlen*returnSpeed;enemy.y+=rdy/rlen*returnSpeed;
+        if(rlen<=returnSpeed){enemy.x=enemy.startX;enemy.y=enemy.startY;}
+        if(!invincible&&!ultraModeActive&&dodgeGhostTimer<=0)enemy.chaserReturning=false;
+        return;
+      }
+      const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1,chaseSpeed=Math.max(3.5,bossSpeed*1.45);
+      enemy.x+=dx/len*chaseSpeed*worldSpeedMultiplier()*freezeFactor;enemy.y+=dy/len*chaseSpeed*worldSpeedMultiplier()*freezeFactor;
+      const fireRange=330;enemy.timer=(enemy.timer??45)-freezeFactor;
+      if(Math.hypot(dx,dy)<=fireRange&&enemy.timer<=0){
+        for(let ss=0;ss<3;ss++){const base=Math.atan2(dy,dx)+(ss-1)*.16;enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:Math.cos(base)*4.5,vy:Math.sin(base)*4.5,shortRange:true,rangeLeft:fireRange});}
+        enemy.timer=50;
+      }
+      return;
+    }
     if(enemy.specialType==="teleport"){
       enemy.specialTimer=(enemy.specialTimer??240)-freezeFactor;
       if(!enemy.teleportHidden&&enemy.specialTimer<=0){
@@ -1745,13 +1762,13 @@ processSpecialEntities();
     if(updateStunnedEnemy(enemy))return;
     if(updateConfusedEnemy(enemy))return;
     if(enemy.specialType==="mirror"){
-      enemy.y+=enemy.speed*(enemy.mirrorClone?.8:1)*worldSpeedMultiplier()*freezeFactor;
-      enemy.x+=Math.sin(Date.now()/500)*.7*(enemy.mirrorClone?.8:1)*freezeFactor;
-      enemy.timer-=freezeFactor;
+      enemy.y+=enemy.speed*(enemy.mirrorClone?.5:1)*worldSpeedMultiplier()*freezeFactor;
+      enemy.x+=Math.sin(Date.now()/500)*.7*(enemy.mirrorClone?.5:1)*freezeFactor;
+      enemy.timer=(enemy.timer??100)-(enemy.mirrorClone?2:1)*freezeFactor;
       if(enemy.timer<=0){
         const dx=player.x-enemy.x,dy=player.y-enemy.y,len=Math.hypot(dx,dy)||1;
-        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,x:enemy.x,y:enemy.y+20,vx:dx/len*(enemy.mirrorClone?0.8:1),vy:enemy.mirrorClone?2.4:3});
-        enemy.timer=enemy.mirrorClone?125:100;
+        enemyBullets.push({freezeSpeedMultiplier:freezeFactor,speedMultiplier:enemy.mirrorClone?.5:1,cloneBullet:!!enemy.mirrorClone,x:enemy.x,y:enemy.y+20,vx:dx/len*(enemy.mirrorClone?.5:1),vy:enemy.mirrorClone?1.5:3});
+        enemy.timer=enemy.mirrorClone?200:100;
       }
     }else if(enemy.specialType==="chaser"){
       if(enemy.chaserStraight){enemy.x+=(Number(enemy.chaserVx)||0)*freezeFactor;enemy.y+=(Number(enemy.chaserVy)||0)*freezeFactor;}
