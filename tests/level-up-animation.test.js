@@ -61,23 +61,26 @@ test("upgrade cards appear only after the level-up animation fully ends", () => 
   assert.doesNotMatch(css, /\.upgradeCard\.levelUpCardEntering\{animation-duration:1ms/);
 });
 
-test("in-game LEVEL UP is optional, follows the player, and slows gameplay to a stop over 250ms", () => {
+test("in-game LEVEL UP is optional, follows the player, ramps to 0.1x over the first quarter, then stays at 0.1x", () => {
   assert.match(html, /id="levelUpAnimationShowInGame"/);
   assert.match(game, /showInGame:saved\.showInGame===true/);
   assert.match(game, /overlay\.classList\.add\("in-game"\)/);
   assert.match(game, /positionLevelUpAnimationAtPlayer\(overlay\)/);
-  assert.match(game, /elapsed>=250/);
-  assert.match(game, /timeScale=1-\.9\*Math\.min\(1,elapsed\/250\)/);
+  assert.match(game, /levelUpSlowMotionDuration=totalMs/);
+  assert.match(game, /rampDuration=Math\.max\(1,levelUpSlowMotionDuration\*\.25\)/);
+  assert.match(game, /timeScale=1-\.9\*rampProgress/);
+  assert.match(game, /if\(rampProgress>=1\)timeScale=\.1/);
+  assert.doesNotMatch(game, /elapsed>=250\)\{levelUpSlowMotionActive=false;gameRunning=false/);
   assert.match(game, /gameRunning=inGame;updateAccumulator=0/);
   assert.match(game, /gameRunning=false/);
   assert.match(css, /#levelUpAnimationOverlay\.in-game/);
 });
 
 
-test("in-game LEVEL UP remains anchored to the ship for the full animation while slow motion ends after 250ms", () => {
+test("in-game LEVEL UP remains anchored to the ship and ends slow motion only when the animation ends", () => {
   assert.match(game, /levelUpAnimationInGameActive=effects\.showInGame===true/);
   assert.match(game, /if\(levelUpAnimationInGameActive\)[\s\S]*positionLevelUpAnimationAtPlayer/);
   assert.match(game, /const clockNow=performance\.now\(\)/);
-  assert.match(game, /levelUpAnimationInGameActive=false/);
+  assert.match(game, /levelUpAnimationInGameActive=false;gameRunning=false;updateAccumulator=0/);
   assert.match(css, /#levelUpAnimationOverlay\.in-game\{z-index:900!important;background:transparent!important/);
 });
