@@ -58,3 +58,9 @@ test("card-choice opacity controls the frozen game backdrop from black to clear"
   assert.match(css, /backdrop-filter:blur\(var\(--card-choice-blur,0px\)\)/);
   assert.match(game, /if\(!levelUpOpen\|\|levelUpSlowMotionActive\)draw\(\)/);
 });
+
+
+test("card-animation settings launcher has a capture-phase click fallback and a reachable modal layer", () => {
+  assert.match(game, /openCardAnimationsButton\.addEventListener\("click"[\s\S]*capture:true/);
+  assert.match(css, /#cardAnimationsSettingsOverlay\{position:fixed;inset:0;z-index:420!important;pointer-events:auto\}/);
+});
