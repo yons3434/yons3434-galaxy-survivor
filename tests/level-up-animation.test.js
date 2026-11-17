@@ -50,7 +50,7 @@ test("card selection animation is wired to a real browser animation timeline", (
 
 test("upgrade cards appear only after the level-up animation fully ends", () => {
   assert.ok(game.includes("function animateLevelUpCards()"));
-  assert.ok(game.includes('card.classList.add("levelUpCardEntering")'));
+  assert.ok(game.includes('card.classList.add("levelUpCardEntering","cardAppear'));
   assert.ok(game.includes("const totalMs=2000/effects.speed;"));
   assert.ok(game.includes("},totalMs)"));
   assert.ok(game.includes('levelUpScreen.style.display="flex";applyCardChoiceBackdrop();animateLevelUpCards()'));
