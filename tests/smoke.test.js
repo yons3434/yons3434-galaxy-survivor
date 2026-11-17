@@ -25,7 +25,7 @@ test("in-game level-up animation offers 100%, 50%, and 20% simulation speeds wit
 test("game simulation uses a fixed 60 FPS timestep independent of display refresh rate", () => {
   assert.match(js, /const FIXED_UPDATE_STEP=1000\/60/);
   assert.match(js, /const frameDelta=Math\.min\(MAX_FRAME_DELTA,Math\.max\(0,frameNow-lastFrameTimestamp\)\)/);
-  assert.match(js, /while\(updateAccumulator>=FIXED_UPDATE_STEP&&updateSteps<MAX_CATCH_UP_STEPS\)\{update\(\);updateAccumulator-=FIXED_UPDATE_STEP;updateSteps\+\+\}/);
+  assert.match(js, /while\(updateAccumulator>=FIXED_UPDATE_STEP&&updateSteps<MAX_CATCH_UP_STEPS\)\{if\(levelUpSlowMotionActive&&timeScale<\.999\)slowMotionPreviousRenderState=captureSlowMotionRenderState\(\);update\(\);updateAccumulator-=FIXED_UPDATE_STEP;updateSteps\+\+\}/);
   assert.match(js, /requestAnimationFrame\(gameLoop\)/);
 });
 
