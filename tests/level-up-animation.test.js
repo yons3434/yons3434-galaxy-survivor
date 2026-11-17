@@ -53,7 +53,7 @@ test("upgrade cards appear only after the level-up animation fully ends", () => 
   assert.ok(game.includes('card.classList.add("levelUpCardEntering")'));
   assert.ok(game.includes("const totalMs=2000/effects.speed;"));
   assert.ok(game.includes("},totalMs)"));
-  assert.ok(game.includes('levelUpScreen.style.display="flex";levelUpScreen.style.background="";animateLevelUpCards()'));
+  assert.ok(game.includes('levelUpScreen.style.display="flex";applyCardChoiceBackdrop();animateLevelUpCards()'));
   assert.doesNotMatch(game, /revealStartMs|levelUpAnimationRevealTimer=setTimeout/);
   assert.ok(game.includes("index*90/speed"));
   assert.ok(css.includes("@keyframes levelUpCardAppear"));
