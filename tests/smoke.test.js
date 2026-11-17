@@ -9,7 +9,7 @@ const js = fs.readFileSync(path.join(root, "src", "game.js"), "utf8");
 const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 const standalone = fs.readFileSync(path.join(root, "Galaxy-Defender.html"), "utf8");
 
-test("game simulation uses a fixed 60 FPS timestep independent of display refresh rate", () => {
+test("in-game level-up animation offers 100%, 50%, and 20% simulation speeds without changing the render loop", () => {\n  assert.match(index, /id="levelUpAnimationGameSpeed"/);\n  assert.match(index, /<option value="100">100%/);\n  assert.match(index, /<option value="50">50%/);\n  assert.match(index, /<option value="20">20%/);\n  assert.match(js, /gameSpeed:\[100,50,20\]\.includes\(Number\(saved\.gameSpeed\)\)\?Number\(saved\.gameSpeed\):50/);\n  assert.match(js, /const targetScale=levelUpAnimationSettings\.gameSpeed\/100;timeScale=1-\(1-targetScale\)\*rampProgress/);\n  assert.match(js, /requestAnimationFrame\(gameLoop\)/);\n});\n\ntest("game simulation uses a fixed 60 FPS timestep independent of display refresh rate", () => {
   assert.match(js, /const FIXED_UPDATE_STEP=1000\/60/);
   assert.match(js, /const frameDelta=Math\.min\(MAX_FRAME_DELTA,Math\.max\(0,frameNow-lastFrameTimestamp\)\)/);
   assert.match(js, /while\(updateAccumulator>=FIXED_UPDATE_STEP&&updateSteps<MAX_CATCH_UP_STEPS\)\{update\(\);updateAccumulator-=FIXED_UPDATE_STEP;updateSteps\+\+\}/);
