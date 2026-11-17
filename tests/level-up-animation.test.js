@@ -51,7 +51,7 @@ test("card selection animation is wired to a real browser animation timeline", (
 test("upgrade cards reveal near the end of the level-up animation with staggered timing", () => {
   assert.ok(game.includes("function animateLevelUpCards()"));
   assert.ok(game.includes('card.classList.add("levelUpCardEntering")'));
-  assert.ok(game.includes("const revealStartMs=1100/effects.speed;"));
+  assert.ok(game.includes("const revealStartMs=1000/effects.speed;"));
   assert.ok(game.includes("levelUpAnimationRevealTimer=setTimeout(()=>"));
   assert.ok(game.includes("animateLevelUpCards()}},revealStartMs"));
   assert.ok(game.includes("index*90/speed"));
