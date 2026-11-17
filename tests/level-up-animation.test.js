@@ -67,7 +67,7 @@ test("in-game LEVEL UP is optional, follows the player, and slows gameplay to a 
   assert.match(game, /overlay\.classList\.add\("in-game"\)/);
   assert.match(game, /positionLevelUpAnimationAtPlayer\(overlay\)/);
   assert.match(game, /elapsed>=250/);
-  assert.match(game, /timeScale=1-\.9\*Math\.max\(0,elapsed\/250\)/);
+  assert.match(game, /timeScale=1-\.9\*Math\.max\(0,elapsed\/250\)/);\n  assert.match(game, /if\(levelUpSlowMotionActive\)updateAccumulator=FIXED_UPDATE_STEP/);
   assert.match(game, /gameRunning=false/);
   assert.match(css, /#levelUpAnimationOverlay\.in-game/);
 });
