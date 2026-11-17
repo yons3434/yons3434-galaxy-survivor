@@ -68,8 +68,11 @@ test("in-game LEVEL UP is optional, follows the player, ramps to 0.5x over the f
   assert.match(game, /positionLevelUpAnimationAtPlayer\(overlay\)/);
   assert.match(game, /levelUpSlowMotionDuration=totalMs/);
   assert.match(game, /rampDuration=Math\.max\(1,levelUpSlowMotionDuration\*\.25\)/);
-  assert.match(game, /timeScale=1-\.5\*rampProgress/);
-  assert.match(game, /if\(rampProgress>=1\)timeScale=\.5/);
+  assert.match(game, /targetScale=Math\.max\(\.2,Math\.min\(1,\(Number\(levelUpAnimationSettings\.gameSpeed\)\|\|50\)\/100\)\)/);
+  assert.match(game, /timeScale=1-\(1-targetScale\)\*rampProgress/);
+  assert.match(game, /if\(rampProgress>=1\)timeScale=targetScale/);
+  assert.match(game, /drawWithSlowMotionInterpolation\(updateAccumulator\/FIXED_UPDATE_STEP\)/);
+  assert.match(game, /captureSlowMotionRenderState\(\)/);
   assert.doesNotMatch(game, /elapsed>=250\)\{levelUpSlowMotionActive=false;gameRunning=false/);
   assert.match(game, /gameRunning=inGame;updateAccumulator=0/);
   assert.match(game, /gameRunning=false/);
@@ -83,4 +86,13 @@ test("in-game LEVEL UP remains anchored to the ship and ends slow motion only wh
   assert.match(game, /const clockNow=performance\.now\(\)/);
   assert.match(game, /levelUpAnimationInGameActive=false;gameRunning=false;updateAccumulator=0/);
   assert.match(css, /#levelUpAnimationOverlay\.in-game\{z-index:900!important;background:transparent!important/);
+});
+
+
+test("in-game slow motion offers 100%, 50%, and 20% and interpolates rendered positions without reducing requestAnimationFrame frequency", () => {
+  assert.match(html, /id="levelUpAnimationGameSpeed"[\s\S]*?<option value="100">[\s\S]*?<option value="50">[\s\S]*?<option value="20">/);
+  assert.match(game, /gameSpeed:\[100,50,20\]\.includes\(Number\(saved\.gameSpeed\)\)\?Number\(saved\.gameSpeed\):50/);
+  assert.match(game, /animationId=requestAnimationFrame\(gameLoop\)/);
+  assert.match(game, /object\.x=previous\.x\+\(object\.x-previous\.x\)\*amount/);
+  assert.match(game, /object\.y=previous\.y\+\(object\.y-previous\.y\)\*amount/);
 });
