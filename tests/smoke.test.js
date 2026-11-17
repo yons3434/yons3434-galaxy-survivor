@@ -11,12 +11,15 @@ const standalone = fs.readFileSync(path.join(root, "Galaxy-Defender.html"), "utf
 
 test("in-game level-up animation offers 100%, 50%, and 20% simulation speeds without changing the render loop", () => {
   assert.match(index, /id="levelUpAnimationGameSpeed"/);
-  assert.match(index, /<option value="100">100%/);
-  assert.match(index, /<option value="50">50%/);
-  assert.match(index, /<option value="20">20%/);
+  assert.match(index, /type="range" min="20" max="100" step="5"/);
+  assert.match(index, /id="levelUpAnimationGameSpeedValue"/);
   assert.match(js, /gameSpeed:\[100,50,20\]\.includes\(Number\(saved\.gameSpeed\)\)\?Number\(saved\.gameSpeed\):50/);
   assert.match(js, /const targetScale=levelUpAnimationSettings\.gameSpeed\/100;timeScale=1-\(1-targetScale\)\*rampProgress/);
   assert.match(js, /requestAnimationFrame\(gameLoop\)/);
+  assert.match(js, /function canControlDuringLevelUp\(\)/);
+  assert.match(js, /levelUpOpen&&!canControlDuringLevelUp\(\)/);
+  assert.match(js, /pendingLevelUpChoices\+\+/);
+  assert.match(js, /pendingLevelUpChoices--/);
 });
 
 test("game simulation uses a fixed 60 FPS timestep independent of display refresh rate", () => {
