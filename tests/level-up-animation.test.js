@@ -61,17 +61,16 @@ test("upgrade cards appear only after the level-up animation fully ends", () => 
   assert.doesNotMatch(css, /\.upgradeCard\.levelUpCardEntering\{animation-duration:1ms/);
 });
 
-test("in-game LEVEL UP is optional, follows the player, ramps to 0.1x over the first quarter, then stays at 0.1x", () => {
+test("in-game LEVEL UP runs gameplay at half speed while keeping the render loop active", () => {
   assert.match(html, /id="levelUpAnimationShowInGame"/);
   assert.match(game, /showInGame:saved\.showInGame===true/);
   assert.match(game, /overlay\.classList\.add\("in-game"\)/);
   assert.match(game, /positionLevelUpAnimationAtPlayer\(overlay\)/);
-  assert.match(game, /levelUpSlowMotionDuration=totalMs/);
-  assert.match(game, /rampDuration=Math\.max\(1,levelUpSlowMotionDuration\*\.25\)/);
-  assert.match(game, /timeScale=1-\.9\*rampProgress/);
-  assert.match(game, /if\(rampProgress>=1\)timeScale=\.1/);
-  assert.doesNotMatch(game, /elapsed>=250\)\{levelUpSlowMotionActive=false;gameRunning=false/);
+  assert.match(game, /const timeScale=levelUpSlowMotionActive\?0\.5:1/);
+  assert.doesNotMatch(game, /rampDuration|rampProgress|levelUpSlowMotionStartedAt|levelUpSlowMotionDuration/);
   assert.match(game, /gameRunning=inGame;updateAccumulator=0/);
+  assert.match(game, /if\(!levelUpOpen\|\|levelUpSlowMotionActive\)draw\(\)/);
+  assert.match(game, /requestAnimationFrame\(gameLoop\)/);
   assert.match(game, /gameRunning=false/);
   assert.match(css, /#levelUpAnimationOverlay\.in-game/);
 });
@@ -80,7 +79,7 @@ test("in-game LEVEL UP is optional, follows the player, ramps to 0.1x over the f
 test("in-game LEVEL UP remains anchored to the ship and ends slow motion only when the animation ends", () => {
   assert.match(game, /levelUpAnimationInGameActive=effects\.showInGame===true/);
   assert.match(game, /if\(levelUpAnimationInGameActive\)[\s\S]*positionLevelUpAnimationAtPlayer/);
-  assert.match(game, /const clockNow=performance\.now\(\)/);
+  assert.match(game, /const frameNow=Number\.isFinite\(timestamp\)\?timestamp:performance\.now\(\)/);
   assert.match(game, /levelUpAnimationInGameActive=false;gameRunning=false;updateAccumulator=0/);
   assert.match(css, /#levelUpAnimationOverlay\.in-game\{z-index:900!important;background:transparent!important/);
 });
