@@ -371,3 +371,17 @@ body :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achieve
 #levelUpAnimationOverlay.in-game{z-index:900!important;background:transparent!important;pointer-events:none}
 #levelUpAnimationOverlay.in-game .levelUpFlash{pointer-events:none}
 #levelUpAnimationOverlay.in-game .levelUpRing,#levelUpAnimationOverlay.in-game .levelUpTitle{will-change:transform,opacity;pointer-events:none}
+
+/* Selectable card entrance animation styles */
+#cardAppearanceAnimationStyle{width:100%;padding:10px;border-radius:9px;background:#101b32;color:#fff;border:1px solid #45617d;font:inherit}
+.cardAppearFlip{animation-name:cardAppearFlip!important}.cardAppearEnergy{animation-name:cardAppearEnergy!important}.cardAppearSide{animation-name:cardAppearSide!important}.cardAppearReveal{animation-name:cardAppearReveal!important}.cardAppearRarityPulse{animation-name:cardAppearRarityPulse!important}.cardAppearRise{animation-name:cardAppearRise!important}.cardAppearAll{animation-name:cardAppearAll!important}
+.cardAppearFlash{--card-appear-flash:1}.cardAppearGlow{filter:drop-shadow(0 0 12px var(--card-rarity-glow,#4cc9f0))}.cardAppearRarityColors.common{--card-rarity-glow:#ffffff}.cardAppearRarityColors.rare{--card-rarity-glow:#35e66b}.cardAppearRarityColors.epic{--card-rarity-glow:#b66cff}.cardAppearRarityColors.legendary{--card-rarity-glow:#ffd84d}.cardAppearRarityColors.amazing{--card-rarity-glow:#ff4242}
+.cardAppearParticles{position:relative}.cardAppearParticles::after{content:"✦  ·  ✧  ·  ✦";position:absolute;inset:0;display:grid;place-items:center;color:#fff;text-shadow:0 0 10px #55dfff;pointer-events:none;animation:cardParticleBurst var(--card-appear-duration,650ms) ease-out both}
+@keyframes cardAppearFlip{0%{opacity:0;transform:perspective(700px) rotateY(90deg) scale(.7)}65%{opacity:1;transform:perspective(700px) rotateY(-8deg) scale(1.04)}100%{opacity:1;transform:perspective(700px) rotateY(0) scale(1)}}
+@keyframes cardAppearEnergy{0%{opacity:0;transform:scale(.35);filter:brightness(3) blur(12px)}55%{opacity:1;transform:scale(1.08);filter:brightness(1.8) blur(0)}100%{opacity:1;transform:scale(1);filter:brightness(1)}}
+@keyframes cardAppearSide{0%{opacity:0;transform:translateX(110px) rotate(8deg)}100%{opacity:1;transform:translateX(0) rotate(0)}}
+@keyframes cardAppearReveal{0%{opacity:0;transform:rotateY(180deg) scale(.8);filter:brightness(.25)}70%{opacity:1;transform:rotateY(-8deg) scale(1.02);filter:brightness(1.5)}100%{opacity:1;transform:rotateY(0) scale(1);filter:brightness(1)}}
+@keyframes cardAppearRarityPulse{0%{opacity:0;transform:scale(.82);filter:brightness(.6)}45%{opacity:1;transform:scale(1.06);filter:brightness(1.8)}75%{transform:scale(.98)}100%{opacity:1;transform:scale(1);filter:brightness(1)}}
+@keyframes cardAppearRise{0%{opacity:0;transform:translateY(90px) scale(.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes cardAppearAll{0%{opacity:0;transform:perspective(700px) rotateY(70deg) translateY(70px) scale(.65);filter:brightness(2) blur(8px)}60%{opacity:1;transform:perspective(700px) rotateY(-10deg) translateY(-8px) scale(1.06);filter:brightness(1.5) blur(0)}100%{opacity:1;transform:perspective(700px) rotateY(0) translateY(0) scale(1);filter:brightness(1)}}
+@keyframes cardParticleBurst{0%{opacity:0;transform:scale(.2)}30%{opacity:1;transform:scale(1.4)}100%{opacity:0;transform:scale(2.2)}}
