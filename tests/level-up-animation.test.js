@@ -79,7 +79,7 @@ test("in-game LEVEL UP runs gameplay at half speed while keeping the render loop
 test("in-game LEVEL UP remains anchored to the ship and ends slow motion only when the animation ends", () => {
   assert.match(game, /levelUpAnimationInGameActive=effects\.showInGame===true/);
   assert.match(game, /if\(levelUpAnimationInGameActive\)[\s\S]*positionLevelUpAnimationAtPlayer/);
-  assert.match(game, /const clockNow=performance\.now\(\)/);
+  assert.match(game, /const frameNow=Number\.isFinite\(timestamp\)\?timestamp:performance\.now\(\)/);
   assert.match(game, /levelUpAnimationInGameActive=false;gameRunning=false;updateAccumulator=0/);
   assert.match(css, /#levelUpAnimationOverlay\.in-game\{z-index:900!important;background:transparent!important/);
 });
