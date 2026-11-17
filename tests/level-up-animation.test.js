@@ -48,14 +48,27 @@ test("card selection animation is wired to a real browser animation timeline", (
 });
 
 
-test("upgrade cards reveal near the end of the level-up animation with staggered timing", () => {
+test("upgrade cards appear only after the level-up animation fully ends", () => {
   assert.ok(game.includes("function animateLevelUpCards()"));
   assert.ok(game.includes('card.classList.add("levelUpCardEntering")'));
-  assert.ok(game.includes("const revealStartMs=1000/effects.speed;"));
-  assert.ok(game.includes("levelUpAnimationRevealTimer=setTimeout(()=>"));
-  assert.ok(game.includes("animateLevelUpCards()}},revealStartMs"));
+  assert.ok(game.includes("const totalMs=2000/effects.speed;"));
+  assert.ok(game.includes("},totalMs)"));
+  assert.ok(game.includes('levelUpScreen.style.display="flex";applyCardChoiceBackdrop();animateLevelUpCards()'));
+  assert.doesNotMatch(game, /revealStartMs|levelUpAnimationRevealTimer=setTimeout/);
   assert.ok(game.includes("index*90/speed"));
   assert.ok(css.includes("@keyframes levelUpCardAppear"));
   assert.ok(css.includes("opacity:0;transform:translateY(26px) scale(.88)"));
   assert.doesNotMatch(css, /\.upgradeCard\.levelUpCardEntering\{animation-duration:1ms/);
+});
+
+test("in-game LEVEL UP is optional, follows the player, and slows gameplay to a stop over 250ms", () => {
+  assert.match(html, /id="levelUpAnimationShowInGame"/);
+  assert.match(game, /showInGame:saved\.showInGame===true/);
+  assert.match(game, /overlay\.classList\.add\("in-game"\)/);
+  assert.match(game, /positionLevelUpAnimationAtPlayer\(overlay\)/);
+  assert.match(game, /elapsed>=250/);
+  assert.match(game, /timeScale=1-\.9\*Math\.max\(0,elapsed\/250\)/);
+  assert.match(game, /if\(levelUpSlowMotionActive\)updateAccumulator=FIXED_UPDATE_STEP/);
+  assert.match(game, /gameRunning=false/);
+  assert.match(css, /#levelUpAnimationOverlay\.in-game/);
 });

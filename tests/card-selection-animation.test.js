@@ -8,13 +8,15 @@ const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 const translations = fs.readFileSync(path.join(root, "src", "translations.js"), "utf8");
 
-test("card appearance and card selection settings share the existing animation button and panel", () => {
+test("LEVEL UP and both card animations have two separate settings panels", () => {
   assert.match(html, /id="openLevelUpAnimationButton"/);
-  assert.match(html, /🃏 אנימציות קלפים/);
+  assert.match(html, /id="openCardAnimationsButton"/);
   assert.match(html, /id="levelUpAnimationSettingsOverlay"/);
+  assert.match(html, /id="cardAnimationsSettingsOverlay"/);
+  assert.match(html, /id="cardAppearanceAnimationEnabled"/);
   assert.match(html, /id="cardSelectionAnimationEnabled"/);
-  assert.match(html, /id="cardSelectionAnimationSpeed"/);
   assert.ok(game.includes('renderLevelUpAnimationSettings();levelUpAnimationOverlay.style.display="flex"'));
+  assert.ok(game.includes('renderCardAnimationsSettings();cardAnimationsSettingsOverlay.style.display="flex"'));
 });
 
 test("card selection animation is enabled by default and its speed and toggle persist", () => {
@@ -39,4 +41,20 @@ test("the upgrade is applied only after the selection animation, while disabling
   assert.ok(game.includes("function completeUpgradeSelection(upgrade)"));
   assert.ok(game.includes("if(cardSelectionAnimationSettings.enabled)playCardSelectionAnimation"));
   assert.match(translations, /🃏 אנימציית בחירת קלף/);
+});
+
+test("card reveal speed and enable state are independent of LEVEL UP animation settings", () => {
+  assert.match(game, /galaxyDefenderCardAppearanceAnimation/);
+  assert.match(game, /cardAppearanceAnimationSettings\.speed/);
+  assert.match(game, /if\(!cardAppearanceAnimationSettings\.enabled\)return/);
+  assert.match(html, /id="cardAppearanceAnimationSpeed"/);
+});
+
+test("card-choice opacity controls the frozen game backdrop from black to clear", () => {
+  assert.match(html, /id="cardSelectionOpacity" type="range" min="0" max="100"/);
+  assert.match(game, /cardSelectionAnimationSettings\.opacity/);
+  assert.match(game, /--card-choice-shade/);
+  assert.match(game, /--card-choice-blur/);
+  assert.match(css, /backdrop-filter:blur\(var\(--card-choice-blur,0px\)\)/);
+  assert.match(game, /if\(!levelUpOpen\|\|levelUpSlowMotionActive\)draw\(\)/);
 });

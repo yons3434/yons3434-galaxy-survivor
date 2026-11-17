@@ -13,7 +13,7 @@ canvas{display:block;background:radial-gradient(circle at 50% 40%,#101b3d,#02030
 #invincible{display:none;position:fixed;top:105px;left:50%;transform:translateX(-50%);color:#00ffff;font-size:18px;font-weight:bold;z-index:30}
 #message{position:fixed;top:42%;left:50%;transform:translate(-50%,-50%);font-size:28px;font-weight:bold;text-align:center;opacity:0;pointer-events:none;z-index:100;text-shadow:0 0 20px #fff}
 .overlay,#levelUp,#pauseMenu{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.93);z-index:200;text-align:center}
-#levelUp,#pauseMenu,#gameOver{display:none}
+#levelUp,#pauseMenu,#gameOver{display:none}#levelUp{background:rgba(0,0,0,var(--card-choice-shade,.93));backdrop-filter:blur(var(--card-choice-blur,0px));-webkit-backdrop-filter:blur(var(--card-choice-blur,0px))}
 h1{color:#4cc9f0;text-shadow:0 0 20px #4cc9f0}h2{color:#90e0ef}
 button{border:0;border-radius:10px;padding:11px 22px;margin:5px;background:#4cc9f0;color:#02030a;font-weight:bold;cursor:pointer;pointer-events:auto;position:relative;z-index:300}
 button:hover{transform:scale(1.05);background:#90e0ef}
@@ -288,24 +288,25 @@ body :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achieve
 
 
 /* Level-up animation and its settings picker */
-#levelUpAnimationSettingsPanel{width:min(560px,94vw);max-height:88vh;overflow:auto;background:linear-gradient(145deg,#111a38,#050918);border:2px solid #4cc9f0;border-radius:18px;padding:22px;box-shadow:0 0 35px rgba(76,201,240,.28);text-align:center;color:#fff}
-#levelUpAnimationSettingsPanel h3{color:#90e0ef;margin:16px 0 8px}
+#levelUpAnimationSettingsPanel,#cardAnimationsSettingsPanel{width:min(560px,94vw);max-height:88vh;overflow:auto;background:linear-gradient(145deg,#111a38,#050918);border:2px solid #4cc9f0;border-radius:18px;padding:22px;box-shadow:0 0 35px rgba(76,201,240,.28);text-align:center;color:#fff}
+#levelUpAnimationSettingsPanel h3,#cardAnimationsSettingsPanel h3{color:#90e0ef;margin:16px 0 8px}
 .levelUpAnimationColors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .levelUpAnimationColors button{background:rgba(255,255,255,.06);color:#fff;border:2px solid rgba(76,201,240,.3)}
 .levelUpAnimationColors button.selected{border-color:#4cc9f0;box-shadow:0 0 14px rgba(76,201,240,.4)}
 .levelUpAnimationSpeedLabels{display:flex;justify-content:space-between;align-items:center;font-size:14px}
-#levelUpAnimationSpeed{width:100%;accent-color:#4cc9f0}
+#levelUpAnimationSpeed,#cardAppearanceAnimationSpeed,#cardSelectionAnimationSpeed,#cardSelectionOpacity{width:100%;accent-color:#4cc9f0}
 .levelUpAnimationHint{font-size:12px;color:#a9c6dc}
 .levelUpAnimationEffects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;text-align:right}
 .levelUpAnimationEffects label{display:flex;align-items:center;gap:8px}
 .levelUpAnimationEffects input{accent-color:#4cc9f0;width:17px;height:17px}
 #levelUpAnimationOverlay{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;overflow:hidden;pointer-events:none;background:rgba(0,0,0,.94);--level-up-glow:#ffd45b}
-#levelUpAnimationOverlay .levelUpFlash{position:absolute;inset:0;opacity:0;background:radial-gradient(circle at center,#fff 0%,var(--level-up-glow) 16%,transparent 70%)}
+#levelUpAnimationOverlay .levelUpFlash{position:absolute;inset:0;opacity:0;background:radial-gradient(circle at var(--level-up-player-x,50%) var(--level-up-player-y,50%),#fff 0%,var(--level-up-glow) 16%,transparent 70%)}
 #levelUpAnimationOverlay .levelUpRing{position:absolute;width:34px;height:34px;border:4px solid var(--level-up-glow);border-radius:50%;opacity:0;box-shadow:0 0 24px var(--level-up-glow)}
 #levelUpAnimationOverlay .levelUpTitle{position:relative;font-size:clamp(32px,8vw,62px);font-weight:900;letter-spacing:2px;color:var(--level-up-glow);text-shadow:0 0 10px var(--level-up-glow),0 0 30px var(--level-up-glow);opacity:0;white-space:nowrap}
 #levelUpAnimationOverlay.active .levelUpFlash{animation:levelUpFlash var(--level-up-duration) ease-out both}
 #levelUpAnimationOverlay.active .levelUpRing{animation:levelUpRing var(--level-up-duration) ease-out both}
 #levelUpAnimationOverlay.active .levelUpTitle{animation:levelUpTitle var(--level-up-duration) ease-in-out both}
+#levelUpAnimationOverlay.in-game{background:transparent!important}#levelUpAnimationOverlay.in-game .levelUpRing{position:absolute;left:var(--level-up-player-x,50%);top:var(--level-up-player-y,50%);margin-left:-17px;margin-top:-17px}#levelUpAnimationOverlay.in-game .levelUpTitle{position:absolute;left:var(--level-up-player-x,50%);top:calc(var(--level-up-player-y,50%) - 76px);translate:-50% -50%}
 @keyframes levelUpFlash{0%{opacity:0}8%{opacity:1}22%{opacity:.1}100%{opacity:0}}
 @keyframes levelUpRing{0%{opacity:1;transform:scale(.2)}35%{opacity:.8}55%,100%{opacity:0;transform:scale(12)}}
 @keyframes levelUpTitle{0%,14%{opacity:0;transform:scale(.35) translateY(15px)}20%{opacity:1;transform:scale(1.12)}70%{opacity:1;transform:scale(1)}80%,100%{opacity:0;transform:scale(.95) translateY(-25px)}}
@@ -351,7 +352,7 @@ body :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achieve
   transition:transform 350ms ease,opacity 350ms ease,filter 350ms ease;
 }
 #cardSelectionAnimationSpeed{width:100%;accent-color:#4cc9f0}
-#levelUpAnimationSettingsPanel h2{color:#90e0ef;margin:20px 0 8px}
+#levelUpAnimationSettingsPanel h2,#cardAnimationsSettingsPanel h2{color:#90e0ef;margin:20px 0 8px}
 @media(prefers-reduced-motion:reduce){
   #upgradeContainer .upgradeCard.cardSelectionActive,
   #upgradeContainer .upgradeCard.cardSelectionAway{transition-duration:1ms!important}
