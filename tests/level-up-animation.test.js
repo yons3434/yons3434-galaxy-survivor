@@ -72,3 +72,12 @@ test("in-game LEVEL UP is optional, follows the player, and slows gameplay to a 
   assert.match(game, /gameRunning=false/);
   assert.match(css, /#levelUpAnimationOverlay\.in-game/);
 });
+
+
+test("in-game LEVEL UP remains anchored to the ship for the full animation while slow motion ends after 250ms", () => {
+  assert.match(game, /levelUpAnimationInGameActive=true/);
+  assert.match(game, /if\(levelUpAnimationInGameActive\)[\s\S]*positionLevelUpAnimationAtPlayer/);
+  assert.match(game, /const clockNow=performance\.now\(\)/);
+  assert.match(game, /levelUpAnimationInGameActive=false/);
+  assert.match(css, /#levelUpAnimationOverlay\.in-game\{z-index:900!important;background:transparent!important/);
+});
