@@ -362,3 +362,12 @@ body :is(h1,h2,h3,h4,p,label,button,option,th,td,.stat,.achievementCard,.achieve
 .upgradeCard.levelUpCardEntering{animation:levelUpCardAppear var(--card-appear-duration,520ms) cubic-bezier(.2,.8,.2,1) var(--card-appear-delay,0ms) both}
 @keyframes levelUpCardAppear{0%{opacity:0;transform:translateY(26px) scale(.88);filter:blur(5px)}68%{opacity:1;transform:translateY(-4px) scale(1.025);filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
 /* Keep the user-configured card entrance animation visible even when the OS reduces motion. */
+
+/* Keep the card-animation settings launcher and its modal reliably interactive. */
+#openCardAnimationsButton{pointer-events:auto!important;position:relative;z-index:320;touch-action:manipulation}
+#cardAnimationsSettingsOverlay{position:fixed;inset:0;z-index:420!important;pointer-events:auto}
+#cardAnimationsSettingsPanel{position:relative;z-index:421;pointer-events:auto}
+/* In-game LEVEL UP is an overlay on the live, frozen game frame—not a full-screen dimmer. */
+#levelUpAnimationOverlay.in-game{z-index:900!important;background:transparent!important;pointer-events:none}
+#levelUpAnimationOverlay.in-game .levelUpFlash{pointer-events:none}
+#levelUpAnimationOverlay.in-game .levelUpRing,#levelUpAnimationOverlay.in-game .levelUpTitle{will-change:transform,opacity;pointer-events:none}
