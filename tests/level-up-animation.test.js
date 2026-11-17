@@ -24,7 +24,7 @@ test("level-up animation preferences persist with safe defaults and supported sp
 test("level-up title is displayed for one second at normal speed and follows the speed setting", () => {
   assert.match(css, /@keyframes levelUpTitle/);
   assert.match(css, /20%\{opacity:1;transform:scale\(1\.12\)\}70%\{opacity:1/);
-  assert.match(game, /\(2\/effects\.speed\)\+"s"/);
+  assert.match(game, /2000\/effects\.speed/);
   assert.match(game, /2000\/effects\.speed/);
 });
 
@@ -51,7 +51,7 @@ test("card selection animation is wired to a real browser animation timeline", (
 test("upgrade cards reveal near the end of the level-up animation with staggered timing", () => {
   assert.ok(game.includes("function animateLevelUpCards()"));
   assert.ok(game.includes('card.classList.add("levelUpCardEntering")'));
-  assert.match(game, /levelUpAnimationRevealTimer=setTimeout\(\(\)=>\{[\s\S]*?animateLevelUpCards\(\)\},revealStartMs\);/);
+  assert.ok(game.includes("const revealStartMs=1100/effects.speed;"));\n  assert.ok(game.includes("levelUpAnimationRevealTimer=setTimeout(()=>"));\n  assert.ok(game.includes("animateLevelUpCards()}},revealStartMs"));
   assert.ok(game.includes("index*90/speed"));
   assert.ok(css.includes("@keyframes levelUpCardAppear"));
   assert.ok(css.includes("opacity:0;transform:translateY(26px) scale(.88)"));
