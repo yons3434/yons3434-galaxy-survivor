@@ -9,12 +9,12 @@ const js = fs.readFileSync(path.join(root, "src", "game.js"), "utf8");
 const css = fs.readFileSync(path.join(root, "src", "style.css"), "utf8");
 const standalone = fs.readFileSync(path.join(root, "Galaxy-Defender.html"), "utf8");
 
-test("in-game level-up animation offers 100%, 50%, and 20% simulation speeds without changing the render loop", () => {
+test("in-game level-up animation uses the same adjustable 0.4x–2.5x speed slider as card appearance", () => {
   assert.match(index, /id="levelUpAnimationGameSpeed"/);
-  assert.match(index, /type="range" min="20" max="100" step="5"/);
-  assert.match(index, /id="levelUpAnimationGameSpeedValue"/);
-  assert.match(js, /gameSpeed:Math\.max\(20,Math\.min\(100,Number\(saved\.gameSpeed\)\|\|50\)\)/);
-  assert.match(js, /const targetScale=levelUpAnimationSettings\.gameSpeed\/100;timeScale=1-\(1-targetScale\)\*rampProgress/);
+  assert.match(index, /type="range" min="0\.4" max="2\.5" step="0\.1" value="1"/);
+  assert.match(index, /id="levelUpAnimationGameSpeedValue"/);\n  assert.match(css, /#levelUpAnimationGameSpeed\{display:block;width:100%/);\n  assert.match(css, /input:not\(\[type="range"\]\)/);
+  assert.match(js, /gameSpeed:Math\.max\(\.4,Math\.min\(2\.5,gameSpeed\)\)/);
+  assert.match(js, /targetScale=Math\.max\(\.4,Math\.min\(2\.5,Number\(levelUpAnimationSettings\.gameSpeed\)\|\|1\)\);timeScale=1\+\(targetScale-1\)\*rampProgress/);
   assert.match(js, /requestAnimationFrame\(gameLoop\)/);
   assert.match(js, /function canControlDuringLevelUp\(\)/);
   assert.match(js, /levelUpOpen&&!canControlDuringLevelUp\(\)/);
