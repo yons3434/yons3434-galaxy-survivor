@@ -60,3 +60,14 @@ test("upgrade cards appear only after the level-up animation fully ends", () => 
   assert.ok(css.includes("opacity:0;transform:translateY(26px) scale(.88)"));
   assert.doesNotMatch(css, /\.upgradeCard\.levelUpCardEntering\{animation-duration:1ms/);
 });
+
+test("in-game LEVEL UP is optional, follows the player, and slows gameplay to a stop over 250ms", () => {
+  assert.match(html, /id="levelUpAnimationShowInGame"/);
+  assert.match(game, /showInGame:saved\.showInGame===true/);
+  assert.match(game, /overlay\.classList\.add\("in-game"\)/);
+  assert.match(game, /positionLevelUpAnimationAtPlayer\(overlay\)/);
+  assert.match(game, /elapsed>=250/);
+  assert.match(game, /timeScale=1-\.9\*Math\.max\(0,elapsed\/250\)/);
+  assert.match(game, /gameRunning=false/);
+  assert.match(css, /#levelUpAnimationOverlay\.in-game/);
+});
