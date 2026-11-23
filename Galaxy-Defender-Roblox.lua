@@ -1,7 +1,7 @@
 --!strict
 -- GALAXY DEFENDER — Roblox / Luau port
 -- Place this LocalScript in StarterPlayer > StarterPlayerScripts.
--- Profile identity is the Roblox username. Translation and the original account system are excluded.
+-- Original account, profile, leaderboard, and translation systems are intentionally excluded.
 -- This is an expanded playable conversion foundation; it is not yet a line-for-line port
 -- of every browser feature (global Supabase leaderboard, every original card/effect,
 -- all special boss phases, and persistent cross-session stats still need dedicated ports).
@@ -66,12 +66,11 @@ local function hudLabel(name: string, x: number, width: number, value: string)
 	corner(l,8); stroke(l,C.ship,1)
 	return l
 end
-local profileLabel = hudLabel("Profile",0,190,"PROFILE: "..player.Name)
-local scoreLabel = hudLabel("Score",198,120,"SCORE: 0")
-local livesLabel = hudLabel("Lives",326,100,"LIVES: 3")
-local levelLabel = hudLabel("Level",434,100,"LEVEL: 1")
-local distanceLabel = hudLabel("Distance",542,130,"0 m")
-local weaponLabel = hudLabel("Weapon",680,180,"WEAPON: PISTOL")
+local scoreLabel = hudLabel("Score",0,120,"SCORE: 0")
+local livesLabel = hudLabel("Lives",128,100,"LIVES: 3")
+local levelLabel = hudLabel("Level",236,100,"LEVEL: 1")
+local distanceLabel = hudLabel("Distance",344,130,"0 m")
+local weaponLabel = hudLabel("Weapon",482,180,"WEAPON: PISTOL")
 
 local xpBack=make("Frame",{Size=UDim2.fromOffset(340,14),Position=UDim2.new(.5,-170,0,55),BackgroundColor3=Color3.fromRGB(35,40,55),BorderSizePixel=0},arena)
 corner(xpBack,10)
@@ -105,22 +104,16 @@ local function panel(name: string, width: number, height: number)
 end
 local startPanel=panel("StartMenu",480,390); startPanel.Visible=true
 local startTitle=make("TextLabel",{Size=UDim2.new(1,-30,0,55),Position=UDim2.fromOffset(15,14),BackgroundTransparency=1,Text="🚀 GALAXY DEFENDER 🚀",TextColor3=C.ship,TextSize=26,Font=Enum.Font.GothamBlack,ZIndex=21},startPanel)
-local startSub=make("TextLabel",{Size=UDim2.new(1,-40,0,32),Position=UDim2.fromOffset(20,70),BackgroundTransparency=1,Text="Profile: "..player.Name,TextColor3=C.white,TextSize=15,Font=Enum.Font.GothamBold,ZIndex=21},startPanel)
+local startSub=make("TextLabel",{Size=UDim2.new(1,-40,0,32),Position=UDim2.fromOffset(20,70),BackgroundTransparency=1,Text="SURVIVE • UPGRADE • DESTROY",TextColor3=C.white,TextSize=15,Font=Enum.Font.GothamBold,ZIndex=21},startPanel)
 local diffLabel=make("TextLabel",{Size=UDim2.new(1,-30,0,25),Position=UDim2.fromOffset(15,108),BackgroundTransparency=1,Text="DIFFICULTY: NORMAL",TextColor3=C.gold,TextSize=15,Font=Enum.Font.GothamBold,ZIndex=21},startPanel)
 local startBtn=button(startPanel,"PLAY",UDim2.fromOffset(210,48),UDim2.new(.5,-105,0,150),C.green); startBtn.ZIndex=22
 local diffBtn=button(startPanel,"CHANGE DIFFICULTY",UDim2.fromOffset(210,42),UDim2.new(.5,-105,0,210)); diffBtn.ZIndex=22
 local helpBtn=button(startPanel,"CONTROLS & HELP",UDim2.fromOffset(210,42),UDim2.new(.5,-105,0,260)); helpBtn.ZIndex=22
-local profileBtn=button(startPanel,"PROFILE",UDim2.fromOffset(210,42),UDim2.new(.5,-105,0,310)); profileBtn.ZIndex=22
 
 local pausePanel=panel("PauseMenu",360,230)
 local pauseTitle=make("TextLabel",{Size=UDim2.new(1,0,0,48),BackgroundTransparency=1,Text="PAUSED",TextColor3=C.ship,TextSize=26,Font=Enum.Font.GothamBlack,ZIndex=21},pausePanel)
 local resumeBtn=button(pausePanel,"RESUME",UDim2.fromOffset(190,42),UDim2.new(.5,-95,0,75),C.green); resumeBtn.ZIndex=22
 local quitBtn=button(pausePanel,"MAIN MENU",UDim2.fromOffset(190,42),UDim2.new(.5,-95,0,130)); quitBtn.ZIndex=22
-
-local profilePanel=panel("ProfilePanel",390,250)
-local profileTitle=make("TextLabel",{Size=UDim2.new(1,0,0,45),BackgroundTransparency=1,Text="PLAYER PROFILE",TextColor3=C.ship,TextSize=23,Font=Enum.Font.GothamBlack,ZIndex=21},profilePanel)
-local profileInfo=make("TextLabel",{Size=UDim2.new(1,-30,0,100),Position=UDim2.fromOffset(15,55),BackgroundTransparency=1,Text="ROBLOX USERNAME\n"..player.Name.."\nYour Roblox username is used as your profile.",TextColor3=C.white,TextSize=16,Font=Enum.Font.GothamBold,ZIndex=21},profilePanel)
-local profileClose=button(profilePanel,"CLOSE",UDim2.fromOffset(150,40),UDim2.new(.5,-75,1,-55)); profileClose.ZIndex=22
 
 local helpPanel=panel("HelpPanel",440,300)
 local helpTitle=make("TextLabel",{Size=UDim2.new(1,0,0,45),BackgroundTransparency=1,Text="CONTROLS",TextColor3=C.ship,TextSize=24,Font=Enum.Font.GothamBlack,ZIndex=21},helpPanel)
@@ -172,7 +165,6 @@ local function updateHud()
 	weaponLabel.Text="WEAPON: "..string.upper(selectedWeapon)
 	xpFill.Size=UDim2.new(math.clamp(xp/xpNeeded,0,1),0,1,0)
 	xpText.Text=string.format("LEVEL %d  •  %d / %d XP",level,math.floor(xp),xpNeeded)
-	profileLabel.Text="PROFILE: "..player.Name
 end
 local function cleanupList(list)
 	for i=#list,1,-1 do local item=list[i]; if item.ui then item.ui:Destroy() end; table.remove(list,i) end
@@ -312,7 +304,7 @@ local function startGame()
 	ship.Position=UDim2.new(.5,0,.82,0)
 	gameOver=false; paused=false; running=true; levelUpOpen=false
 	startPanel.Visible=false; gameOverPanel.Visible=false; pausePanel.Visible=false
-	levelPanel.Visible=false; profilePanel.Visible=false; helpPanel.Visible=false
+	levelPanel.Visible=false; helpPanel.Visible=false
 	arena.BackgroundColor3=difficulty.bg
 	updateHud(); message("DESTROY THE ENEMY SHIPS!")
 end
@@ -353,8 +345,6 @@ diffBtn.MouseButton1Click:Connect(function()
 	diffLabel.TextColor3=difficulty.color
 end)
 helpBtn.MouseButton1Click:Connect(function() helpPanel.Visible=true end)
-profileBtn.MouseButton1Click:Connect(function() profilePanel.Visible=true end)
-profileClose.MouseButton1Click:Connect(function() profilePanel.Visible=false end)
 helpClose.MouseButton1Click:Connect(function() helpPanel.Visible=false end)
 resumeBtn.MouseButton1Click:Connect(togglePause)
 quitBtn.MouseButton1Click:Connect(function()
@@ -1536,11 +1526,8 @@ achievementClose.MouseButton1Click:Connect(function()
 	if not running and not gameOver then startPanel.Visible=true end
 end)
 
--- Make sure the full HUD reflects the Roblox profile identity, not the old web account.
-profileInfo.Text="ROBLOX USERNAME\n"..player.Name.."\nThis profile uses your Roblox account name."
-startSub.Text="Profile: "..player.Name
 updateHud()
 updateAdvancedHud()
 updateLifeHud()
-message("WELCOME, "..player.Name)
+message("WELCOME, PILOT")
 
