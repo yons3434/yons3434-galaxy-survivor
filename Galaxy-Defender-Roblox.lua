@@ -139,6 +139,7 @@ local restartBtn=button(gameOverPanel,"PLAY AGAIN",UDim2.fromOffset(190,42),UDim
 local menuBtn=button(gameOverPanel,"MAIN MENU",UDim2.fromOffset(190,42),UDim2.new(.5,-95,0,190)); menuBtn.ZIndex=22
 
 local score,lives,level,xp=0,difficulty.lives,1,0
+local pendingLevelUps=0
 local xpNeeded=100
 local distance,gameTime=0,0
 local bullets,enemies,meteors,effects={},{},{},{}
@@ -196,10 +197,8 @@ end
 local function awardXP(amount: number)
 	xp+=amount*difficulty.xp
 	while xp>=xpNeeded do
-		xp-=xpNeeded; level+=1; stats.levels+=1; xpNeeded=math.floor(xpNeeded*1.18)
+		xp-=xpNeeded; level+=1; stats.levels+=1; pendingLevelUps+=1; xpNeeded=math.floor(xpNeeded*1.18)
 		if level>=5 then ultraUnlocked=true end
-		updateHud()
-		return true
 	end
 	updateHud(); return false
 end
@@ -308,6 +307,7 @@ local function startGame()
 	damage=10; fireRateMultiplier=1; ammo={RPG=10,Shotgun=30}; selectedWeapon="Pistol"
 	ultraPoints=0; ultraActive=false; ultraShield=0; ultraCooldownUntil=0; ultraUnlocked=false
 	stats={enemies=0,meteors=0,bosses=0,levels=0,games=stats.games+1}
+	pendingLevelUps=0
 	achievementState={}; bossDistance=1000; combo=0; lastKillAt=0
 	ship.Position=UDim2.new(.5,0,.82,0)
 	gameOver=false; paused=false; running=true; levelUpOpen=false
@@ -450,9 +450,9 @@ end)
 task.spawn(function()
 	while gui.Parent do
 		task.wait(.12)
-		if running and not paused and not gameOver and not levelUpOpen and xp>=xpNeeded then
-			local leveled=awardXP(0)
-			if leveled then showLevelUp() end
+		if running and not paused and not gameOver and not levelUpOpen and pendingLevelUps>0 then
+			pendingLevelUps-=1
+			showLevelUp()
 		end
 	end
 end)
