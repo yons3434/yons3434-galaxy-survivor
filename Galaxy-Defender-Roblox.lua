@@ -1019,9 +1019,20 @@ local function applyStatus(target: any, name: string, duration: number, strength
 	if not entry then entry={}; activeStatuses[target.ui]=entry end
 	local now=os.clock()
 	if name=="poison" then
+		-- Match the original poison stacking rule: each hit adds 10% of the
+		-- remaining strength, while the tick interval becomes 10% shorter.
+		local initialStrength=math.min(1,math.max(.1,poisonLevel*.1))
+		local initialInterval=1/math.max(1,math.min(9,poisonLevel))
+		if (entry.poisonStrength or 0)>0 then
+			entry.poisonStrength=entry.poisonStrength+(1-entry.poisonStrength)*.1
+			entry.poisonInterval=math.max(1/60,(entry.poisonInterval or initialInterval)*.9)
+		else
+			entry.poisonStrength=initialStrength
+			entry.poisonInterval=initialInterval
+			entry.poisonNext=now+initialInterval
+		end
+		entry.poisonStrength=math.min(1,entry.poisonStrength)
 		entry.poisonUntil=math.huge
-		entry.poisonStrength=(entry.poisonStrength or 0)+strength
-		entry.poisonNext=entry.poisonNext or now+.8
 	elseif name=="burn" then
 		entry.burnUntil=now+duration
 		entry.burnStrength=(entry.burnStrength or 0)+strength
@@ -1333,10 +1344,20 @@ RunService.Heartbeat:Connect(function(dt)
 				if entity then break end
 			end
 			if entity then
-				if entry.poisonUntil and now>=(entry.poisonNext or 0) then
-					entry.poisonNext=now+math.max(.2,1/(1+poisonLevel*.25))
-					local amount=math.min(entity.hp-1,(entry.poisonStrength or 0)*(.1+poisonLevel*.02))
-					if amount>0 then entity.hp-=amount end
+				if entry.poisonUntil and entity.hp>1 and now>=(entry.poisonNext or 0) then
+					local interval=math.max(1/60,entry.poisonInterval or 1)
+					local ticks=0
+					while now>=(entry.poisonNext or 0) and entity.hp>1 and ticks<20 do
+						local strength=math.clamp(entry.poisonStrength or 0,0,1)
+						if entity.boss then strength*=.25 end
+						local amount=math.min(entity.hp-1,entity.hp*strength)
+						if amount>0 then
+							entity.hp=math.max(1,entity.hp-amount)
+							floatingText("POISON -"..math.floor(amount),entity.x,entity.y,C.green)
+						end
+						entry.poisonNext+=interval
+						ticks+=1
+					end
 				end
 				if entry.burnUntil and now<entry.burnUntil and now>=(entry.burnNext or 0) then
 					entry.burnNext=now+.5
