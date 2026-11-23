@@ -2,8 +2,8 @@
 -- GALAXY DEFENDER — Roblox / Luau port
 -- Place this LocalScript in StarterPlayer > StarterPlayerScripts.
 -- Original account, profile, leaderboard, and translation systems are intentionally excluded.
--- This is an in-progress native Luau conversion; remaining source systems are being ported in stages
--- of every browser feature. Do not treat this file as a completed one-to-one port yet.
+-- This is an in-progress native Luau conversion. Some original systems are still missing;
+-- do not treat this file as a completed one-to-one port yet.
 
 local Players = game:GetService("Players")
 local UIS = game:GetService("UserInputService")
