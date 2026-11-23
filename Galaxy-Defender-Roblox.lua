@@ -1103,6 +1103,7 @@ local function applyStatus(target: any, name: string, duration: number, strength
 	end
 end
 
+local chainExplosionSequence=0
 local function damageTarget(target: any, amount: number)
 	if not target or not target.ui or not target.ui.Parent then return end
 	target.hp-=amount
@@ -1119,8 +1120,35 @@ local function damageTarget(target: any, amount: number)
 		else
 			addKill(target.isMeteor==true)
 		end
-		if chainExplosionLevel>0 then
-			table.insert(explosions,{x=target.x,y=target.y,radius=75+chainExplosionLevel*20,life=.35,damage=damage*(.8+chainExplosionLevel*.25)})
+		if chainExplosionLevel>0 and not target.chainNoChain then
+			-- Native Luau port of src/chain-explosion.js + triggerChainExplosion().
+			chainExplosionSequence=(chainExplosionSequence or 0)+1
+			local chainId=target.chainReactionId or chainExplosionSequence
+			local chainLevel=math.clamp(math.floor(chainExplosionLevel),1,9)
+			local size=math.max(12,tonumber(target.size) or (wasBoss and 60 or 25))
+			local sizeMultiplier=1+(chainLevel-1)*.5
+			local radius=size*(wasBoss and 3.8 or 2.2)*sizeMultiplier
+			local maxHealth=math.max(0,tonumber(target.maxHp) or 0)
+			local chainDamage=maxHealth*(20+(chainLevel-1)*10)/100
+			table.insert(explosions,{x=target.x,y=target.y,radius=radius,life=.35,damage=chainDamage})
+			local targets={}
+			for _,candidate in ipairs(enemies) do table.insert(targets,candidate) end
+			for _,candidate in ipairs(meteors) do table.insert(targets,candidate) end
+			for _,candidate in ipairs(targets) do
+				if candidate~=target and candidate.ui and candidate.ui.Parent and candidate.hp>0
+					and candidate.lastChainExplosionId~=chainId
+					and (Vector2.new(candidate.x-target.x,candidate.y-target.y)).Magnitude<=radius then
+					candidate.lastChainExplosionId=chainId
+					candidate.hp-=chainDamage
+					floatingText("-"..math.floor(chainDamage),candidate.x,candidate.y,C.orange)
+					if candidate.hp<=0 then
+						candidate.hp=0
+						candidate.chainReactionId=chainId
+						candidate.chainNoChain=wasBoss
+						damageTarget(candidate,0)
+					end
+				end
+			end
 		end
 	end
 end
