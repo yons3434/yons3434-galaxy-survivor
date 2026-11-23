@@ -2,9 +2,8 @@
 -- GALAXY DEFENDER — Roblox / Luau port
 -- Place this LocalScript in StarterPlayer > StarterPlayerScripts.
 -- Original account, profile, leaderboard, and translation systems are intentionally excluded.
--- This is an expanded playable conversion foundation; it is not yet a line-for-line port
--- of every browser feature (global Supabase leaderboard, every original card/effect,
--- all special boss phases, and persistent cross-session stats still need dedicated ports).
+-- This is an in-progress native Luau conversion; remaining source systems are being ported in stages
+-- of every browser feature. Do not treat this file as a completed one-to-one port yet.
 
 local Players = game:GetService("Players")
 local UIS = game:GetService("UserInputService")
@@ -1012,6 +1011,65 @@ local function beamHitsTarget(target: any, origin: Vector2, direction: Vector2, 
 	return perpendicular<=width+radius
 end
 
+-- Faithful Luau port of src/burn.js and the original applyBurn/updateBurn rules.
+local BURN_MAX_LEVEL=10
+local BURN_TICKS=8
+local BURN_DURATION=4
+local BURN_TICK_INTERVAL=BURN_DURATION/BURN_TICKS
+local function burnLevelIndex(value: number): number
+	return math.clamp(math.floor(tonumber(value) or 0),0,BURN_MAX_LEVEL)
+end
+local function burnChance(value: number): number
+	local n=burnLevelIndex(value); if n==0 then return 0 end
+	return math.min(.65,math.floor((.20+(n-1)*.05)*10000+.5)/10000)
+end
+local function burnChanceDecay(value: number): number
+	local n=burnLevelIndex(value); if n==0 then return 0 end
+	return math.max(.05,math.floor((.50-(n-1)*.05)*10000+.5)/10000)
+end
+local function burnInitialFraction(value: number): number
+	local n=burnLevelIndex(value); if n==0 then return 0 end
+	return math.min(.95,math.floor((.50+(n-1)*.05)*10000+.5)/10000)
+end
+local function burnDamageIncrease(value: number): number
+	local n=burnLevelIndex(value); if n==0 then return 0 end
+	return math.min(.475,math.floor((.25+(n-1)*.025)*10000+.5)/10000)
+end
+local function clearBurnState(target: any)
+	for _,key in ipairs({"burnUntil","burnBaseDamage","burnDamageTotal","burnDamagePerTick","burnDamageMultiplier","burnDuration","burnNextChance","burnHitCount","burnTicksRemaining","burnNextTick","burnNextHitCheck"}) do target[key]=nil end
+end
+local function applyOriginalBurn(target: any, continuous: boolean, hitDamage: number): boolean
+	if burnLevel<=0 or not target or (target.hp or 0)<=0 then return false end
+	local now=os.clock()
+	if continuous and now<(target.burnNextHitCheck or 0) then return false end
+	if continuous then target.burnNextHitCheck=now+BURN_TICK_INTERVAL end
+	if (target.burnUntil or 0)>now then
+		if rng:NextNumber()>= (target.burnNextChance or 0) then
+			clearBurnState(target)
+			if continuous then target.burnNextHitCheck=now+BURN_TICK_INTERVAL end
+			return false
+		end
+		target.burnHitCount=(target.burnHitCount or 1)+1
+		target.burnDamageMultiplier=(target.burnDamageMultiplier or 1)*(1+burnDamageIncrease(burnLevel))
+		target.burnDuration=(target.burnDuration or BURN_DURATION)*.75
+		target.burnNextChance=(target.burnNextChance or 0)*(1-burnChanceDecay(burnLevel))
+		target.burnDamageTotal=(target.burnBaseDamage or 0)*target.burnDamageMultiplier
+	else
+		if rng:NextNumber()>=burnChance(burnLevel) then return false end
+		target.burnBaseDamage=math.max(0,tonumber(hitDamage) or 0)*burnInitialFraction(burnLevel)
+		target.burnDamageMultiplier=1
+		target.burnDuration=BURN_DURATION
+		target.burnNextChance=burnChance(burnLevel)*(1-burnChanceDecay(burnLevel))
+		target.burnHitCount=1
+		target.burnDamageTotal=target.burnBaseDamage
+	end
+	target.burnUntil=now+target.burnDuration
+	target.burnTicksRemaining=BURN_TICKS
+	target.burnDamagePerTick=target.burnDamageTotal/BURN_TICKS
+	target.burnNextTick=now+target.burnDuration/BURN_TICKS
+	return true
+end
+
 -- Status effects are target-bound and update without relying on browser timers.
 local function applyStatus(target: any, name: string, duration: number, strength: number)
 	if not target or not target.ui then return end
@@ -1034,9 +1092,7 @@ local function applyStatus(target: any, name: string, duration: number, strength
 		entry.poisonStrength=math.min(1,entry.poisonStrength)
 		entry.poisonUntil=math.huge
 	elseif name=="burn" then
-		entry.burnUntil=now+duration
-		entry.burnStrength=(entry.burnStrength or 0)+strength
-		entry.burnNext=now+.5
+		applyOriginalBurn(target,true,strength)
 	elseif name=="freeze" then
 		entry.freezeUntil=math.max(entry.freezeUntil or 0,now+duration)
 		entry.freezeStrength=math.max(entry.freezeStrength or 0,strength)
@@ -1220,9 +1276,7 @@ RunService.Heartbeat:Connect(function(dt)
 				if beamHitsTarget(target,Vector2.new(px,py),direction,1300,8) then
 					damageTarget(target,damage*.65*heatMultiplier*damageMultiplier*dt*12)
 					lastContinuousHit=now
-					if burnLevel>0 and rng:NextNumber()<math.min(.75,.2+burnLevel*.05) then
-						applyStatus(target,"burn",10,damage*.5*(1+burnLevel*.5))
-					end
+					if burnLevel>0 then applyOriginalBurn(target,true,damage*.65*heatMultiplier*damageMultiplier*dt*12) end
 					if poisonLevel>0 then applyStatus(target,"poison",math.huge,damage*.1*poisonLevel) end
 				end
 			end
@@ -1243,7 +1297,7 @@ RunService.Heartbeat:Connect(function(dt)
 			for _,target in ipairs(list) do
 				if beamHitsTarget(target,Vector2.new(px,py),currentAim,240,32) then
 					damageTarget(target,damage*.28*damageMultiplier*dt*10)
-					applyStatus(target,"burn",3,damage*.35*(1+burnLevel*.25))
+					applyOriginalBurn(target,true,damage*.28*damageMultiplier*dt*10)
 					lastContinuousHit=now
 				end
 			end
@@ -1359,9 +1413,13 @@ RunService.Heartbeat:Connect(function(dt)
 						ticks+=1
 					end
 				end
-				if entry.burnUntil and now<entry.burnUntil and now>=(entry.burnNext or 0) then
-					entry.burnNext=now+.5
-					damageTarget(entity,(entry.burnStrength or 1)*.5)
+				if (entity.burnTicksRemaining or 0)>0 and now>=(entity.burnNextTick or math.huge) then
+					local rawBurn=entity.burnDamagePerTick or 0
+					local burnDamage=entity.boss and rawBurn*.25 or rawBurn
+					entity.burnTicksRemaining-=1
+					entity.burnNextTick+=(entity.burnDuration or BURN_DURATION)/BURN_TICKS
+					if burnDamage>0 then damageTarget(entity,burnDamage) end
+					if (entity.burnTicksRemaining or 0)<=0 or now>=(entity.burnUntil or 0) then clearBurnState(entity) end
 				end
 				if entry.freezeUntil and now<entry.freezeUntil then
 					entity.ui.BackgroundColor3=Color3.fromRGB(90,210,255)
